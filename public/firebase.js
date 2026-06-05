@@ -11,8 +11,8 @@ import {
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
+// Your web app's Firebase configuration resolved dynamically or with solid static fallback
+let firebaseConfig = {
   apiKey: "AIzaSyCO6THcYmnTXL3g_wu6rFnTxKm1f-P3_x8",
   authDomain: "new-web-76da8.firebaseapp.com",
   projectId: "new-web-76da8",
@@ -22,12 +22,28 @@ const firebaseConfig = {
   measurementId: "G-L8XS75W5Z2"
 };
 
-// Initialize Firebase
+// Initialize Firebase with fallback defaults first
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const analytics = firebaseConfig.measurementId ? getAnalytics(app) : null;
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+
+// Attempt to fetch fresh environment values asynchronously without top-level await blockages
+fetch("/api/firebase-config")
+  .then(response => {
+    if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
+      return response.json();
+    }
+  })
+  .then(dynamicConfig => {
+    if (dynamicConfig) {
+      Object.assign(firebaseConfig, dynamicConfig);
+    }
+  })
+  .catch(err => {
+    console.warn("[Firebase] Could not fetch response config, running on embedded config:", err);
+  });
 
 /**
  * Sign in with Google using a popup window

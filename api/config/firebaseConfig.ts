@@ -1,4 +1,7 @@
 import admin from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
+import fs from "fs";
+import path from "path";
 import { logger } from "../utils/logger.ts";
 
 const requiredEnv = ["FIREBASE_PROJECT_ID", "FIREBASE_CLIENT_EMAIL", "FIREBASE_PRIVATE_KEY"];
@@ -25,6 +28,21 @@ if (!admin.apps.length && missingEnv.length === 0 && !hasPlaceholder) {
   logger.warn("⚠️ Firebase Admin NOT configured. Fill in .env with real service account credentials.");
 }
 
-const db = (admin.apps.length > 0) ? admin.firestore() : null;
+let firestoreDatabaseId: string | undefined = undefined;
+try {
+  const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+  if (fs.existsSync(configPath)) {
+    const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+    if (config.firestoreDatabaseId) {
+      firestoreDatabaseId = config.firestoreDatabaseId;
+    }
+  }
+} catch (e) {
+  // Ignore
+}
+
+const db = (admin.apps.length > 0)
+  ? (firestoreDatabaseId ? getFirestore(admin.apps[0], firestoreDatabaseId) : admin.firestore())
+  : null;
 
 export { admin, db, missingEnv };

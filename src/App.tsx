@@ -17,7 +17,9 @@ import {
   Truck, 
   Heart,
   Droplets,
-  Search
+  Search,
+  Menu,
+  X
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -31,6 +33,7 @@ export default function App() {
   const [status, setStatus] = useState<HealthStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/health")
@@ -65,16 +68,38 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="p-2 text-slate-400 hover:text-slate-600">
+            <a href="/pureorigins.html" className="p-2 text-slate-400 hover:text-slate-600 block">
               <Search className="w-5 h-5" />
-            </button>
+            </a>
             <div className="h-4 w-px bg-slate-200 hidden sm:block"></div>
             <div className="flex items-center gap-2 text-xs font-mono">
               <span className={`w-2 h-2 rounded-full ${status?.ok ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-500'}`}></span>
               <span className="text-slate-400">SERVER: {status?.ok ? 'LIVE' : 'WAITING'}</span>
             </div>
+            {/* Mobile hamburger menu button */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-slate-600 hover:text-[#1B4332] md:hidden transition-colors"
+              id="mobile-menu-btn"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Drawer/Menu */}
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden bg-white border-b border-slate-100 py-4 px-6 flex flex-col gap-4 text-sm font-medium text-slate-600 shadow-lg"
+          >
+            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 border-b border-slate-50 transition-colors">আমাদের বৈশিষ্ট্য (Features)</a>
+            <a href="#products" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 border-b border-slate-50 transition-colors">আমাদের পণ্য (Products)</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 transition-colors">যোগাযোগ করুন (Contact)</a>
+            <a href="/pureorigins.html" onClick={() => setMobileMenuOpen(false)} className="bg-[#1B4332] text-white text-center py-2.5 rounded-xl hover:bg-[#2D6A4F] transition-colors font-semibold">শপ ভিজিট করুন</a>
+          </motion.div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -97,12 +122,18 @@ export default function App() {
               PureOrigins এ আমরা সরাসরি কৃষক ও খামারিদের কাছ থেকে সংগ্রহ করি সেরা মানের পণ্য, যাতে আপনার টেবিলে পৌঁছে যায় শতভাগ বিশুদ্ধ খাবার।
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <button className="px-8 py-4 bg-[#1B4332] text-white rounded-full font-semibold shadow-xl shadow-emerald-900/10 hover:bg-[#2D6A4F] transition-all transform hover:-translate-y-0.5">
+              <a 
+                href="/pureorigins.html" 
+                className="px-8 py-4 bg-[#1B4332] text-white rounded-full font-semibold shadow-xl shadow-emerald-900/10 hover:bg-[#2D6A4F] transition-all transform hover:-translate-y-0.5 block select-none text-center"
+              >
                 কেনাকাটা শুরু করুন
-              </button>
-              <button className="px-8 py-4 bg-white text-[#1B4332] border border-slate-200 rounded-full font-semibold hover:bg-slate-50 transition-all shadow-sm">
+              </a>
+              <a 
+                href="#products" 
+                className="px-8 py-4 bg-white text-[#1B4332] border border-slate-200 rounded-full font-semibold hover:bg-slate-50 transition-all shadow-sm block select-none text-center"
+              >
                 পণ্য সম্পর্কে জানুন
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -187,9 +218,15 @@ export default function App() {
                 <Database className="w-6 h-6 text-[#409167]" /> System Infrastructure
               </h3>
               <div className="space-y-4">
-                <AdminStatusItem label="API Backend" status={status?.ok ?? false} />
-                <AdminStatusItem label="Firebase Config" status={status?.firebaseAdminConfigured ?? false} />
-                <AdminStatusItem label="Admin Emails" status={status?.adminEmailsConfigured ?? false} />
+                {loading ? (
+                  <SkeletonPulse />
+                ) : (
+                  <>
+                    <AdminStatusItem label="API Backend" status={status?.ok ?? false} />
+                    <AdminStatusItem label="Firebase Config" status={status?.firebaseAdminConfigured ?? false} />
+                    <AdminStatusItem label="Admin Emails" status={status?.adminEmailsConfigured ?? false} />
+                  </>
+                )}
               </div>
             </div>
             
@@ -197,22 +234,30 @@ export default function App() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 -mr-16 -mt-16 rounded-full"></div>
               <Activity className="w-8 h-8 text-[#95D5B2] mb-8" />
               <h4 className="text-xl font-bold mb-4">Instance Monitor</h4>
-              <div className="space-y-4 font-mono text-xs opacity-80">
-                <div className="flex justify-between border-b border-white/10 pb-2">
-                  <span>PROJECT_ID:</span>
-                  <span>{loading ? '...' : (status ? 'new-web-76da8' : 'NOT_SET')}</span>
+              {loading ? (
+                <div className="animate-pulse space-y-4 py-4 opacity-50">
+                  <div className="h-4 bg-white/10 rounded w-3/4"></div>
+                  <div className="h-4 bg-white/10 rounded w-1/2"></div>
+                  <div className="h-4 bg-white/10 rounded w-5/6"></div>
                 </div>
-                <div className="flex justify-between border-b border-white/10 pb-2">
-                  <span>REGION:</span>
-                  <span>asia-east1</span>
+              ) : (
+                <div className="space-y-4 font-mono text-xs opacity-80">
+                  <div className="flex justify-between border-b border-white/10 pb-2">
+                    <span>PROJECT_ID:</span>
+                    <span>{status ? ((import.meta as any).env?.VITE_FIREBASE_PROJECT_ID || 'new-web-76da8') : 'NOT_SET'}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/10 pb-2">
+                    <span>REGION:</span>
+                    <span>asia-east1</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/10 pb-2">
+                    <span>ADMIN_ACCESS:</span>
+                    <span className={status?.adminEmailsConfigured ? 'text-emerald-400' : 'text-amber-400'}>
+                      {status?.adminEmailsConfigured ? 'CONFIGURED' : 'PENDING'}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between border-b border-white/10 pb-2">
-                  <span>ADMIN_ACCESS:</span>
-                  <span className={status?.adminEmailsConfigured ? 'text-emerald-400' : 'text-amber-400'}>
-                    {status?.adminEmailsConfigured ? 'CONFIGURED' : 'PENDING'}
-                  </span>
-                </div>
-              </div>
+              )}
               
               {!status?.firebaseAdminConfigured && !loading && (
                 <div className="mt-8 p-4 bg-white/10 rounded-xl flex items-start gap-3">
@@ -311,12 +356,25 @@ function ProductCard({ image, title, price, unit, badge }: { image: string, titl
         </div>
         <div className="flex items-center justify-between mt-4 border-t border-slate-100/55 pt-3">
           <span className="text-base font-bold text-[#2D6A4F] font-mono">{price}</span>
-          <button className="text-[10px] font-bold bg-[#1B4332] text-white px-3.5 py-1.5 rounded-full hover:bg-[#2D6A4F] transition-colors uppercase tracking-wider">
+          <a 
+            href="/pureorigins.html" 
+            className="text-[10px] font-bold bg-[#1B4332] text-white px-3.5 py-1.5 rounded-full hover:bg-[#2D6A4F] transition-colors uppercase tracking-wider inline-block text-center select-none"
+          >
             অর্ডার
-          </button>
+          </a>
         </div>
       </div>
     </motion.div>
+  );
+}
+
+function SkeletonPulse() {
+  return (
+    <div className="animate-pulse space-y-4">
+      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
+      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
+      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
+    </div>
   );
 }
 

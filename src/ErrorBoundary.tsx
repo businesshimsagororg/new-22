@@ -22,11 +22,45 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error in PureOrigins UI:", error, errorInfo);
+    
+    // Safely extract context info preventing sandbox/iframe SecurityErrors
+    let safeUrl = "";
+    try {
+      safeUrl = window.location.href;
+    } catch (e) {
+      safeUrl = "Iframe Sandbox / Hidden Url";
+    }
+
+    let safeUserAgent = "";
+    try {
+      safeUserAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    } catch (e) {
+      safeUserAgent = "Unknown UserAgent";
+    }
+
+    fetch("/api/health", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        error: error?.message || String(error),
+        stack: error?.stack,
+        componentStack: errorInfo?.componentStack,
+        url: safeUrl,
+        userAgent: safeUserAgent,
+        timestamp: new Date().toISOString()
+      })
+    }).catch((err) => {
+      console.error("Failed to post error log to backend:", err);
+    });
   }
 
   private handleReset = () => {
     this.setState({ hasError: false, error: null });
-    window.location.reload();
+    try {
+      window.location.reload();
+    } catch (e) {
+      console.error("Failed to reload via window.location.reload():", e);
+    }
   };
 
   public render() {
@@ -46,7 +80,9 @@ export class ErrorBoundary extends Component<Props, State> {
             {this.state.error && (
               <div className="mb-6 p-4 bg-slate-50 rounded-2xl text-left border border-slate-100">
                 <p className="text-xs font-mono text-slate-600 font-semibold mb-1">Error Message:</p>
-                <p className="text-xs font-mono text-rose-600 break-words">{this.state.error.message}</p>
+                <p className="text-xs font-mono text-rose-600 break-words">
+                  {this.state.error.message || String(this.state.error)}
+                </p>
               </div>
             )}
 

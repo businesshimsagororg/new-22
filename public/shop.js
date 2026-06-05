@@ -124,29 +124,83 @@ function renderStars(r){
 function productCard(p){
   const t=tagLabel(p.tag);
   const disc=p.origPrice?Math.round((1-p.price/p.origPrice)*100):0;
-  return `<div class="product-card flex flex-col" onclick="openProduct(${p.id})">
-    <div class="relative overflow-hidden" style="aspect-ratio:1;background:#f3ede6;">
-      <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105 rounded-t-xl" loading="lazy"/>
-      ${t?`<span class="badge ${t[1]} absolute top-2 left-2">${t[0]}</span>`:''}
-      ${disc>0?`<span class="badge bg-error text-white absolute top-2 right-2">-${disc}%</span>`:''}
-      <button onclick="event.stopPropagation();addToCart(${p.id})" class="absolute bottom-2 right-2 w-9 h-9 bg-primary text-white rounded-full flex items-center justify-center hover:bg-surface-tint transition-colors card-shadow opacity-0 group-hover:opacity-100" style="transition:all .2s;opacity:0;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">
-        <span class="mat text-[18px]">add_shopping_cart</span>
-      </button>
+  const weightSelectId = `weight-select-${p.id}`;
+  
+  return `<article class="product-card bg-surface rounded-lg border border-border-sand overflow-hidden shadow-[0_4px_12px_rgba(31,77,58,0.04)] hover:shadow-[0_8px_24px_rgba(31,77,58,0.08)] transition-all duration-300 flex flex-col group relative" onclick="openProduct(${p.id})">
+    <!-- Badges -->
+    <div class="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
+      ${t?`<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps px-2 py-0.5 rounded-sm shadow-sm text-[10px] md:text-xs tracking-wider">${t[0]}</span>`:''}
+      ${p.id === 1 ? `<span class="bg-primary-container/90 text-[#bceed3] font-label-caps text-label-caps px-2 py-0.5 rounded backdrop-blur-sm border border-primary/20 text-[10px] hidden md:inline-block">COD Available</span>`:''}
     </div>
-    <div class="flex flex-col flex-1 p-3 gap-1">
-      <div class="text-xs text-muted-gray font-semibold uppercase tracking-wider">${p.cat} • ${p.unit}</div>
-      <div class="font-garamond font-semibold text-primary text-base leading-snug">${p.name}</div>
-      <div class="flex items-center gap-1 mt-0.5">${renderStars(p.rating)}<span class="text-xs text-muted-gray">(${p.reviews})</span></div>
-      <div class="flex items-center justify-between mt-auto pt-2">
-        <div class="flex items-baseline gap-1.5">
-          <span class="font-bold text-primary text-base">৳ ${p.price.toLocaleString('bn-BD')}</span>
-          ${p.origPrice?`<span class="text-xs text-muted-gray line-through">৳ ${p.origPrice}</span>`:''}
+    ${disc>0?`
+      <div class="absolute top-2 right-2 z-10">
+        <span class="bg-error text-on-error font-label-caps text-label-caps px-2 py-0.5 rounded-sm shadow-sm animate-subtle-pulse text-[10px] md:text-xs">-${disc}%</span>
+      </div>
+    `:''}
+    
+    <!-- Image Area -->
+    <div class="aspect-square bg-surface-container overflow-hidden p-3 md:p-4 flex items-center justify-center relative">
+      <img alt="${p.name}" class="object-cover w-full h-full rounded-md group-hover:scale-105 transition-transform duration-500 mix-blend-multiply" src="${p.img}">
+    </div>
+    
+    <!-- Card Info Panel -->
+    <div class="p-3 md:p-4 flex flex-col flex-grow bg-surface-cream">
+      <div class="flex-grow">
+        <span class="text-on-surface-variant font-body-sm text-body-sm text-xs mb-1 block md:hidden">${p.cat}</span>
+        <h3 class="font-headline-sm text-headline-sm text-sm md:text-base lg:text-lg text-primary mb-1 line-clamp-2">${p.name}</h3>
+        <p class="hidden md:block font-body-sm text-body-sm text-on-surface-variant line-clamp-2 md:text-xs min-h-[32px] mb-2 leading-relaxed opacity-85">${p.desc || ''}</p>
+        <div class="flex items-center gap-1.5 mb-2">${renderStars(p.rating)}<span class="text-xs text-muted-gray">(${p.reviews})</span></div>
+        
+        <div class="flex items-baseline md:items-end gap-2 md:gap-3 mt-1 mb-2">
+          <span class="font-body-md md:font-headline-sm md:text-headline-sm text-primary font-bold leading-none text-base md:text-lg">৳ ${p.price.toLocaleString('bn-BD')}</span>
+          ${p.origPrice?`<span class="font-body-sm text-body-sm text-muted-gray line-through text-xs mb-[1px]">৳ ${p.origPrice.toLocaleString('bn-BD')}</span>`:''}
         </div>
-        <button onclick="event.stopPropagation();addToCart(${p.id})" class="btn-primary text-xs py-1.5 px-3 gap-1"><span class="mat text-[14px]">add</span>যোগ করুন</button>
+      </div>
+      
+      <!-- Weight Selectors (desktop only, hidden on mobile) -->
+      <div class="mb-3 w-full group relative hidden md:block" onclick="event.stopPropagation()">
+        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 text-[11px]" for="${weightSelectId}">পরিমাণ বাছাই করুন:</label>
+        <div class="relative">
+          <select class="w-full appearance-none bg-surface-cream border border-border-sand text-primary font-body-sm text-body-sm rounded-lg py-1.5 px-3 pr-8 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer transition-colors duration-200 hover:border-primary/50 text-[13px]" id="${weightSelectId}">
+            <option value="100g">১০০ গ্রাম</option>
+            <option value="250g">২৫০ গ্রাম</option>
+            <option value="500g">৫০০ গ্রাম</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary transition-transform duration-200 group-hover:translate-y-1">
+            <span class="material-symbols-outlined text-[16px]">expand_more</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="flex flex-col gap-1.5 mt-auto" onclick="event.stopPropagation()">
+        <button onclick="addToCartAnimated(this, ${p.id})" class="add-to-cart-btn w-full bg-transparent border border-primary text-primary hover:bg-primary hover:text-on-primary font-body-sm text-body-sm py-1.5 md:py-2 rounded-md transition-all active:scale-95 flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-[16px] md:text-[18px] icon">add_shopping_cart</span>
+          <span class="text">কার্টে যোগ</span>
+        </button>
+        <button onclick="addToCart(${p.id}); nav('checkout')" class="w-full bg-primary text-on-primary hover:bg-[#1C4631] font-body-sm text-body-sm py-1.5 md:py-2 rounded-md transition-all active:scale-95 font-medium shadow-sm flex items-center justify-center">
+          এখনই কিনুন
+        </button>
       </div>
     </div>
-  </div>`;
+  </article>`;
 }
+
+window.addToCartAnimated = function(btn, id) {
+  addToCart(id, 1);
+  const icon = btn.querySelector('.icon');
+  const text = btn.querySelector('.text');
+  if(!icon || !text) return;
+  const origClass = btn.className;
+  btn.className = "add-to-cart-btn w-full bg-primary text-on-primary border border-primary font-body-sm text-body-sm py-1.5 md:py-2 rounded-md transition-all active:scale-95 flex items-center justify-center gap-1 shadow-sm";
+  icon.textContent = 'check_circle';
+  text.textContent = 'যোগ করা হয়েছে';
+  setTimeout(() => {
+    btn.className = origClass;
+    icon.textContent = 'add_shopping_cart';
+    text.textContent = 'কার্টে যোগ';
+  }, 2000);
+};
 
 /* ===================== PAGES RENDER ===================== */
 function renderHomeProducts(){
@@ -217,21 +271,32 @@ function renderSunnah(){
 function setCategory(el,cat){
   if (typeof el === 'string') {
     cat = el;
-    const chips = document.querySelectorAll('.category-chip');
-    chips.forEach(c => {
-      const text = c.textContent.trim();
-      const isMatch = text === cat || (cat === 'সব' && text === 'সব');
-      c.className = isMatch 
-        ? "category-chip px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all active"
-        : "category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all";
-    });
-  } else {
-    document.querySelectorAll('.category-chip').forEach(c => {
-      c.className = "category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all";
-    });
-    el.className = "category-chip px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all active";
+    el = null;
   }
   currentCategory = cat;
+
+  // Sync Mobile Chips Active Styles
+  document.querySelectorAll('.category-chip').forEach(c => {
+    const isMatched = (cat === 'সব' && c.getAttribute('onclick')?.includes('সব')) ||
+                      (c.getAttribute('onclick')?.includes(`'${cat}'`));
+    if (isMatched) {
+      c.className = "category-chip whitespace-nowrap px-4 py-2 rounded-full border border-primary bg-primary text-white font-body-sm text-body-sm flex items-center gap-1 shadow-sm transition-transform active:scale-95 active";
+    } else {
+      c.className = "category-chip whitespace-nowrap px-4 py-2 rounded-full border border-border-sand bg-surface hover:border-primary text-on-surface-variant font-body-sm text-body-sm flex items-center gap-1 transition-transform active:scale-95";
+    }
+  });
+
+  // Sync Desktop Sidebar Active Styles
+  document.querySelectorAll('.category-chip-desktop').forEach(c => {
+    const isMatched = (cat === 'সব' && c.getAttribute('onclick')?.includes('সব')) ||
+                      (c.getAttribute('onclick')?.includes(`'${cat}'`));
+    if (isMatched) {
+      c.className = "category-chip-desktop active w-full flex items-center justify-between p-2 rounded-lg text-primary bg-[#ede7e1] transition-colors font-body-md text-body-md category-link-hover text-left select-none font-bold";
+    } else {
+      c.className = "category-chip-desktop w-full flex items-center justify-between p-2 rounded-lg text-on-surface-variant hover:bg-[#ede7e1] transition-colors font-body-md text-body-md category-link-hover text-left select-none";
+    }
+  });
+
   renderShop();
 }
 
@@ -241,9 +306,7 @@ function filterAndNav(cat){
   currentCategory = cat;
   nav('shop');
   setTimeout(()=>{
-    document.querySelectorAll('.category-chip').forEach(c=>{
-      c.classList.toggle('active', c.dataset.cat===cat);
-    });
+    setCategory(null, cat);
   },100);
 }
 
@@ -319,7 +382,7 @@ function addToCart(id, qty=1){
   const existing = cart.find(c=>c.id===id);
   if(existing) existing.qty+=qty; else cart.push({...p,qty});
   updateCartBadge();
-  showToast(`${p.name} কার্টে যোগ হয়েছে!`,'check_circle');
+  showCartToast(p);
   renderDrawer();
 }
 
@@ -330,7 +393,7 @@ function addComboToCart(cid){
   const p = PRODUCTS[0];
   cart.push({id:'combo-'+cid, name:c.name, price:c.price, img:c.img, qty:1, unit:'১ সেট'});
   updateCartBadge();
-  showToast(`${c.name} কার্টে যোগ হয়েছে!`,'check_circle');
+  showCartToast(c);
   renderDrawer();
 }
 
@@ -365,6 +428,8 @@ function updateCartBadge(){
     if(count>0){ el.classList.remove('hidden'); el.textContent=count>9?'9+':count; }
     else el.classList.add('hidden');
   });
+  const countEl = document.getElementById('cart-count');
+  if(countEl) countEl.textContent = `কার্ট ${count.toLocaleString('bn-BD')}`;
 }
 
 /* ===================== DRAWER ===================== */
@@ -415,7 +480,38 @@ function renderCartPage(){
   const el = document.getElementById('cart-page-content');
   if(!el) return;
   if(cart.length===0){
-    el.innerHTML=`<div class="flex flex-col items-center py-16 text-center"><span class="mat text-[80px] text-border-sand">shopping_bag</span><h2 class="font-garamond font-semibold text-primary text-3xl mt-5">আপনার কার্ট খালি</h2><p class="text-muted-gray mt-2">কেনাকাটা শুরু করতে শপ ভিজিট করুন।</p><button onclick="nav('shop')" class="btn-primary mt-6">শপ করুন</button></div>`;
+    el.innerHTML=`<div class="flex-grow flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop py-16 px-6 w-full animate-fade-in">
+      <div class="bg-surface-cream rounded-2xl shadow-[0_8px_24px_rgba(31,77,58,0.08)] md:p-16 max-w-2xl w-full text-center flex flex-col items-center border border-border-sand/50 p-6">
+        <!-- Illustration / Icon -->
+        <div class="w-32 h-32 bg-surface-container-high rounded-full flex items-center justify-center mb-8 shadow-inner relative overflow-hidden shrink-0">
+          <span class="material-symbols-outlined text-[64px] text-outline-variant select-none cursor-default" data-icon="shopping_bag" data-weight="fill">shopping_bag</span>
+          <!-- Subtle organic decorative elements -->
+          <div class="absolute -top-4 -right-4 w-16 h-16 bg-secondary-container rounded-full opacity-50 blur-xl"></div>
+          <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-primary-container rounded-full opacity-10 blur-xl"></div>
+        </div>
+        <!-- Empty State Message -->
+        <h2 class="font-headline-md text-headline-md text-primary mb-6 font-bold leading-relaxed max-w-lg mx-auto text-[28px]">
+          আপনার কার্ট বর্তমানে খালি আছে
+        </h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-md">
+          সেরা মূল্যে স্বাস্থ্যকর পণ্যের বান্ডিল এবং অফারগুলো দেখতে আমাদের শপ ভিজিট করুন।
+        </p>
+        <!-- Call to Action -->
+        <button onclick="nav('shop')" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-lg font-body-md text-body-md font-bold hover:bg-surface-tint transition-all shadow-md hover:shadow-lg active:scale-95 w-full md:w-auto cursor-pointer">
+          <span class="material-symbols-outlined text-[20px]">storefront</span>
+          কেনাকাটা শুরু করুন
+        </button>
+        <!-- Suggestion / Helpful Links -->
+        <div class="mt-12 pt-8 border-t border-border-sand w-full">
+          <p class="font-label-caps text-label-caps text-muted-gray mb-4 uppercase tracking-wider">জনপ্রিয় ক্যাটাগরি</p>
+          <div class="flex flex-col md:flex-row flex-wrap justify-center gap-3">
+            <button onclick="filterAndNav('মধু')" class="px-4 py-2 bg-surface rounded-full text-primary font-body-sm text-body-sm border border-border-sand hover:border-primary transition-colors text-center cursor-pointer">মধু (Honey)</button>
+            <button onclick="filterAndNav('সুপারফুড')" class="px-4 py-2 bg-surface rounded-full text-primary font-body-sm text-body-sm border border-border-sand hover:border-primary transition-colors text-center cursor-pointer">সুপারফুড (Superfood)</button>
+            <button onclick="nav('combo')" class="px-4 py-2 bg-surface rounded-full text-primary font-body-sm text-body-sm border border-border-sand hover:border-primary transition-colors text-center cursor-pointer">কম্বো অফার (Combos)</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
     return;
   }
   el.innerHTML=`<div class="flex flex-col lg:flex-row gap-8">
@@ -705,7 +801,7 @@ function verifyOtp(){
 
 function resendOtp(){ showToast('নতুন কোড পাঠানো হয়েছে','send'); startOtpTimer(); }
 
-/* ===================== TOAST ===================== */
+/* ===================== TOAST & CART MODALS ===================== */
 let toastTimeout;
 function showToast(msg, icon='check_circle'){
   const t=document.getElementById('toast');
@@ -718,6 +814,73 @@ function showToast(msg, icon='check_circle'){
   clearTimeout(toastTimeout);
   toastTimeout=setTimeout(()=>t.classList.remove('show'),2800);
 }
+
+let cartToastTimeout;
+window.showCartToast = function(item){
+  // Fill data for desktop
+  const dImg = document.getElementById('desktop-toast-img');
+  const dName = document.getElementById('desktop-toast-name');
+  const dPrice = document.getElementById('desktop-toast-price');
+  if(dImg) dImg.src = item.img || '';
+  if(dName) dName.textContent = item.name || '';
+  if(dPrice) dPrice.textContent = '৳ ' + (item.price || 0).toLocaleString('bn-BD');
+
+  // Fill data for mobile
+  const mImg = document.getElementById('mobile-toast-img');
+  const mName = document.getElementById('mobile-toast-name');
+  const mPrice = document.getElementById('mobile-toast-price');
+  if(mImg) mImg.src = item.img || '';
+  if(mName) mName.textContent = item.name || '';
+  if(mPrice) mPrice.textContent = '৳ ' + (item.price || 0).toLocaleString('bn-BD');
+
+  // Show both
+  const dToast = document.getElementById('desktop-toast');
+  const mToast = document.getElementById('mobile-toast');
+  const mOverlay = document.getElementById('mobile-toast-overlay');
+
+  if(dToast) {
+    dToast.classList.remove('opacity-0', 'pointer-events-none');
+    dToast.classList.add('opacity-100');
+    const dCard = document.getElementById('desktop-toast-card');
+    if(dCard) {
+      dCard.classList.remove('translate-y-4');
+      dCard.classList.add('translate-y-0');
+    }
+  }
+
+  if(mToast && mOverlay) {
+    mOverlay.classList.remove('opacity-0', 'pointer-events-none');
+    mOverlay.classList.add('opacity-100', 'pointer-events-auto');
+    mToast.classList.remove('translate-y-full');
+    mToast.classList.add('translate-y-0');
+  }
+
+  clearTimeout(cartToastTimeout);
+  cartToastTimeout = setTimeout(hideToast, 4000);
+};
+
+window.hideToast = function(){
+  const dToast = document.getElementById('desktop-toast');
+  const mToast = document.getElementById('mobile-toast');
+  const mOverlay = document.getElementById('mobile-toast-overlay');
+
+  if(dToast) {
+    dToast.classList.remove('opacity-100');
+    dToast.classList.add('opacity-0', 'pointer-events-none');
+    const dCard = document.getElementById('desktop-toast-card');
+    if(dCard) {
+      dCard.classList.remove('translate-y-0');
+      dCard.classList.add('translate-y-4');
+    }
+  }
+
+  if(mToast && mOverlay) {
+    mOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+    mOverlay.classList.add('opacity-0', 'pointer-events-none');
+    mToast.classList.remove('translate-y-0');
+    mToast.classList.add('translate-y-full');
+  }
+};
 
 /* ===================== INIT ===================== */
 document.addEventListener('DOMContentLoaded', async ()=>{
@@ -767,3 +930,25 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   if(page==='shop') renderShop();
   if(page==='sunnah') renderSunnah();
 });
+
+window.toggleMobileMenu = function() {
+  const menu = document.getElementById('mobile-menu');
+  const icon = document.getElementById('menu-icon');
+  if(!menu) return;
+  const isHidden = menu.classList.contains('hidden');
+  if(isHidden) {
+    menu.classList.remove('hidden');
+    if(icon) icon.textContent = 'close';
+  } else {
+    menu.classList.add('hidden');
+    if(icon) icon.textContent = 'menu';
+  }
+};
+
+window.toggleSearch = function() {
+  nav('shop');
+  setTimeout(() => {
+    const sInput = document.getElementById('shop-search-input');
+    if(sInput) sInput.focus();
+  }, 100);
+};

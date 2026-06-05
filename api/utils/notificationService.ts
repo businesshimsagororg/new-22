@@ -20,6 +20,16 @@ export interface OrderNotificationPayload {
   totalAmount: number;
 }
 
+function escapeHtml(str: string): string {
+  if (typeof str !== "string") return String(str || "");
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function sendOrderAlert(order: OrderNotificationPayload) {
   try {
     if (!db) {
@@ -57,7 +67,7 @@ export async function sendOrderAlert(order: OrderNotificationPayload) {
       .map(
         item => `
         <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: left;">${item.name}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: left;">${escapeHtml(item.name || "")}</td>
           <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: center;">${item.quantity}</td>
           <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${item.price}</td>
           <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${item.price * item.quantity}</td>
@@ -66,12 +76,12 @@ export async function sendOrderAlert(order: OrderNotificationPayload) {
       )
       .join("");
 
-    const emailSubject = `🔔 [PureOrigins] New Order Alert: #${order.id}`;
+    const emailSubject = `🔔 [PureOrigins] New Order Alert: #${escapeHtml(order.id || "")}`;
     const emailBodyHtml = `
       <div style="font-family: inherit; color: #1c2b1c; max-width: 600px; margin: 0 auto; border: 1px solid #d4dec9; border-radius: 16px; overflow: hidden; background: #fffcf8;">
         <div style="background-color: #0f3310; color: #ffffff; padding: 24px; text-align: center;">
           <h1 style="margin: 0; font-size: 24px; letter-spacing: 0.5px;">New Order Placed!</h1>
-          <p style="margin: 8px 0 0 0; opacity: 0.85; font-size: 14px;">Order ID: #${order.id}</p>
+          <p style="margin: 8px 0 0 0; opacity: 0.85; font-size: 14px;">Order ID: #${escapeHtml(order.id || "")}</p>
         </div>
         
         <div style="padding: 24px;">
@@ -79,23 +89,23 @@ export async function sendOrderAlert(order: OrderNotificationPayload) {
           <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
             <tr>
               <td style="padding: 4px 0; font-weight: bold; width: 30%;">Name:</td>
-              <td style="padding: 4px 0;">${order.customerInfo.name}</td>
+              <td style="padding: 4px 0;">${escapeHtml(order.customerInfo.name || "")}</td>
             </tr>
             <tr>
               <td style="padding: 4px 0; font-weight: bold;">Phone:</td>
-              <td style="padding: 4px 0;">${order.customerInfo.phone}</td>
+              <td style="padding: 4px 0;">${escapeHtml(order.customerInfo.phone || "")}</td>
             </tr>
             <tr>
               <td style="padding: 4px 0; font-weight: bold;">Address:</td>
-              <td style="padding: 4px 0;">${order.customerInfo.address}</td>
+              <td style="padding: 4px 0;">${escapeHtml(order.customerInfo.address || "")}</td>
             </tr>
             <tr>
               <td style="padding: 4px 0; font-weight: bold;">City:</td>
-              <td style="padding: 4px 0;">${order.customerInfo.city}</td>
+              <td style="padding: 4px 0;">${escapeHtml(order.customerInfo.city || "")}</td>
             </tr>
             <tr>
               <td style="padding: 4px 0; font-weight: bold;">Payment Method:</td>
-              <td style="padding: 4px 0;">${order.paymentMethod}</td>
+              <td style="padding: 4px 0;">${escapeHtml(order.paymentMethod || "")}</td>
             </tr>
           </table>
 

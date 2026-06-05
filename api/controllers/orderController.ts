@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { db, admin } from "../config/firebaseConfig.ts";
 import { AuthRequest } from "../middleware/authMiddleware.ts";
 import { sendOrderAlert } from "../utils/notificationService.ts";
+import { z } from "zod";
 
 export const getOrders = async (req: Request, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
@@ -39,8 +40,29 @@ export const getOrders = async (req: Request, res: Response, next: NextFunction)
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
+    // 1. Verify total calculation to prevent pricing tampering
+    const items = req.body.items || [];
+    const expectedTotal = items.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    if (Math.abs(expectedTotal - Number(req.body.totalAmount)) > 0.01) {
+      return res.status(400).json({ error: `Invalid totalAmount. Sum of item prices matches: ৳${expectedTotal}` });
+    }
+
+    // 2. Safely resolve uid for authenticated checkouts without blocking guest checkouts
+    let uid = null;
+    const header = req.get("authorization") || "";
+    const token = header.startsWith("Bearer ") ? header.slice(7) : "";
+    if (token) {
+      try {
+        const decodedToken = await admin.auth().verifyIdToken(token);
+        uid = decodedToken.uid;
+      } catch (err) {
+        console.warn("Invalid ID token provided, defaulting to guest checkout", err);
+      }
+    }
+
     const orderData = {
       ...req.body,
+      uid: uid || null,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       status: "Pending"
     };
@@ -137,8 +159,12 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
     const { status } = req.body;
     if (!status) return res.status(400).json({ error: "Status is required" });
     
-    await db.collection("orders").doc(id).update({ status });
-    res.json({ success: true, status });
+    // Validate order status strictly using Zod values
+    const statusSchema = z.enum(["Pending", "In Transit", "Delivered", "Cancelled"]);
+    const parsedStatus = statusSchema.parse(status);
+    
+    await db.collection("orders").doc(id).update({ status: parsedStatus });
+    res.json({ success: true, status: parsedStatus });
   } catch (error) {
     next(error);
   }

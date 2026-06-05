@@ -26,7 +26,6 @@ async function startServer() {
   // Environment Validation at Startup
   try {
     const envSchema = z.object({
-      GEMINI_API_KEY: z.string().min(1, "GEMINI_API_KEY is missing or empty"),
       FIREBASE_PROJECT_ID: z.string().min(1, "FIREBASE_PROJECT_ID is missing or empty"),
       FIREBASE_CLIENT_EMAIL: z.string().min(1, "FIREBASE_CLIENT_EMAIL is missing or empty"),
       FIREBASE_PRIVATE_KEY: z.string().min(1, "FIREBASE_PRIVATE_KEY is missing or empty"),
@@ -52,7 +51,7 @@ async function startServer() {
     contentSecurityPolicy: process.env.NODE_ENV === "production" ? {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
+        scriptSrc: ["'self'", "https://cdn.tailwindcss.com"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         imgSrc: ["'self'", "data:", "https://images.unsplash.com", "https://lh3.googleusercontent.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
@@ -69,23 +68,43 @@ async function startServer() {
     })
   );
 
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-  ];
-  if (process.env.ALLOWED_ORIGINS) {
-    allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(",").map(o => o.trim()).filter(Boolean));
-  }
+  app.use(cors((req: express.Request, callback: (err: Error | null, options?: cors.CorsOptions) => void) => {
+    const origin = req.header("Origin");
+    const host = req.header("Host") || req.get("host");
+    const proto = req.header("X-Forwarded-Proto") || (req.secure ? "https" : "http");
+    const selfOrigin = host ? `${proto}://${host}` : null;
 
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".run.app")) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+    ];
+
+    if (process.env.ALLOWED_ORIGINS) {
+      allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(",").map(o => o.trim()).filter(Boolean));
+    }
+    if (process.env.APP_URL) {
+      allowedOrigins.push(process.env.APP_URL.trim());
+    }
+    if (process.env.CLOUD_RUN_URL) {
+      allowedOrigins.push(process.env.CLOUD_RUN_URL.trim());
+    }
+
+    // Automatically trust Firebase Client Hosting URLs if configured
+    const firebaseProjectId = process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+    if (firebaseProjectId) {
+      allowedOrigins.push(`https://${firebaseProjectId}.web.app`);
+      allowedOrigins.push(`https://${firebaseProjectId}.firebaseapp.com`);
+    }
+
+    const isAllowed = !origin || 
+                      origin === selfOrigin || 
+                      allowedOrigins.includes(origin);
+
+    if (isAllowed) {
+      callback(null, { origin: true, credentials: true });
+    } else {
+      callback(new Error(`Not allowed by CORS: ${origin}`), { origin: false });
+    }
   }));
   app.use(express.json());
 
@@ -93,11 +112,28 @@ async function startServer() {
   app.use(pinoHttp({ logger }));
 
   // API Routes
+  app.get("/api/firebase-config", (req, res) => {
+    res.json({
+      apiKey: process.env.VITE_FIREBASE_API_KEY || "",
+      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || "",
+      projectId: process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || "",
+      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || "",
+      messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
+      appId: process.env.VITE_FIREBASE_APP_ID || "",
+      measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID || ""
+    });
+  });
+
   app.use("/api/products", productRoutes);
   app.use("/api/orders", orderRoutes);
   app.use("/api/customers", customerRoutes);
   app.use("/api/settings", settingsRoutes);
   app.use("/api", systemRoutes);
+
+  // API 404 Handler (Relocated here BEFORE SPA and static fallback catch-alls so it is reachable)
+  app.use("/api/*", (req, res) => {
+    notFoundHandler(req, res);
+  });
 
   // Serve static files from public folder
   app.use(express.static(path.join(process.cwd(), "public")));
@@ -117,16 +153,7 @@ async function startServer() {
     });
   }
 
-  // Error Handling (must be after all routes and vite middleware)
-  // We use a wrapper to avoid catching Vite errors in development
-  app.use((req, res, next) => {
-    if (req.path.startsWith("/api/")) {
-      notFoundHandler(req, res);
-    } else {
-      next();
-    }
-  });
-  
+  // Error Handling
   app.use(errorHandler);
 
   app.listen(PORT, "0.0.0.0", () => {

@@ -5,6 +5,7 @@ import { requireFirebaseUser, requireAdmin } from "../middleware/authMiddleware.
 const router = express.Router();
 
 router.get("/health", getHealth);
+router.post("/health", getHealth);
 router.get("/me", requireFirebaseUser, getMe);
 router.put("/me", requireFirebaseUser, updateMe);
 router.get("/admin/summary", requireFirebaseUser, requireAdmin, getAdminSummary);

@@ -3,6 +3,10 @@ import { admin, db, missingEnv } from "../config/firebaseConfig.ts";
 import { adminEmails, AuthRequest } from "../middleware/authMiddleware.ts";
 
 export const getHealth = (req: Request, res: Response) => {
+  if (req.method === "POST") {
+    console.error("ErrorBoundary Client UI Error reported:", req.body);
+    return res.json({ ok: true, message: "Client error logged successfully" });
+  }
   res.json({
     ok: true,
     firebaseAdminConfigured: missingEnv.length === 0,

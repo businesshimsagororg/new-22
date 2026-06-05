@@ -68,9 +68,9 @@ export async function sendOrderAlert(order: OrderNotificationPayload) {
         item => `
         <tr>
           <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: left;">${escapeHtml(item.name || "")}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: center;">${item.quantity}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${item.price}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${item.price * item.quantity}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: center;">${Number(item.quantity) || 0}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${Number(item.price) || 0}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; text-align: right;">৳ ${(Number(item.price) || 0) * (Number(item.quantity) || 0)}</td>
         </tr>
       `
       )

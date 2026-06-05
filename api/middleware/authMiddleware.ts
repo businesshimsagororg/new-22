@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { admin, missingEnv } from "../config/firebaseConfig.ts";
 
-const adminEmails = new Set(
+export const getAdminEmails = () => new Set(
   (process.env.ADMIN_EMAILS || "")
     .split(",")
     .map((email) => email.trim().toLowerCase())
@@ -36,11 +36,12 @@ export async function requireFirebaseUser(req: AuthRequest, res: Response, next:
 }
 
 export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction) {
+  if (!req.user) return res.status(401).json({ error: "Missing user" });
   const email = (req.user?.email || "").toLowerCase();
+  const adminEmails = getAdminEmails();
   if (req.user?.admin !== true && !adminEmails.has(email)) {
     return res.status(403).json({ error: "This Google account is not an admin" });
   }
   next();
 }
 
-export { adminEmails };

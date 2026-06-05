@@ -7,7 +7,7 @@ import { z } from "zod";
 export const getOrders = async (req: Request, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
-    const limit = parseInt(req.query.limit as string) || 50;
+    const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const cursor = req.query.cursor as string;
     const status = req.query.status as string;
 
@@ -42,7 +42,18 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
   try {
     // 1. Verify total calculation to prevent pricing tampering
     const items = req.body.items || [];
-    const expectedTotal = items.reduce((sum: number, item: any) => sum + (Number(item.price) * Number(item.quantity)), 0);
+    let expectedTotal = 0;
+    for (const item of items) {
+      let realPrice = Number(item.price) || 0;
+      if (item.productId && typeof item.productId === "string" && !item.productId.startsWith("combo-")) {
+        const productDoc = await db.collection("products").doc(item.productId).get();
+        if (productDoc.exists) {
+          realPrice = Number(productDoc.data()?.price || 0);
+        }
+      }
+      expectedTotal += realPrice * Number(item.quantity);
+    }
+    
     if (Math.abs(expectedTotal - Number(req.body.totalAmount)) > 0.01) {
       return res.status(400).json({ error: `Invalid totalAmount. Sum of item prices matches: ৳${expectedTotal}` });
     }
@@ -74,29 +85,18 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       const phoneId = req.body.customerInfo.phone.replace(/[^0-9]/g, '');
       if (phoneId) {
         const customerRef = db.collection("customers").doc(phoneId);
-        const customerDoc = await customerRef.get();
         const orderTotal = Number(req.body.totalAmount) || 0;
         
-        if (customerDoc.exists) {
-          await customerRef.update({
-            totalOrders: admin.firestore.FieldValue.increment(1),
-            totalSpent: admin.firestore.FieldValue.increment(orderTotal),
-            lastOrderDate: admin.firestore.FieldValue.serverTimestamp(),
-            name: req.body.customerInfo.name || customerDoc.data()?.name,
-            city: req.body.customerInfo.city || customerDoc.data()?.city
-          });
-        } else {
-          await customerRef.set({
-            phone: req.body.customerInfo.phone,
-            name: req.body.customerInfo.name || "Unknown",
-            city: req.body.customerInfo.city || "Unknown",
-            email: req.body.customerInfo.email || "",
-            totalOrders: 1,
-            totalSpent: orderTotal,
-            registeredAt: admin.firestore.FieldValue.serverTimestamp(),
-            lastOrderDate: admin.firestore.FieldValue.serverTimestamp()
-          });
-        }
+        await customerRef.set({
+          phone: req.body.customerInfo.phone,
+          name: req.body.customerInfo.name || "Unknown",
+          city: req.body.customerInfo.city || "Unknown",
+          email: req.body.customerInfo.email || "",
+          totalOrders: admin.firestore.FieldValue.increment(1),
+          totalSpent: admin.firestore.FieldValue.increment(orderTotal),
+          registeredAt: admin.firestore.FieldValue.serverTimestamp(),
+          lastOrderDate: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
       }
     }
 
@@ -124,9 +124,10 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
 
 export const getMyOrders = async (req: AuthRequest, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
+  if (!req.user) return res.status(401).json({ error: "Missing user" });
   try {
     const uid = req.user.uid;
-    const limit = parseInt(req.query.limit as string) || 50;
+    const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const cursor = req.query.cursor as string;
 
     let query: any = db.collection("orders")

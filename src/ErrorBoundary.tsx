@@ -72,14 +72,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <CircleAlert className="w-8 h-8" />
             </div>
             
-            <h1 className="text-2xl font-bold text-slate-900 mb-3">Something went wrong</h1>
+            <h1 className="text-2xl font-bold text-slate-900 mb-3">দুঃখিত, কোনো একটি সমস্যা হয়েছে</h1>
             <p className="text-sm text-slate-500 mb-6 leading-relaxed">
-              An unexpected error occurred in the PureOrigins layout. We have logged this diagnostic event.
+              পিওরঅরিজিন্স লেআউটে একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আমরা এই ডায়াগনস্টিক তথ্যটি সংরক্ষণ করেছি।
             </p>
 
             {this.state.error && (
               <div className="mb-6 p-4 bg-slate-50 rounded-2xl text-left border border-slate-100">
-                <p className="text-xs font-mono text-slate-600 font-semibold mb-1">Error Message:</p>
+                <p className="text-xs font-mono text-slate-600 font-semibold mb-1">ত্রুটির বার্তা (Error Message):</p>
                 <p className="text-xs font-mono text-rose-600 break-words">
                   {this.state.error.message || String(this.state.error)}
                 </p>
@@ -90,7 +90,7 @@ export class ErrorBoundary extends Component<Props, State> {
               onClick={this.handleReset}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#1B4332] text-white rounded-full font-semibold hover:bg-[#2D6A4F] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <RotateCcw className="w-4 h-4" /> Try Reloading
+              <RotateCcw className="w-4 h-4" /> রিলোড করার চেষ্টা করুন
             </button>
           </div>
         </div>

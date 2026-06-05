@@ -57,9 +57,13 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
     const { id } = req.params;
+    const prodRef = db.collection("products").doc(id);
+    const prodDoc = await prodRef.get();
+    if (!prodDoc.exists) return res.status(404).json({ error: "Product not found" });
+
     const now = new Date();
     const updates = { ...req.body, updatedAt: admin.firestore.FieldValue.serverTimestamp() };
-    await db.collection("products").doc(id).update(updates);
+    await prodRef.update(updates);
     res.json({ success: true, id, ...req.body, updatedAt: now.toISOString() });
   } catch (error) {
     next(error);
@@ -70,7 +74,11 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
     const { id } = req.params;
-    await db.collection("products").doc(id).delete();
+    const prodRef = db.collection("products").doc(id);
+    const prodDoc = await prodRef.get();
+    if (!prodDoc.exists) return res.status(404).json({ error: "Product not found" });
+
+    await prodRef.delete();
     res.json({ success: true, id });
   } catch (error) {
     next(error);

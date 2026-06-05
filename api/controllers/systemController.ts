@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { admin, db, missingEnv } from "../config/firebaseConfig.ts";
-import { adminEmails, AuthRequest } from "../middleware/authMiddleware.ts";
+import { getAdminEmails, AuthRequest } from "../middleware/authMiddleware.ts";
 
 export const getHealth = (req: Request, res: Response) => {
   if (req.method === "POST") {
@@ -10,12 +10,14 @@ export const getHealth = (req: Request, res: Response) => {
   res.json({
     ok: true,
     firebaseAdminConfigured: missingEnv.length === 0,
-    adminEmailsConfigured: adminEmails.size > 0
+    adminEmailsConfigured: getAdminEmails().size > 0
   });
 };
 
 export const getMe = async (req: AuthRequest, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: "Missing user" });
   const email = (req.user.email || "").toLowerCase();
+  const adminEmails = getAdminEmails();
   const isAdminEmail = adminEmails.has(email);
 
   if (isAdminEmail && req.user.admin !== true) {
@@ -45,6 +47,7 @@ export const getMe = async (req: AuthRequest, res: Response) => {
 
 export const updateMe = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user) return res.status(401).json({ error: "Missing user" });
     const { displayName, phoneNumber } = req.body;
     const uid = req.user.uid;
     const updatePayload: any = {};
@@ -58,6 +61,7 @@ export const updateMe = async (req: AuthRequest, res: Response, next: NextFuncti
 };
 
 export const getAdminSummary = (req: AuthRequest, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: "Missing user" });
   res.json({
     ok: true,
     message: "Admin token verified",

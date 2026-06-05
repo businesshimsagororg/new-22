@@ -66,6 +66,12 @@ let currentProduct = null;
 let currentCategory = 'সব';
 let orderInfo = {};
 let placedOrders = [];
+try {
+  const stored = localStorage.getItem('po_orders');
+  if (stored) placedOrders = JSON.parse(stored);
+} catch (e) {
+  console.error("Failed to parse po_orders:", e);
+}
 
 /* ===================== ROUTER ===================== */
 function nav(page){
@@ -162,9 +168,9 @@ function productCard(p){
         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-1 text-[11px]" for="${weightSelectId}">পরিমাণ বাছাই করুন:</label>
         <div class="relative">
           <select class="w-full appearance-none bg-surface-cream border border-border-sand text-primary font-body-sm text-body-sm rounded-lg py-1.5 px-3 pr-8 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer transition-colors duration-200 hover:border-primary/50 text-[13px]" id="${weightSelectId}">
-            <option value="100g">১০০ গ্রাম</option>
-            <option value="250g">২৫০ গ্রাম</option>
-            <option value="500g">৫০০ গ্রাম</option>
+            <option value="100g" ${p.unit.includes('100') || p.unit.includes('১০০') ? 'selected' : ''}>১০০ গ্রাম</option>
+            <option value="250g" ${p.unit.includes('250') || p.unit.includes('২৫০') ? 'selected' : ''}>২৫০ গ্রাম</option>
+            <option value="500g" ${p.unit.includes('500') || p.unit.includes('৫০০') ? 'selected' : ''}>৫০০ গ্রাম</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-primary transition-transform duration-200 group-hover:translate-y-1">
             <span class="material-symbols-outlined text-[16px]">expand_more</span>
@@ -305,9 +311,17 @@ function applySortFilter(){ renderShop(); }
 function filterAndNav(cat){
   currentCategory = cat;
   nav('shop');
-  setTimeout(()=>{
-    setCategory(null, cat);
-  },100);
+  let retries = 0;
+  const attemptSync = () => {
+    const grid = document.getElementById('shop-grid');
+    if (grid || retries >= 10) {
+      setCategory(null, cat);
+    } else {
+      retries++;
+      setTimeout(attemptSync, 50);
+    }
+  };
+  attemptSync();
 }
 
 /* ===================== PRODUCT DETAIL ===================== */
@@ -315,6 +329,7 @@ function openProduct(id){
   const p = PRODUCTS.find(x=>x.id===id);
   if(!p) return;
   currentProduct = p;
+  detQty = 1; // RESET QUANTITY
   const content = document.getElementById('product-detail-content');
   const disc = p.origPrice?Math.round((1-p.price/p.origPrice)*100):0;
   const t=tagLabel(p.tag);
@@ -340,6 +355,17 @@ function openProduct(id){
           <h4 class="font-semibold text-on-surface text-sm mb-2">উপকারিতা</h4>
           <ul class="flex flex-col gap-1.5">${p.benefits.map(b=>`<li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="mat fill text-secondary text-[18px]">check_circle</span>${b}</li>`).join('')}</ul>
         </div>
+        <!-- Pack Size Selector -->
+        <div>
+          <h4 class="font-semibold text-on-surface text-sm mb-2">প্যাকের সাইজ (ওজন)</h4>
+          <div class="relative max-w-xs mb-3">
+            <select class="appearance-none bg-surface-cream border border-border-sand text-primary font-body-sm text-body-sm rounded-lg py-1.5 px-3 pr-8 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer w-full text-[13px]" id="detail-weight-select" onchange="updateDetailPrice()">
+              <option value="100g" ${p.unit.includes('100') || p.unit.includes('১০০') ? 'selected' : ''}>১০০ গ্রাম</option>
+              <option value="250g" ${p.unit.includes('250') || p.unit.includes('২৫০') ? 'selected' : ''}>২৫০ গ্রাম</option>
+              <option value="500g" ${p.unit.includes('500') || p.unit.includes('৫০০') ? 'selected' : ''}>৫০০ গ্রাম</option>
+            </select>
+          </div>
+        </div>
         <!-- Quantity -->
         <div>
           <h4 class="font-semibold text-on-surface text-sm mb-2">পরিমাণ</h4>
@@ -349,7 +375,7 @@ function openProduct(id){
               <span id="det-qty" class="w-10 text-center font-bold text-on-surface">১</span>
               <button class="qty-btn" onclick="adjDetQty(1)"><span class="mat text-[18px]">add</span></button>
             </div>
-            <span class="text-xs text-muted-gray">${p.unit} প্রতি প্যাক</span>
+            <span class="text-xs text-muted-gray">প্রতি প্যাক</span>
           </div>
         </div>
         <div class="flex gap-3 mt-2">
@@ -372,17 +398,92 @@ function openProduct(id){
 
 let detQty = 1;
 function adjDetQty(d){ detQty=Math.max(1,detQty+d); const el=document.getElementById('det-qty'); if(el) el.textContent=detQty; }
-function addToCartFromDetail(){ if(currentProduct) addToCart(currentProduct.id, detQty); detQty=1; }
+function addToCartFromDetail(){
+  if(currentProduct) {
+    const detailWeightSel = document.getElementById('detail-weight-select');
+    const selectedWeight = detailWeightSel ? detailWeightSel.value : null;
+    addToCart(currentProduct.id, detQty, selectedWeight);
+  }
+  detQty=1;
+}
 function buyNow(){ addToCartFromDetail(); nav('checkout'); }
 
+function getBaseWeight(unitStr) {
+  if (!unitStr) return 100;
+  const match = unitStr.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 100;
+}
+
+window.updateDetailPrice = function() {
+  if (!currentProduct) return;
+  const detailWeightSel = document.getElementById('detail-weight-select');
+  if (!detailWeightSel) return;
+  const selectedWeight = detailWeightSel.value;
+  const baseUnitWeight = getBaseWeight(currentProduct.unit);
+  const targetWeightMatch = selectedWeight.match(/(\d+)/);
+  if (targetWeightMatch) {
+    const targetWeightNum = parseInt(targetWeightMatch[1], 10);
+    const price = Math.round((currentProduct.price / baseUnitWeight) * targetWeightNum);
+    const priceEl = document.querySelector('#product-detail-content .text-primary.text-3xl');
+    if (priceEl) {
+      priceEl.textContent = `৳ ${price.toLocaleString('bn-BD')}`;
+    }
+    if (currentProduct.origPrice) {
+      const origPrice = Math.round((currentProduct.origPrice / baseUnitWeight) * targetWeightNum);
+      const origPriceEl = document.querySelector('#product-detail-content .line-through');
+      if (origPriceEl) {
+        origPriceEl.textContent = `৳ ${origPrice.toLocaleString('bn-BD')}`;
+      }
+    }
+  }
+};
+
 /* ===================== CART ===================== */
-function addToCart(id, qty=1){
-  const p = PRODUCTS.find(x=>x.id===id);
+function addToCart(id, qty=1, selectedWeight=null){
+  const numericId = typeof id === 'string' && id.includes('-') ? parseInt(id.split('-')[0], 10) : parseInt(id, 10);
+  const p = PRODUCTS.find(x=>x.id===numericId);
   if(!p) return;
-  const existing = cart.find(c=>c.id===id);
-  if(existing) existing.qty+=qty; else cart.push({...p,qty});
+  
+  if(!selectedWeight){
+    const weightSelect = document.getElementById(`weight-select-${p.id}`);
+    if(weightSelect) {
+      selectedWeight = weightSelect.value;
+    }
+  }
+
+  let price = p.price;
+  let unit = p.unit;
+  let cartId = p.id;
+
+  if (selectedWeight) {
+    const baseUnitWeight = getBaseWeight(p.unit);
+    const targetWeightMatch = selectedWeight.match(/(\d+)/);
+    if (targetWeightMatch) {
+      const targetWeightNum = parseInt(targetWeightMatch[1], 10);
+      price = Math.round((p.price / baseUnitWeight) * targetWeightNum);
+      
+      const bnWeights = { "100g": "১০০ গ্রাম", "250g": "২৫০ গ্রাম", "500g": "৫০০ গ্রাম" };
+      unit = bnWeights[selectedWeight] || (targetWeightNum + " গ্রাম");
+      cartId = `${p.id}-${selectedWeight}`;
+    }
+  }
+
+  const existing = cart.find(c=>c.id===cartId);
+  if(existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({
+      ...p,
+      id: cartId,
+      baseId: p.id,
+      price: price,
+      unit: unit,
+      qty: qty
+    });
+  }
   updateCartBadge();
-  showCartToast(p);
+  const toastItem = { ...p, price: price, unit: unit };
+  showCartToast(toastItem);
   renderDrawer();
 }
 
@@ -606,7 +707,7 @@ function goToPaymentStep(){
 function backToDeliveryStep(){ showStep(1); }
 
 async function placeOrder(){
-  const payEl = document.querySelector('input[name="pay"]:checked');
+  const payEl = document.querySelector('input[name="payment_method_desk"]:checked') || document.querySelector('input[name="payment_mobile"]:checked') || document.querySelector('input[name="pay"]:checked');
   const payment = payEl?payEl.value:'cod';
   const orderId = 'PO-'+Math.floor(100000+Math.random()*900000);
   const order = {id:orderId,items:[...cart],info:{...orderInfo},payment,total:getTotal(),subtotal:getSubtotal(),date:new Date()};
@@ -689,17 +790,36 @@ function renderSuccess(order){
   setEl('success-subtotal',`৳ ${order.subtotal.toLocaleString('bn-BD')}`);
   setEl('success-total',`৳ ${order.total.toLocaleString('bn-BD')}`);
   const addr=document.getElementById('success-address');
-  if(addr) addr.textContent=`${order.info.name} • ${order.info.phone}\n${order.info.address}, ${order.info.area}, ${order.info.city}`;
+  if(addr) {
+    const addressParts = [order.info.address, order.info.area, order.info.city].filter(part => part && part.trim());
+    addr.textContent = `${order.info.name} • ${order.info.phone}\n${addressParts.join(', ')}`;
+  }
+}
+
+function getStatusLabel(status) {
+  if (!status) return "প্রক্রিয়াধীন";
+  const s = status.toLowerCase();
+  if (s === "pending" || s === "processing" || s === "প্রক্রিয়াধীন" || s === "প্রক্রিয়াধীন") return "প্রক্রিয়াধীন";
+  if (s === "confirmed" || s === "নিশ্চিত") return "নিশ্চিত";
+  if (s === "shipped" || s === "পাঠানো হয়েছে") return "পাঠানো হয়েছে";
+  if (s === "delivered" || s === "ডেলিভারড") return "ডেলিভারড";
+  if (s === "cancelled" || s === "বাতিল") return "বাতিল";
+  return status;
 }
 
 /* ===================== ORDER TRACKING ===================== */
 function trackOrder(){
   const val = document.getElementById('track-input')?.value.trim();
   if(!val){ showToast('অর্ডার আইডি লিখুন','error'); return; }
-  const found = placedOrders.find(o=>o.id===val||val==='PO-123456');
+  const found = placedOrders.find(o=>o.id===val);
+  if(!found){
+    showToast('অর্ডারটি খুঁজে পাওয়া যায়নি','error');
+    document.getElementById('tracking-result').classList.add('hidden');
+    return;
+  }
   document.getElementById('tracking-result').classList.remove('hidden');
-  document.getElementById('track-order-id').textContent = '#'+(found?found.id:val);
-  document.getElementById('track-status-badge').textContent = found?'প্রক্রিয়াধীন':'নিশ্চিত';
+  document.getElementById('track-order-id').textContent = '#'+found.id;
+  document.getElementById('track-status-badge').textContent = getStatusLabel(found.status || 'Pending');
   showToast('অর্ডার তথ্য পাওয়া গেছে','location_on');
 }
 
@@ -713,7 +833,7 @@ function renderAccount(){
   } else {
     list.innerHTML=orders.map(o=>`<div class="border border-border-sand rounded-xl p-4 mb-3 flex items-center justify-between gap-3">
       <div><div class="font-semibold text-sm text-on-surface">#${o.id}</div><div class="text-xs text-muted-gray mt-0.5">${o.items.length}টি পণ্য • ৳ ${o.total.toLocaleString('bn-BD')}</div></div>
-      <div class="flex items-center gap-2"><span class="badge bg-secondary-container text-on-secondary-container">প্রক্রিয়াধীন</span><button onclick="nav('tracking');document.getElementById('track-input').value='${o.id}';trackOrder()" class="text-primary hover:underline text-xs font-semibold">ট্র্যাক করুন</button></div>
+      <div class="flex items-center gap-2"><span class="badge bg-secondary-container text-on-secondary-container">${getStatusLabel(o.status || 'Pending')}</span><button onclick="nav('tracking');document.getElementById('track-input').value='${o.id}';trackOrder()" class="text-primary hover:underline text-xs font-semibold">ট্র্যাক করুন</button></div>
     </div>`).join('');
   }
 }
@@ -733,17 +853,34 @@ function showAccountTab(tab){
 }
 
 /* ===================== LOGIN ===================== */
+let currentSentOtp = null;
 function loginUser(){
   const phone=document.getElementById('login-phone')?.value.trim();
   const pass=document.getElementById('login-pass')?.value.trim();
   if(!phone||!pass){ showToast('নম্বর ও পাসওয়ার্ড দিন','error'); return; }
-  document.getElementById('otp-phone-display').textContent=phone;
-  nav('otp');
-  startOtpTimer();
+  
+  showToast('কোড পাঠানো হচ্ছে...', 'hourglass_top');
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  currentSentOtp = otpCode;
+  
+  setTimeout(() => {
+    showToast(`আপনার মোবাইলে ওটিপি পাঠানো হয়েছে: ${otpCode}`, 'sms');
+    document.getElementById('otp-phone-display').textContent=phone;
+    nav('otp');
+    startOtpTimer();
+  }, 1000);
 }
 
 function signInWithGoogle() {
-  showToast('গুগল লগইন শীঘ্রই আসছে', 'info');
+  const firebaseSignIn = window.signInWithGoogle;
+  if (typeof firebaseSignIn === 'function' && firebaseSignIn !== signInWithGoogle) {
+    firebaseSignIn().catch(err => {
+      console.error('Firebase sign-in failed from lobby:', err);
+      showToast('গুগল লগইন ব্যর্থ হয়েছে', 'error');
+    });
+  } else {
+    showToast('গুগল লগইন প্রক্রিয়াকরণ করা হচ্ছে...', 'info');
+  }
 }
 
 function logoutGoogle() {
@@ -758,14 +895,22 @@ function logoutGoogle() {
 function togglePass(id){ const el=document.getElementById(id); if(el) el.type=el.type==='password'?'text':'password'; }
 function toggleMobileMenu(){
   const m   = document.getElementById('mobile-menu');
+  if(!m) return;
   const btn = document.getElementById('hamburger-btn');
   const willOpen = m.classList.contains('hidden');
   m.classList.toggle('hidden', !willOpen);
   m.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
   if (btn) btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-  document.getElementById('menu-icon').textContent = willOpen ? 'close' : 'menu';
+  const icon = document.getElementById('menu-icon');
+  if(icon) icon.textContent = willOpen ? 'close' : 'menu';
 }
-function toggleSearch(){ showToast('সার্চ ফিচার শীঘ্রই আসছে','search'); }
+function toggleSearch(){
+  nav('shop');
+  setTimeout(() => {
+    const sInput = document.getElementById('shop-search-input');
+    if(sInput) sInput.focus();
+  }, 100);
+}
 
 /* ===================== OTP ===================== */
 let otpTimer;
@@ -790,6 +935,13 @@ function otpMove(el, idx){
 function verifyOtp(){
   const inputs=[...document.querySelectorAll('.otp-input')].map(i=>i.value);
   if(inputs.some(v=>!v)){ showToast('সম্পূর্ণ কোড দিন','error'); return; }
+  
+  const enteredCode = inputs.join('');
+  if (enteredCode !== currentSentOtp) {
+    showToast('ভুল ওটিপি কোড, আবার চেষ্টা করুন', 'error');
+    return;
+  }
+  
   clearInterval(otpTimer);
   showToast('লগইন সফল!','check_circle');
   const accName = document.getElementById('account-name');
@@ -799,7 +951,12 @@ function verifyOtp(){
   nav('account');
 }
 
-function resendOtp(){ showToast('নতুন কোড পাঠানো হয়েছে','send'); startOtpTimer(); }
+function resendOtp(){ 
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  currentSentOtp = otpCode;
+  showToast(`নতুন ওটিপি কোড পাঠানো হয়েছে: ${otpCode}`, 'send'); 
+  startOtpTimer(); 
+}
 
 /* ===================== TOAST & CART MODALS ===================== */
 let toastTimeout;
@@ -931,24 +1088,5 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   if(page==='sunnah') renderSunnah();
 });
 
-window.toggleMobileMenu = function() {
-  const menu = document.getElementById('mobile-menu');
-  const icon = document.getElementById('menu-icon');
-  if(!menu) return;
-  const isHidden = menu.classList.contains('hidden');
-  if(isHidden) {
-    menu.classList.remove('hidden');
-    if(icon) icon.textContent = 'close';
-  } else {
-    menu.classList.add('hidden');
-    if(icon) icon.textContent = 'menu';
-  }
-};
-
-window.toggleSearch = function() {
-  nav('shop');
-  setTimeout(() => {
-    const sInput = document.getElementById('shop-search-input');
-    if(sInput) sInput.focus();
-  }, 100);
-};
+window.toggleMobileMenu = toggleMobileMenu;
+window.toggleSearch = toggleSearch;

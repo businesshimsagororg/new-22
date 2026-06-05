@@ -73,7 +73,8 @@ async function startServer() {
           "https://*.firebaseio.com",
           "https://identitytoolkit.googleapis.com",
           "https://securetoken.googleapis.com",
-          "https://firestore.googleapis.com"
+          "https://firestore.googleapis.com",
+          "https://firebase.googleapis.com"
         ]
       }
     } : false,

@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { Menu, ShoppingBag, ShoppingCart, User, Minus, Plus, Trash2, ArrowRight, Lock } from "lucide-react";
+import { Menu, ShoppingBag, ShoppingCart, User, Minus, Plus, Trash2, ArrowRight, Lock, X } from "lucide-react";
 
 type CartItem = {
   id: string;
@@ -15,29 +15,13 @@ type CartItem = {
   image: string;
 };
 
-const INITIAL_CART: CartItem[] = [
-  {
-    id: "moringa-powder",
-    name: "Moringa Powder",
-    tag: "ORGANIC • 250G",
-    price: 1250,
-    quantity: 1,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg"
-  },
-  {
-    id: "chia-seeds",
-    name: "Chia Seeds",
-    tag: "SUPERFOOD • 500G",
-    price: 900,
-    quantity: 2,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ"
-  }
-];
+const INITIAL_CART: CartItem[] = [];
 
 // Helper to convert English numbers to Bengali numerals
 function toBengaliNumerals(number: number): string {
+  const numStr = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-  return number.toString().replace(/\d/g, (digit) => bengaliDigits[parseInt(digit, 10)]);
+  return numStr.replace(/\d/g, (digit) => bengaliDigits[parseInt(digit, 10)]);
 }
 
 export default function App() {
@@ -85,7 +69,7 @@ export default function App() {
       {/* ============================================== */}
       <div className="hidden md:flex flex-col min-h-screen">
         {/* Desktop Header */}
-        <header className="w-full top-0 z-50 bg-[#fef8f2] border-b border-[#DCCFBF]/50">
+        <header className="w-full sticky top-0 z-50 bg-[#fef8f2] border-b border-[#DCCFBF]/50">
           <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
             <a href="/" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
             <nav className="flex gap-8 items-center">
@@ -146,7 +130,7 @@ export default function App() {
                             <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">{item.name}</h3>
                             <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">{item.tag}</p>
                           </div>
-                          <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ {toBengaliNumerals(item.price * item.quantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                          <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ {toBengaliNumerals(item.price * item.quantity)}</div>
                         </div>
                         
                         <div className="flex justify-between items-end pb-1">
@@ -165,6 +149,7 @@ export default function App() {
                               value={toBengaliNumerals(item.quantity)} 
                               className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" 
                               readOnly 
+                              onChange={() => {}}
                             />
                             <button 
                               aria-label="Increase quantity" 
@@ -199,7 +184,7 @@ export default function App() {
                 <div className="space-y-4 text-[#414944] font-medium">
                   <div className="flex justify-between">
                     <span>সাবটোটাল</span>
-                    <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                    <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>শিপিং খরচ</span>
@@ -209,7 +194,7 @@ export default function App() {
                 
                 <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-6 mt-6 mb-8">
                   <span className="text-2xl text-[#1d1b18]">মোট</span>
-                  <span className="font-serif text-[40px] text-[#5a4103] font-bold tracking-tight">৳ {toBengaliNumerals(total).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                  <span className="font-serif text-[40px] text-[#5a4103] font-bold tracking-tight">৳ {toBengaliNumerals(total)}</span>
                 </div>
                 
                 <button 
@@ -268,11 +253,11 @@ export default function App() {
         {/* Mobile Header */}
         <header className="w-full bg-[#fef8f2] sticky top-0 z-50 p-5 flex justify-between items-center">
           <button 
-            aria-label="Menu" 
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} 
             className="text-[#1d1b18] flex items-center justify-center p-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <Menu size={28} />
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
           <a href="/" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
           <button aria-label="Cart" className="relative text-[#1d1b18] flex items-center justify-center p-1">
@@ -284,6 +269,18 @@ export default function App() {
             )}
           </button>
         </header>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="fixed top-[72px] left-0 w-full bg-[#fef8f2] border-b border-[#DCCFBF] z-40 flex flex-col p-6 gap-4 shadow-lg animate-fade-in">
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#023625] font-bold border-b border-[#DCCFBF]/30 pb-2">Home</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#414944] hover:text-[#023625] font-medium border-b border-[#DCCFBF]/30 pb-2">Shop</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#414944] hover:text-[#023625] font-medium border-b border-[#DCCFBF]/30 pb-2">Combo</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#414944] hover:text-[#023625] font-medium border-b border-[#DCCFBF]/30 pb-2">Sunnah</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#414944] hover:text-[#023625] font-medium border-b border-[#DCCFBF]/30 pb-2">About</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#414944] hover:text-[#023625] font-medium pb-1">Contact</a>
+          </div>
+        )}
 
         {/* Mobile Main Content */}
         <main className="flex-grow w-full px-5 py-8">
@@ -317,7 +314,7 @@ export default function App() {
                      <div className="pr-8">
                        <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">{item.name}</h3>
                        <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">{item.tag}</p>
-                       <div className="font-serif text-xl text-[#023625] font-bold">৳ {toBengaliNumerals(item.price * item.quantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                       <div className="font-serif text-xl text-[#023625] font-bold">৳ {toBengaliNumerals(item.price * item.quantity)}</div>
                      </div>
                      
                      <button 
@@ -342,6 +339,7 @@ export default function App() {
                           value={toBengaliNumerals(item.quantity)} 
                           className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" 
                           readOnly 
+                          onChange={() => {}}
                         />
                         <button 
                           aria-label="Increase quantity" 
@@ -365,7 +363,7 @@ export default function App() {
             <div className="space-y-4 text-[#414944] font-medium text-[15px]">
               <div className="flex justify-between">
                 <span>সাবটোটাল</span>
-                <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span>শিপিং খরচ</span>
@@ -375,7 +373,7 @@ export default function App() {
             
             <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-5 mt-5">
               <span className="text-[17px] text-[#1d1b18] font-medium">মোট</span>
-              <span className="font-serif text-[28px] text-[#5a4103] font-bold">৳ {toBengaliNumerals(total).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              <span className="font-serif text-[28px] text-[#5a4103] font-bold">৳ {toBengaliNumerals(total)}</span>
             </div>
           </div>
 

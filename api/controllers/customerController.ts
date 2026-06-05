@@ -4,7 +4,7 @@ import { db } from "../config/firebaseConfig.ts";
 export const getCustomers = async (req: Request, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
-    const limit = parseInt(req.query.limit as string) || 100;
+    const limit = Math.min(parseInt(req.query.limit as string) || 100, 200);
     const cursor = req.query.cursor as string;
 
     let query: any = db.collection("customers").orderBy("lastOrderDate", "desc").limit(limit);

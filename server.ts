@@ -21,7 +21,7 @@ import { errorHandler, notFoundHandler } from "./api/middleware/errorMiddleware.
 
 async function startServer() {
   const app = express();
-  const PORT = Number(process.env.PORT) || 3000;
+  const PORT = 3000;
 
   // Environment Validation at Startup
   try {
@@ -51,11 +51,30 @@ async function startServer() {
     contentSecurityPolicy: process.env.NODE_ENV === "production" ? {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "https://cdn.tailwindcss.com"],
+        scriptSrc: [
+          "'self'", 
+          "https://cdn.tailwindcss.com",
+          "https://www.gstatic.com",
+          "https://fonts.googleapis.com"
+        ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        imgSrc: ["'self'", "data:", "https://images.unsplash.com", "https://lh3.googleusercontent.com"],
+        imgSrc: [
+          "'self'", 
+          "data:", 
+          "blob:", 
+          "https://images.unsplash.com", 
+          "https://lh3.googleusercontent.com",
+          "https://www.gstatic.com"
+        ],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        connectSrc: ["'self'"]
+        connectSrc: [
+          "'self'",
+          "https://*.googleapis.com",
+          "https://*.firebaseio.com",
+          "https://identitytoolkit.googleapis.com",
+          "https://securetoken.googleapis.com",
+          "https://firestore.googleapis.com"
+        ]
       }
     } : false,
   }));
@@ -63,7 +82,7 @@ async function startServer() {
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 1000, // Increased for dev/preview
+      max: process.env.NODE_ENV === "production" ? 150 : 1000,
       message: { error: "Too many requests from this IP, please try again later." },
     })
   );
@@ -131,9 +150,7 @@ async function startServer() {
   app.use("/api", systemRoutes);
 
   // API 404 Handler (Relocated here BEFORE SPA and static fallback catch-alls so it is reachable)
-  app.use("/api/*", (req, res) => {
-    notFoundHandler(req, res);
-  });
+  app.use("/api/*", notFoundHandler);
 
   // Serve static files from public folder
   app.use(express.static(path.join(process.cwd(), "public")));

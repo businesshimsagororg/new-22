@@ -11,8 +11,8 @@ import {
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration resolved dynamically or with solid static fallback
-let firebaseConfig = {
+// FALLBACK_CONFIG is only used when the server is unreachable (e.g., local dev with no .env)
+const FALLBACK_CONFIG = {
   apiKey: "AIzaSyCO6THcYmnTXL3g_wu6rFnTxKm1f-P3_x8",
   authDomain: "new-web-76da8.firebaseapp.com",
   projectId: "new-web-76da8",
@@ -22,28 +22,25 @@ let firebaseConfig = {
   measurementId: "G-L8XS75W5Z2"
 };
 
-// Initialize Firebase with fallback defaults first
-const app = initializeApp(firebaseConfig);
-const analytics = firebaseConfig.measurementId ? getAnalytics(app) : null;
-const auth = getAuth(app);
-const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
+let _appPromise = null;
 
-// Attempt to fetch fresh environment values asynchronously without top-level await blockages
-fetch("/api/firebase-config")
-  .then(response => {
-    if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
-      return response.json();
-    }
-  })
-  .then(dynamicConfig => {
-    if (dynamicConfig) {
-      Object.assign(firebaseConfig, dynamicConfig);
-    }
-  })
-  .catch(err => {
-    console.warn("[Firebase] Could not fetch response config, running on embedded config:", err);
-  });
+async function getFirebaseApp() {
+  if (_appPromise) return _appPromise;
+  _appPromise = fetch("/api/firebase-config")
+    .then(r => r.ok && r.headers.get("content-type")?.includes("application/json") ? r.json() : null)
+    .catch(() => null)
+    .then(dynamicConfig => {
+      const config = dynamicConfig && dynamicConfig.apiKey ? dynamicConfig : FALLBACK_CONFIG;
+      return initializeApp(config);
+    });
+  return _appPromise;
+}
+
+export const app = await getFirebaseApp();
+export const analytics = app.options.measurementId ? getAnalytics(app) : null;
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const googleProvider = new GoogleAuthProvider();
 
 /**
  * Sign in with Google using a popup window
@@ -80,4 +77,4 @@ export const logOut = async () => {
   }
 };
 
-export { app, auth, db, analytics, RecaptchaVerifier, signInWithPhoneNumber };
+export { RecaptchaVerifier, signInWithPhoneNumber };

@@ -6,8 +6,76 @@
 import React, { useState } from "react";
 import { Menu, ShoppingBag, ShoppingCart, User, Minus, Plus, Trash2, ArrowRight, Lock } from "lucide-react";
 
+type CartItem = {
+  id: string;
+  name: string;
+  tag: string;
+  price: number;
+  quantity: number;
+  image: string;
+};
+
+const INITIAL_CART: CartItem[] = [
+  {
+    id: "moringa-powder",
+    name: "Moringa Powder",
+    tag: "ORGANIC • 250G",
+    price: 1250,
+    quantity: 1,
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg"
+  },
+  {
+    id: "chia-seeds",
+    name: "Chia Seeds",
+    tag: "SUPERFOOD • 500G",
+    price: 900,
+    quantity: 2,
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ"
+  }
+];
+
+// Helper to convert English numbers to Bengali numerals
+function toBengaliNumerals(number: number): string {
+  const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+  return number.toString().replace(/\d/g, (digit) => bengaliDigits[parseInt(digit, 10)]);
+}
+
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART);
+
+  const handleIncrement = (id: string) => {
+    setCartItems(prev => prev.map(item => 
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    ));
+  };
+
+  const handleDecrement = (id: string) => {
+    setCartItems(prev => {
+      const item = prev.find(i => i.id === id);
+      if (item && item.quantity <= 1) {
+        return prev.filter(i => i.id !== id);
+      }
+      return prev.map(i => 
+        i.id === id ? { ...i, quantity: i.quantity - 1 } : i
+      );
+    });
+  };
+
+  const handleRemove = (id: string) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const shipping = subtotal > 750 || subtotal === 0 ? 0 : 60;
+  const total = subtotal + shipping;
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleCheckout = () => {
+    if (cartItems.length > 0) {
+      window.location.href = "/checkout";
+    }
+  };
 
   return (
     <div className="bg-[#fef8f2] text-[#1d1b18] font-sans antialiased min-h-screen">
@@ -19,7 +87,7 @@ export default function App() {
         {/* Desktop Header */}
         <header className="w-full top-0 z-50 bg-[#fef8f2] border-b border-[#DCCFBF]/50">
           <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
-            <a href="#" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
+            <a href="/" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
             <nav className="flex gap-8 items-center">
               <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Home</a>
               <a href="#" className="text-[#023625] font-bold border-b-2 border-[#023625] pb-1 transition-colors">Shop</a>
@@ -29,8 +97,13 @@ export default function App() {
               <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Contact</a>
             </nav>
             <div className="flex items-center gap-4 text-[#023625]">
-              <button className="hover:bg-[#F8F4EC] p-2 rounded-full transition-colors flex items-center justify-center">
+              <button className="relative hover:bg-[#F8F4EC] p-2 rounded-full transition-colors flex items-center justify-center">
                 <ShoppingCart size={24} />
+                {totalItems > 0 && (
+                  <span className="absolute top-0 right-0 bg-[#5a4103] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {totalItems}
+                  </span>
+                )}
               </button>
               <button className="hover:bg-[#F8F4EC] p-2 rounded-full transition-colors flex items-center justify-center">
                 <User size={24} />
@@ -51,83 +124,70 @@ export default function App() {
             {/* Cart Items Column */}
             <div className="flex-grow flex flex-col gap-6">
               
-              {/* Item 1 */}
-              <div className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 flex items-center gap-8 shadow-sm">
-                 <img 
-                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" 
-                   alt="Moringa Powder" 
-                   referrerPolicy="no-referrer"
-                   className="w-[140px] h-[140px] object-cover rounded-lg shadow-sm"
-                 />
-                 
-                 <div className="flex flex-col flex-grow h-[130px] justify-between">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">Moringa Powder</h3>
-                        <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">ORGANIC • 250G</p>
-                      </div>
-                      <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ ১,২৫০</div>
-                    </div>
-                    
-                    <div className="flex justify-between items-end pb-1">
-                      {/* Quantity */}
-                      <div className="flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
-                        <button aria-label="Decrease quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
-                           <Minus size={16} />
-                        </button>
-                        <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" readOnly />
-                        <button aria-label="Increase quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
-                           <Plus size={16} />
-                        </button>
-                      </div>
-                      
-                      {/* Remove */}
-                      <button className="flex items-center gap-2 text-[#6F685F] hover:text-red-700 transition-colors group">
-                        <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
-                        <span className="text-sm">মুছে ফেলুন</span>
-                      </button>
-                    </div>
-                 </div>
-              </div>
-              
-              {/* Item 2 */}
-              <div className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 flex items-center gap-8 shadow-sm">
-                 <img 
-                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" 
-                   alt="Chia Seeds" 
-                   referrerPolicy="no-referrer"
-                   className="w-[140px] h-[140px] object-cover rounded-lg shadow-sm"
-                 />
-                 
-                 <div className="flex flex-col flex-grow h-[130px] justify-between">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">Chia Seeds</h3>
-                        <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">SUPERFOOD • 500G</p>
-                      </div>
-                      <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ ১,৮০০</div>
-                    </div>
-                    
-                    <div className="flex justify-between items-end pb-1">
-                      {/* Quantity */}
-                      <div className="flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
-                        <button aria-label="Decrease quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
-                           <Minus size={16} />
-                        </button>
-                        <input type="text" aria-label="Quantity" defaultValue="২" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" readOnly />
-                        <button aria-label="Increase quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
-                           <Plus size={16} />
-                        </button>
-                      </div>
-                      
-                      {/* Remove */}
-                      <button className="flex items-center gap-2 text-[#6F685F] hover:text-red-700 transition-colors group">
-                        <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
-                        <span className="text-sm">মুছে ফেলুন</span>
-                      </button>
-                    </div>
-                 </div>
-              </div>
+              {cartItems.length === 0 ? (
+                <div className="bg-[#F8F4EC] rounded-xl p-12 text-center border border-[#DCCFBF]/60 shadow-sm flex flex-col items-center">
+                  <ShoppingCart size={64} className="text-[#DCCFBF] mb-4" />
+                  <h2 className="font-serif text-2xl mb-2 text-[#414944]">কার্ট খালি</h2>
+                  <p className="text-[#6F685F]">আপনার কার্টে কোনো পণ্য নেই।</p>
+                </div>
+              ) : (
+                cartItems.map(item => (
+                  <div key={item.id} className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 flex items-center gap-8 shadow-sm">
+                     <img 
+                       src={item.image} 
+                       alt={item.name} 
+                       referrerPolicy="no-referrer"
+                       className="w-[140px] h-[140px] object-cover rounded-lg shadow-sm bg-white"
+                     />
+                     
+                     <div className="flex flex-col flex-grow h-[130px] justify-between">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">{item.name}</h3>
+                            <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">{item.tag}</p>
+                          </div>
+                          <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ {toBengaliNumerals(item.price * item.quantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                        </div>
+                        
+                        <div className="flex justify-between items-end pb-1">
+                          {/* Quantity */}
+                          <div className="flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
+                            <button 
+                              aria-label="Decrease quantity" 
+                              onClick={() => handleDecrement(item.id)}
+                              className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]"
+                            >
+                               <Minus size={16} />
+                            </button>
+                            <input 
+                              type="text" 
+                              aria-label="Quantity" 
+                              value={toBengaliNumerals(item.quantity)} 
+                              className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" 
+                              readOnly 
+                            />
+                            <button 
+                              aria-label="Increase quantity" 
+                              onClick={() => handleIncrement(item.id)}
+                              className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]"
+                            >
+                               <Plus size={16} />
+                            </button>
+                          </div>
+                          
+                          {/* Remove */}
+                          <button 
+                            onClick={() => handleRemove(item.id)}
+                            className="flex items-center gap-2 text-[#6F685F] hover:text-red-700 transition-colors group"
+                          >
+                            <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
+                            <span className="text-sm">মুছে ফেলুন</span>
+                          </button>
+                        </div>
+                     </div>
+                  </div>
+                ))
+              )}
 
             </div>
 
@@ -139,20 +199,28 @@ export default function App() {
                 <div className="space-y-4 text-[#414944] font-medium">
                   <div className="flex justify-between">
                     <span>সাবটোটাল</span>
-                    <span className="text-[#1d1b18]">৳ ৩,০৫০</span>
+                    <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>শিপিং খরচ</span>
-                    <span className="text-[#1d1b18]">৳ ৬০</span>
+                    <span className="text-[#1d1b18]">{shipping === 0 ? "ফ্রি" : `৳ ${toBengaliNumerals(shipping)}`}</span>
                   </div>
                 </div>
                 
                 <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-6 mt-6 mb-8">
                   <span className="text-2xl text-[#1d1b18]">মোট</span>
-                  <span className="font-serif text-[40px] text-[#5a4103] font-bold tracking-tight">৳ ৩,১১০</span>
+                  <span className="font-serif text-[40px] text-[#5a4103] font-bold tracking-tight">৳ {toBengaliNumerals(total).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                 </div>
                 
-                <button className="w-full bg-[#023625] hover:bg-[#022b1d] text-white font-medium text-lg py-4 rounded-lg shadow-md transition-colors flex justify-center items-center gap-3">
+                <button 
+                  onClick={handleCheckout}
+                  disabled={cartItems.length === 0}
+                  className={`w-full font-medium text-lg py-4 rounded-lg shadow-md transition-colors flex justify-center items-center gap-3 ${
+                    cartItems.length === 0 
+                      ? "bg-gray-400 text-gray-200 cursor-not-allowed" 
+                      : "bg-[#023625] hover:bg-[#022b1d] text-white"
+                  }`}
+                >
                   চেকআউট করুন
                   <ArrowRight size={24} />
                 </button>
@@ -172,7 +240,7 @@ export default function App() {
               <div className="col-span-2">
                  <h3 className="font-serif text-3xl font-bold text-[#023625] mb-4">PureOrigins</h3>
                  <p className="text-[#6F685F] text-[15px] max-w-sm mb-8 leading-relaxed">প্রকৃতির খাঁটি উপাদান দিয়ে তৈরি আমাদের পণ্য, আপনার সুস্বাস্থ্যের বিশ্বস্ত সঙ্গী।</p>
-                 <p className="text-[#6F685F] text-sm">© 2024 PureOrigins. All rights reserved.</p>
+                 <p className="text-[#6F685F] text-sm">© {new Date().getFullYear()} PureOrigins. All rights reserved.</p>
               </div>
               <div>
                 <h4 className="font-serif text-2xl text-[#1d1b18] mb-6">প্রয়োজনীয় লিংক</h4>
@@ -206,10 +274,14 @@ export default function App() {
           >
             <Menu size={28} />
           </button>
-          <a href="#" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
+          <a href="/" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
           <button aria-label="Cart" className="relative text-[#1d1b18] flex items-center justify-center p-1">
             <ShoppingBag size={28} />
-            <span className="absolute -top-1 -right-1 bg-[#5a4103] text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold">2</span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#5a4103] text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold">
+                {totalItems}
+              </span>
+            )}
           </button>
         </header>
 
@@ -225,73 +297,65 @@ export default function App() {
           {/* Mobile Cart Items */}
           <div className="flex flex-col gap-4 mb-8">
             
-            {/* Mobile Item 1 */}
-            <div className="bg-[#F8F4EC] rounded-xl p-3 border border-[#DCCFBF]/60 flex gap-4 shadow-sm relative overflow-hidden">
-              <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" 
-                alt="মরিঙ্গা পাউডার" 
-                referrerPolicy="no-referrer"
-                className="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply" 
-              />
-              
-              <div className="flex flex-col flex-grow justify-between py-1">
-                 <div className="pr-8">
-                   <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">মরিঙ্গা পাউডার</h3>
-                   <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">ORGANIC • 250G</p>
-                   <div className="font-serif text-xl text-[#023625] font-bold">৳ ৪৫০</div>
-                 </div>
-                 
-                 {/* Trash Icon Absolute Top Right */}
-                 <button aria-label="Remove item" className="absolute top-3 right-3 text-[#6F685F] hover:text-red-700 bg-transparent p-1 flex items-center justify-center">
-                    <Trash2 size={22} />
-                 </button>
-                 
-                 {/* Quantity */}
-                 <div className="absolute bottom-3 right-3 flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
-                    <button aria-label="Decrease quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
-                       <Minus size={16} />
-                    </button>
-                    <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" readOnly />
-                    <button aria-label="Increase quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
-                       <Plus size={16} />
-                    </button>
-                 </div>
+            {cartItems.length === 0 ? (
+              <div className="bg-[#F8F4EC] rounded-xl p-8 text-center border border-[#DCCFBF]/60 shadow-sm flex flex-col items-center">
+                <ShoppingCart size={48} className="text-[#DCCFBF] mb-3" />
+                <h2 className="font-serif text-xl mb-1 text-[#414944]">কার্ট খালি</h2>
+                <p className="text-[#6F685F] text-sm">আপনার কার্টে কোনো পণ্য নেই।</p>
               </div>
-            </div>
-
-            {/* Mobile Item 2 */}
-            <div className="bg-[#F8F4EC] rounded-xl p-3 border border-[#DCCFBF]/60 flex gap-4 shadow-sm relative overflow-hidden">
-              <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" 
-                alt="চিয়া বীজ" 
-                referrerPolicy="no-referrer"
-                className="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply" 
-              />
-              
-              <div className="flex flex-col flex-grow justify-between py-1">
-                 <div className="pr-8">
-                   <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">চিয়া বীজ</h3>
-                   <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">RAW • 500G</p>
-                   <div className="font-serif text-xl text-[#023625] font-bold">৳ ৩২০</div>
-                 </div>
-                 
-                 {/* Trash Icon Absolute Top Right */}
-                 <button aria-label="Remove item" className="absolute top-3 right-3 text-[#6F685F] hover:text-red-700 bg-transparent p-1 flex items-center justify-center">
-                    <Trash2 size={22} />
-                 </button>
-                 
-                 {/* Quantity */}
-                 <div className="absolute bottom-3 right-3 flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
-                    <button aria-label="Decrease quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
-                       <Minus size={16} />
-                    </button>
-                    <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" readOnly />
-                    <button aria-label="Increase quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
-                       <Plus size={16} />
-                    </button>
-                 </div>
-              </div>
-            </div>
+            ) : (
+              cartItems.map(item => (
+                <div key={item.id} className="bg-[#F8F4EC] rounded-xl p-3 border border-[#DCCFBF]/60 flex gap-4 shadow-sm relative overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    referrerPolicy="no-referrer"
+                    className="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply bg-white" 
+                  />
+                  
+                  <div className="flex flex-col flex-grow justify-between py-1">
+                     <div className="pr-8">
+                       <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">{item.name}</h3>
+                       <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">{item.tag}</p>
+                       <div className="font-serif text-xl text-[#023625] font-bold">৳ {toBengaliNumerals(item.price * item.quantity).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                     </div>
+                     
+                     <button 
+                       aria-label="Remove item" 
+                       onClick={() => handleRemove(item.id)}
+                       className="absolute top-3 right-3 text-[#6F685F] hover:text-red-700 bg-transparent p-1 flex items-center justify-center"
+                     >
+                        <Trash2 size={22} />
+                     </button>
+                     
+                     <div className="absolute bottom-3 right-3 flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
+                        <button 
+                          aria-label="Decrease quantity" 
+                          onClick={() => handleDecrement(item.id)}
+                          className="w-8 h-full flex items-center justify-center text-[#6F685F]"
+                        >
+                           <Minus size={16} />
+                        </button>
+                        <input 
+                          type="text" 
+                          aria-label="Quantity" 
+                          value={toBengaliNumerals(item.quantity)} 
+                          className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" 
+                          readOnly 
+                        />
+                        <button 
+                          aria-label="Increase quantity" 
+                          onClick={() => handleIncrement(item.id)}
+                          className="w-8 h-full flex items-center justify-center text-[#6F685F]"
+                        >
+                           <Plus size={16} />
+                        </button>
+                     </div>
+                  </div>
+                </div>
+              ))
+            )}
+            
           </div>
 
           {/* Mobile Order Summary Card */}
@@ -301,21 +365,20 @@ export default function App() {
             <div className="space-y-4 text-[#414944] font-medium text-[15px]">
               <div className="flex justify-between">
                 <span>সাবটোটাল</span>
-                <span className="text-[#1d1b18]">৳ ৭৭০</span>
+                <span className="text-[#1d1b18]">৳ {toBengaliNumerals(subtotal).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               </div>
               <div className="flex justify-between">
                 <span>শিপিং খরচ</span>
-                <span className="text-[#1d1b18]">৳ ৬০</span>
+                <span className="text-[#1d1b18]">{shipping === 0 ? "ফ্রি" : `৳ ${toBengaliNumerals(shipping)}`}</span>
               </div>
             </div>
             
             <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-5 mt-5">
               <span className="text-[17px] text-[#1d1b18] font-medium">মোট</span>
-              <span className="font-serif text-[28px] text-[#5a4103] font-bold">৳ ৮৩০</span>
+              <span className="font-serif text-[28px] text-[#5a4103] font-bold">৳ {toBengaliNumerals(total).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
             </div>
           </div>
 
-          {/* Safe payment info */}
           <div className="flex justify-center items-center gap-2 text-[#6F685F] text-sm pb-4">
             <Lock size={18} />
             <span>নিরাপদ পেমেন্ট গ্যারান্টি</span>
@@ -325,7 +388,15 @@ export default function App() {
 
         {/* Mobile Fixed Bottom Action Bar */}
         <div className="fixed bottom-0 left-0 w-full bg-[#FCFAF8] p-5 z-40 border-t border-[#DCCFBF]/30 shadow-[0_-4px_16px_rgba(31,77,58,0.04)]">
-          <button className="w-full bg-[#023625] text-white font-medium text-[18px] py-[15px] rounded-xl shadow-md active:bg-[#022b1d] transition-colors flex justify-center items-center gap-3">
+          <button 
+            onClick={handleCheckout}
+            disabled={cartItems.length === 0}
+            className={`w-full font-medium text-[18px] py-[15px] rounded-xl shadow-md transition-colors flex justify-center items-center gap-3 ${
+              cartItems.length === 0 
+                ? "bg-gray-400 text-gray-200 cursor-not-allowed" 
+                : "bg-[#023625] text-white active:bg-[#022b1d]"
+            }`}
+          >
             চেকআউট করুন
             <ArrowRight size={22} />
           </button>

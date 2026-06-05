@@ -166,6 +166,13 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
     await db.collection("orders").doc(id).update({ status: parsedStatus });
     res.json({ success: true, status: parsedStatus });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        error: "Invalid status value",
+        validValues: ["Pending", "In Transit", "Delivered", "Cancelled"],
+        details: error.issues
+      });
+    }
     next(error);
   }
 };

@@ -41,12 +41,13 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
 export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
+    const now = new Date();
     const productData = {
       ...req.body,
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     };
     const docRef = await db.collection("products").add(productData);
-    res.json({ id: docRef.id, ...productData });
+    res.status(201).json({ id: docRef.id, ...req.body, createdAt: now.toISOString() });
   } catch (error) {
     next(error);
   }
@@ -56,9 +57,10 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
   if (!db) return res.status(500).json({ error: "Database not configured" });
   try {
     const { id } = req.params;
+    const now = new Date();
     const updates = { ...req.body, updatedAt: admin.firestore.FieldValue.serverTimestamp() };
     await db.collection("products").doc(id).update(updates);
-    res.json({ success: true, id, ...updates });
+    res.json({ success: true, id, ...req.body, updatedAt: now.toISOString() });
   } catch (error) {
     next(error);
   }

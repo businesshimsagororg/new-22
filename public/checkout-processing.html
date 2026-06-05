@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>PureOrigins - Processing Order</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1d1b18",
+                        "primary-fixed-dim": "#a1d1b8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5c4304",
+                        "surface": "#fef8f2",
+                        "on-secondary-container": "#4c6d31",
+                        "outline": "#717973",
+                        "primary-container": "#1f4d3a",
+                        "primary": "#023625",
+                        "secondary-fixed-dim": "#acd28a",
+                        "surface-cream": "#F8F4EC",
+                        "secondary-fixed": "#c7efa4",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8dbda4",
+                        "surface-container-low": "#f8f3ec",
+                        "inverse-primary": "#a1d1b8",
+                        "surface-tint": "#3a6753",
+                        "secondary": "#47672c",
+                        "surface-container-high": "#ede7e1",
+                        "inverse-surface": "#32302c",
+                        "on-tertiary": "#ffffff",
+                        "border-sand": "#DCCFBF",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#e7c17a",
+                        "on-surface-variant": "#414944",
+                        "outline-variant": "#c0c9c2",
+                        "tertiary-fixed": "#ffdea3",
+                        "background": "#fef8f2",
+                        "muted-gray": "#6F685F",
+                        "surface-container-highest": "#e7e2db",
+                        "on-primary-fixed": "#002114",
+                        "surface-bright": "#fef8f2",
+                        "on-primary-fixed-variant": "#214f3c",
+                        "on-tertiary-fixed": "#261900",
+                        "tertiary": "#3f2c00",
+                        "surface-variant": "#e7e2db",
+                        "on-tertiary-container": "#d2ae68",
+                        "secondary-container": "#c7efa4",
+                        "surface-dim": "#dfd9d3",
+                        "on-secondary-fixed-variant": "#304f16",
+                        "surface-container": "#f3ede6",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#0c2000",
+                        "background-beige": "#EDE6D6",
+                        "primary-fixed": "#bceed3",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#5a4103",
+                        "inverse-on-surface": "#f6f0e9",
+                        "on-surface": "#1d1b18"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "stack-sm": "8px",
+                        "margin-desktop": "64px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["EB Garamond", "serif"],
+                        "display-lg-mobile": ["EB Garamond", "serif"],
+                        "label-caps": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "headline-md": ["EB Garamond", "serif"],
+                        "headline-sm": ["EB Garamond", "serif"],
+                        "body-sm": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "body-md": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "body-lg": ["Noto Sans", "Noto Sans Bengali", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel {
+                @apply bg-surface-cream/80 backdrop-blur-md border border-border-sand shadow-lg;
+            }
+            .organic-shadow {
+                box-shadow: 0 8px 24px rgba(31, 77, 58, 0.08);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-beige text-on-surface font-body-md h-screen w-screen overflow-hidden antialiased relative">
+    <!-- Minimal Header (Back-to-Main Exception for Checkout Flow) -->
+    <header class="h-20 bg-surface-container-lowest border-b border-border-sand flex items-center px-4 md:px-margin-desktop sticky top-0 z-10">
+        <div class="max-w-container-max mx-auto w-full flex items-center justify-between">
+            <button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors disabled:opacity-50" disabled="">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+                <span class="font-label-caps tracking-widest mt-0.5">ফিরে যান</span>
+            </button>
+            <h1 class="font-headline-sm text-primary font-medium tracking-tight">PureOrigins</h1>
+            <div class="w-24"></div> <!-- Spacer for balance -->
+        </div>
+    </header>
+
+    <!-- Underlying Checkout Content (Blurred/Disabled State) -->
+    <main class="max-w-container-max mx-auto w-full px-4 md:px-margin-desktop py-stack-lg h-[calc(100vh-5rem)] overflow-hidden opacity-40 blur-[2px] transition-all duration-500 pointer-events-none">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter h-full">
+            <!-- Left Column: Forms -->
+            <div class="lg:col-span-7 flex flex-col gap-stack-md h-full">
+                <!-- Delivery Info Card -->
+                <section class="bg-surface-cream rounded-lg p-6 border border-border-sand organic-shadow">
+                    <h2 class="font-headline-sm text-primary mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">location_on</span>
+                        ডেলিভারি ঠিকানা
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="h-12 bg-surface-variant rounded border border-border-sand/50"></div>
+                            <div class="h-12 bg-surface-variant rounded border border-border-sand/50"></div>
+                        </div>
+                        <div class="h-12 bg-surface-variant rounded border border-border-sand/50"></div>
+                        <div class="h-24 bg-surface-variant rounded border border-border-sand/50"></div>
+                    </div>
+                </section>
+                <!-- Payment Info Card -->
+                <section class="bg-surface-cream rounded-lg p-6 border border-border-sand organic-shadow flex-grow">
+                    <h2 class="font-headline-sm text-primary mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">credit_card</span>
+                        পেমেন্ট পদ্ধতি
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="h-16 bg-surface-variant rounded border border-border-sand/50"></div>
+                        <div class="h-16 bg-surface-variant rounded border border-border-sand/50"></div>
+                    </div>
+                </section>
+            </div>
+            <!-- Right Column: Order Summary -->
+            <div class="lg:col-span-5 h-full hidden lg:block">
+                <aside class="bg-surface-cream rounded-lg p-6 border border-border-sand organic-shadow h-full flex flex-col">
+                    <h2 class="font-headline-sm text-primary mb-6">অর্ডারের সারসংক্ষেপ</h2>
+                    <div class="flex-grow space-y-4">
+                        <!-- Product Item Skeleton -->
+                        <div class="flex gap-4 items-center pb-4 border-b border-border-sand">
+                            <div class="w-16 h-16 bg-surface-variant rounded"></div>
+                            <div class="flex-grow space-y-2">
+                                <div class="h-4 bg-surface-variant rounded w-3/4"></div>
+                                <div class="h-3 bg-surface-variant rounded w-1/2"></div>
+                            </div>
+                        </div>
+                        <!-- Product Item Skeleton -->
+                        <div class="flex gap-4 items-center pb-4 border-b border-border-sand">
+                            <div class="w-16 h-16 bg-surface-variant rounded"></div>
+                            <div class="flex-grow space-y-2">
+                                <div class="h-4 bg-surface-variant rounded w-2/3"></div>
+                                <div class="h-3 bg-surface-variant rounded w-1/3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 space-y-3 pt-6 border-t border-border-sand">
+                        <div class="flex justify-between">
+                            <div class="h-4 bg-surface-variant rounded w-20"></div>
+                            <div class="h-4 bg-surface-variant rounded w-16"></div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div class="h-4 bg-surface-variant rounded w-24"></div>
+                            <div class="h-4 bg-surface-variant rounded w-12"></div>
+                        </div>
+                        <div class="flex justify-between pt-3 border-t border-border-sand mt-3">
+                            <div class="h-6 bg-surface-variant rounded w-16"></div>
+                            <div class="h-6 bg-surface-variant rounded w-24"></div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Processing Overlay (The Primary Focus) -->
+    <div class="absolute inset-0 z-50 flex items-center justify-center p-4 bg-background-beige/40 backdrop-blur-[4px]">
+        <div class="glass-panel w-full max-w-[480px] rounded-xl p-8 md:p-12 flex flex-col items-center text-center organic-shadow transform scale-100 transition-transform duration-500 ease-out">
+            <!-- Branded Loading Animation -->
+            <div class="relative w-24 h-24 mb-8">
+                <!-- Outer static ring -->
+                <svg class="absolute inset-0 w-full h-full text-surface-variant" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="2"></circle>
+                </svg>
+                <!-- Inner spinning ring (Primary Green) -->
+                <svg class="absolute inset-0 w-full h-full text-primary animate-[spin_2s_linear_infinite]" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="70 200" stroke-linecap="round" stroke-width="4"></circle>
+                </svg>
+                <!-- Center pulse icon (Soft Gold / Tertiary) -->
+                <div class="absolute inset-0 flex items-center justify-center animate-pulse">
+                    <span class="material-symbols-outlined text-4xl text-tertiary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
+                </div>
+            </div>
+
+            <!-- Typography -->
+            <h2 class="font-headline-md text-primary mb-3 leading-tight">
+                আপনার অর্ডারটি<br/>প্রসেস করা হচ্ছে...
+            </h2>
+            <p class="font-body-md text-muted-gray mb-8 px-4">
+                অনুগ্রহ করে অপেক্ষা করুন। আমরা আপনার পেমেন্ট এবং অর্ডার ডিটেইলস কনফার্ম করছি।
+            </p>
+
+            <!-- Minimal Progress Indication -->
+            <div class="w-full max-w-[240px] bg-surface-variant h-1 rounded-full overflow-hidden">
+                <div class="bg-tertiary-container h-full rounded-full w-1/2 animate-[pulse_1.5s_ease-in-out_infinite] origin-left scale-x-100 transition-transform duration-1000"></div>
+            </div>
+            <p class="font-label-caps text-outline mt-4 tracking-widest text-[10px]">
+                দয়া করে পেজটি রিফ্রেশ করবেন না
+            </p>
+        </div>
+    </div>
+</body>
+</html>

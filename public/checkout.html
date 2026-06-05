@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Checkout | PureOrigins</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#023625",
+                        "background": "#fef8f2",
+                        "surface-cream": "#F8F4EC",
+                        "border-sand": "#DCCFBF",
+                        "muted-gray": "#6F685F",
+                        "tertiary-container": "#5a4103",
+                        "secondary": "#47672c",
+                        "on-surface": "#1d1b18",
+                        "on-surface-variant": "#414944",
+                        "surface": "#fef8f2",
+                        "background-beige": "#EDE6D6",
+                        "on-tertiary-container": "#d2ae68",
+                        "surface-container": "#f3ede6",
+                        "surface-container-low": "#f8f3ec",
+                        "surface-variant": "#e7e2db",
+                        "outline": "#717973",
+                        "on-background": "#1d1b18"
+                    },
+                    spacing: {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                        "headline-sm": ["EB Garamond", "serif"],
+                        "headline-md": ["EB Garamond", "serif"],
+                        "display-lg-mobile": ["EB Garamond", "serif"],
+                        "body-sm": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                        "body-md": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                        "label-caps": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                        "display-lg": ["EB Garamond", "serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Mobile specific styles */
+        .ambient-shadow { box-shadow: 0 8px 24px rgba(31, 77, 58, 0.08); }
+        .mobile-bg { background-color: #EDE6D6; }
+        
+        /* Desktop specific styles */
+        input[type="radio"]:checked + .radio-content {
+            border-color: #023625;
+            background-color: #f6f0e9;
+        }
+        input[type="radio"]:checked + .radio-content .radio-inner {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+    <!-- ============================================== -->
+    <!--               DESKTOP VIEW                     -->
+    <!-- ============================================== -->
+    <div class="hidden md:flex flex-col min-h-screen w-full">
+        <!-- Minimal Checkout Header -->
+        <header class="w-full bg-background border-b border-border-sand py-10 flex justify-center items-center relative">
+            <a class="font-display-lg text-4xl font-bold text-primary decoration-transparent tracking-tight" href="#">
+                PureOrigins
+            </a>
+            <a class="absolute left-16 flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="/cart.html">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                <span class="font-body-md text-base mt-1">Back to Cart</span>
+            </a>
+        </header>
+
+        <!-- Main Checkout Canvas -->
+        <main class="flex-grow max-w-[1200px] w-full mx-auto px-16 py-16">
+            <div class="grid grid-cols-12 gap-12">
+                
+                <!-- Left Column: Delivery & Payment -->
+                <div class="col-span-7 flex flex-col gap-8">
+                    <!-- Delivery Info Section -->
+                    <section class="bg-[#F8F4EC] rounded-xl p-8 shadow-sm border border-border-sand/50">
+                        <div class="flex items-center gap-2 mb-8">
+                            <span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+                            <h2 class="font-headline-md text-3xl font-medium text-primary tracking-tight">ডেলিভারি তথ্য</h2>
+                        </div>
+                        
+                        <form class="grid grid-cols-2 gap-5">
+                            <div class="col-span-2">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">পুরো নাম *</label>
+                                <input type="text" placeholder="আপনার নাম লিখুন" class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">মোবাইল নাম্বার *</label>
+                                <input type="tel" placeholder="01XXX-XXXXXX" class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">বিকল্প মোবাইল নাম্বার</label>
+                                <input type="tel" placeholder="(ঐচ্ছিক)" class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                            </div>
+                            
+                            <div class="col-span-2">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">পূর্ণ ঠিকানা *</label>
+                                <textarea rows="3" placeholder="বাসা নং, রাস্তা, এলাকা" class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"></textarea>
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">শহর *</label>
+                                <select class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none">
+                                    <option value="">শহর নির্বাচন করুন</option>
+                                    <option value="dhaka">ঢাকা</option>
+                                    <option value="chittagong">চট্টগ্রাম</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-span-1">
+                                <label class="text-[13px] font-bold text-muted-gray mb-1.5 block">জোন/এলাকা *</label>
+                                <select class="w-full bg-background border border-border-sand rounded-xl px-4 py-3.5 text-base focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none">
+                                    <option value="">এলাকা নির্বাচন করুন</option>
+                                    <option value="gulshan">গুলশান</option>
+                                    <option value="banani">বনানী</option>
+                                    <option value="dhanmondi">ধানমন্ডি</option>
+                                </select>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Payment Method Section -->
+                    <section class="bg-[#F8F4EC] rounded-xl p-8 shadow-sm border border-border-sand/50">
+                        <div class="flex items-center gap-2 mb-8">
+                            <span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+                            <h2 class="font-headline-md text-3xl font-medium text-primary tracking-tight">পেমেন্ট পদ্ধতি</h2>
+                        </div>
+                        
+                        <div class="flex flex-col gap-4">
+                            <!-- COD Option -->
+                            <label class="relative cursor-pointer group block">
+                                <input type="radio" name="payment_method_desk" value="cod" class="peer sr-only" checked>
+                                <div class="radio-content w-full bg-background border border-border-sand rounded-xl p-5 flex items-center justify-between transition-all group-hover:border-primary/50">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center peer-checked:border-primary transition-colors">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 scale-50 transition-all radio-inner"></div>
+                                        </div>
+                                        <div>
+                                            <span class="text-[17px] text-on-background block mb-1">Cash on Delivery (ক্যাশ অন ডেলিভারি)</span>
+                                            <span class="text-xs font-medium text-muted-gray">পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন</span>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-[#d2ae68]">payments</span>
+                                </div>
+                            </label>
+
+                            <!-- bKash Option -->
+                            <label class="relative cursor-pointer group block">
+                                <input type="radio" name="payment_method_desk" value="bkash" class="peer sr-only">
+                                <div class="radio-content w-full bg-background border border-border-sand rounded-xl p-5 flex items-center justify-between transition-all group-hover:border-primary/50">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center transition-colors">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 scale-50 transition-all radio-inner"></div>
+                                        </div>
+                                        <div>
+                                            <span class="text-[17px] text-on-background block">bKash (বিকাশ)</span>
+                                        </div>
+                                    </div>
+                                    <div class="px-2.5 py-1 bg-[#E2136E]/10 rounded text-[#E2136E] font-bold text-[11px] tracking-wider">bKash</div>
+                                </div>
+                            </label>
+
+                            <!-- Cards Option -->
+                            <label class="relative cursor-pointer group block">
+                                <input type="radio" name="payment_method_desk" value="cards" class="peer sr-only">
+                                <div class="radio-content w-full bg-background border border-border-sand rounded-xl p-5 flex items-center justify-between transition-all group-hover:border-primary/50">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center transition-colors">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-primary opacity-0 scale-50 transition-all radio-inner"></div>
+                                        </div>
+                                        <div>
+                                            <span class="text-[17px] text-on-background block mb-1">Credit / Debit Card</span>
+                                            <span class="text-[11px] font-bold tracking-wide uppercase text-muted-gray">Visa, MasterCard, Amex</span>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-muted-gray">credit_card</span>
+                                </div>
+                            </label>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="col-span-5 relative">
+                    <div class="sticky top-8 bg-[#F8F4EC] rounded-xl p-8 shadow-sm border border-border-sand">
+                        <h2 class="font-headline-md text-[30px] font-medium text-primary mb-6 border-b border-border-sand pb-5">অর্ডার সারসংক্ষেপ</h2>
+                        
+                        <div class="flex flex-col gap-5 mb-8">
+                            <!-- Item 1 -->
+                            <div class="flex gap-4 items-center">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden bg-background border border-border-sand shrink-0">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPJq1bYiMYXAQB3SrFyGwTqejuOJlLzQ2E1jU4D9AHFfz_afcZywrsh_E5KvKU8DLuk21q3jqfAt8sd45RFKhbVrpElRrCjG32uXJ50qxHoX3BcI9ktofyfbLGQPTV8h2nJU5dle12zqEcjQ78wbb5WewgH-OAxbhq0-Dakk_WFzrGmK6dQUg-9ngDdVwfRp02ta95oqkcax9ru7p5fAScarLpUSwpWz-JmxhSEf6UhzPG64x4XBTdfxn14BqGwbvIFIbySFKd0MI" alt="Honey" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="text-[15px] font-medium text-on-background leading-snug">Pure Origins Premium Organic Honey</h3>
+                                    <div class="text-sm text-muted-gray mt-0.5">পরিমাণ: ১ • ৳ ৯৫০</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Item 2 -->
+                            <div class="flex gap-4 items-center">
+                                <div class="w-16 h-16 rounded-lg overflow-hidden bg-background border border-border-sand shrink-0 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-border-sand text-[24px]">spa</span>
+                                </div>
+                                <div class="flex-grow">
+                                    <h3 class="text-[15px] font-medium text-on-background leading-snug">Cold-Pressed Black Seed Oil (১০০ মিলি)</h3>
+                                    <div class="text-sm text-muted-gray mt-0.5">পরিমাণ: ২ • ৳ ৭০০</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Totals -->
+                        <div class="border-y border-border-sand py-5 flex flex-col gap-3">
+                            <div class="flex justify-between items-center text-[15px] text-on-surface-variant font-medium">
+                                <span>সাবটোটাল</span>
+                                <span class="text-on-background">৳ ১,৬৫০</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[15px] text-on-surface-variant font-medium">
+                                <span>ডেলিভারি চার্জ</span>
+                                <span class="text-on-background">৳ ৬০</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[15px] text-on-surface-variant font-medium">
+                                <span>ডিসকাউন্ট</span>
+                                <span class="text-secondary">- ৳ 0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 flex justify-between items-center font-headline-sm text-2xl font-medium text-primary">
+                            <span>সর্বমোট</span>
+                            <span class="text-[#d2ae68] font-bold text-[28px]">৳ ১,৭১০</span>
+                        </div>
+
+                        <!-- CTA -->
+                        <button class="w-full mt-8 bg-primary hover:bg-[#022b1d] text-white font-medium text-[19px] py-4 rounded-xl transition-colors flex items-center justify-center gap-2 group shadow-md">
+                            অর্ডার নিশ্চিত করুন
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </button>
+                        
+                        <p class="text-[13px] text-muted-gray text-center mt-5 flex items-center justify-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px]">lock</span>
+                            নিরাপদ পেমেন্ট গ্যারান্টিযুক্ত
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Desktop Footer -->
+        <footer class="w-full mt-auto bg-[#F8F4EC] py-10 border-t border-border-sand text-center">
+            <span class="font-display-lg text-3xl font-bold text-primary opacity-40 block mb-2 tracking-tight">PureOrigins</span>
+            <p class="text-[13px] text-muted-gray">
+                © 2024 PureOrigins. All rights reserved. Crafted for Bangladeshi Wellness.
+            </p>
+        </footer>
+    </div>
+
+
+    <!-- ============================================== -->
+    <!--               MOBILE VIEW                      -->
+    <!-- ============================================== -->
+    <div class="md:hidden flex flex-col min-h-screen mobile-bg pb-24">
+        
+        <!-- TopAppBar -->
+        <header class="w-full sticky top-0 z-50 bg-[#fef8f2] shadow-sm">
+            <div class="flex items-center justify-between px-5 h-16 w-full">
+                <button class="text-primary hover:opacity-80 transition-opacity">
+                    <span class="material-symbols-outlined text-[26px]">arrow_back</span>
+                </button>
+                <h1 class="font-serif text-[26px] font-bold text-primary tracking-tight" style="font-family: 'EB Garamond', serif;">PureOrigins</h1>
+                <div class="w-6"></div> 
+            </div>
+        </header>
+
+        <!-- Main Content Base -->
+        <main class="w-full max-w-lg mx-auto px-5 pt-6 flex flex-col gap-6">
+            
+            <!-- Order Summary Section -->
+            <section class="bg-[#F8F4EC] rounded-xl p-5 ambient-shadow border border-[#DCCFBF]">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-serif text-[22px] font-medium text-[#023625]" style="font-family: 'EB Garamond', serif;">অর্ডার সারাংশ</h2>
+                    <span class="text-sm font-medium text-[#6F685F]">২টি আইটেম</span>
+                </div>
+                
+                <div class="flex flex-col gap-3 mb-4 border-b border-[#DCCFBF] pb-4">
+                    <div class="flex items-center gap-4">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0FprU4PQjBKxP0v4kZa0JCSMHIcGEEqkDH2GAmAgkDr8qND4nWjpysdME9zZNsI5P-wcjrYdPe5KTz9RvPh5L_ZxAJimJrLLmOwypZbcHtB0DZnoriICrAuEknC77gZwOJ94HdW9QAZp3rXuwDHXvHwJAoV_WkcQCqxaSJJi0NsOuOkyuOkMmi-EXdVehUE6agV2Zvzb-AhromBQahi4Jy7dHeRx0z6VYIoYvSdMcmkm2lM1KcafVhOh9RFeJQ16ChRbKOnLIyPk" 
+                             alt="Organic Honey" class="w-16 h-16 object-cover rounded shadow-sm">
+                        <div class="flex-1">
+                            <h3 class="font-medium text-[#023625] text-[15px] leading-tight mb-0.5">সুন্দরবনের খাঁটি মধু</h3>
+                            <p class="text-xs text-[#6F685F]">৫০০ গ্রাম</p>
+                        </div>
+                        <span class="text-base font-medium text-[#023625] whitespace-nowrap">৳ ৭৫০</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYYVPFdBKpA8gwu2VNJK1RXD1JoN_NJLns-x-S130WQMP3YZqPeDCrqCOgJyKcSHbgBNSF55z2cC10dVXz46j6z5i_1IdZacX63nz0IQvU-51XROEmv3dYMJpGlMvmplmz-ZgVJtAiHnUHP9wJND_Nov538bYUGgn1SRXY4yzheCe3A86VFiesiFswelaG1jcEk8Nd1xUK-mVG4xOVnlUIbjIH96RPGInfQSbdbMc5B0eznQvoDi4fGKugjp_4s-u2RfDWINDmJOA" 
+                             alt="Mustard Oil" class="w-16 h-16 object-cover rounded shadow-sm">
+                        <div class="flex-1">
+                            <h3 class="font-medium text-[#023625] text-[15px] leading-tight mb-0.5">কোল্ড প্রেসড সরিষার তেল</h3>
+                            <p class="text-xs text-[#6F685F]">১ লিটার</p>
+                        </div>
+                        <span class="text-base font-medium text-[#023625] whitespace-nowrap">৳ ৩২০</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center pt-1">
+                    <span class="text-[17px] font-bold text-[#023625]">সর্বমোট</span>
+                    <span class="text-xl font-bold text-[#023625]">৳ ১০৭০</span>
+                </div>
+            </section>
+
+            <!-- Delivery Information Section -->
+            <section class="bg-[#F8F4EC] rounded-xl p-5 ambient-shadow border border-[#DCCFBF]">
+                <h2 class="font-serif text-[22px] font-medium text-[#023625] mb-4" style="font-family: 'EB Garamond', serif;">ডেলিভারি তথ্য</h2>
+                <form class="flex flex-col gap-3">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs text-[#414944] font-medium px-1">সম্পূর্ণ নাম</label>
+                        <input type="text" placeholder="আপনার নাম লিখুন" class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-[#023625] transition-colors">
+                    </div>
+                    
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs text-[#414944] font-medium px-1">মোবাইল নম্বর</label>
+                        <input type="tel" placeholder="০১৭XXXXXXXX" class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-base focus:outline-none focus:border-[#023625] transition-colors">
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <div class="flex flex-col gap-1 w-1/2">
+                            <label class="text-xs text-[#414944] font-medium px-1">জেলা</label>
+                            <select class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-base appearance-none focus:outline-none focus:border-[#023625]">
+                                <option>জেলা নির্বাচন করুন</option>
+                                <option>ঢাকা</option>
+                                <option>চট্টগ্রাম</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1 w-1/2">
+                            <label class="text-xs text-[#414944] font-medium px-1">উপজেলা/এলাকা</label>
+                            <select class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-base appearance-none focus:outline-none focus:border-[#023625]">
+                                <option>এলাকা নির্বাচন করুন</option>
+                                <option>ধানমন্ডি</option>
+                                <option>গুলশান</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs text-[#414944] font-medium px-1">সম্পূর্ণ ঠিকানা</label>
+                        <textarea rows="2" placeholder="বাসা নম্বর, রাস্তা, পাড়া/মহল্লা" class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-base resize-none focus:outline-none focus:border-[#023625]"></textarea>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Promo Code Section -->
+            <section class="bg-[#F8F4EC] rounded-xl p-5 ambient-shadow border border-[#DCCFBF]">
+                <div class="flex gap-3 items-end">
+                    <div class="flex flex-col gap-1 flex-1">
+                        <label class="text-xs text-[#414944] font-medium px-1">প্রোমো কোড (যদি থাকে)</label>
+                        <input type="text" placeholder="কোড লিখুন" class="w-full bg-[#F8F4EC] border border-[#DCCFBF] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#023625] transition-colors">
+                    </div>
+                    <button class="bg-[#ede7e1] text-[#023625] border border-[#DCCFBF] font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-[#dfd9d3] transition-colors h-[42px]">
+                        প্রয়োগ করুন
+                    </button>
+                </div>
+            </section>
+
+            <!-- Payment Method Section -->
+            <section class="bg-[#F8F4EC] rounded-xl p-5 ambient-shadow border border-[#DCCFBF] mb-4">
+                <h2 class="font-serif text-[22px] font-medium text-[#023625] mb-4" style="font-family: 'EB Garamond', serif;">পেমেন্ট মেথড</h2>
+                <div class="flex flex-col gap-3">
+                    
+                    <label class="flex items-center p-3.5 border border-[#DCCFBF] rounded-lg cursor-pointer hover:bg-[#f8f3ec] transition-colors">
+                        <input type="radio" name="payment_mobile" class="w-4 h-4 text-[#023625] focus:ring-[#023625] border-[#DCCFBF]" checked>
+                        <span class="ml-3 text-[15px] text-[#023625] font-medium flex-1">ক্যাশ অন ডেলিভারি</span>
+                        <span class="material-symbols-outlined text-[#6F685F] text-[22px]">local_shipping</span>
+                    </label>
+                    
+                    <label class="flex items-center p-3.5 border border-[#DCCFBF] rounded-lg cursor-pointer hover:bg-[#f8f3ec] opacity-60">
+                        <input type="radio" name="payment_mobile" class="w-4 h-4 text-[#023625] border-[#DCCFBF]" disabled>
+                        <span class="ml-3 text-[15px] text-[#6F685F] font-medium flex-1">বিকাশ (bKash)</span>
+                        <span class="material-symbols-outlined text-[#6F685F] text-[22px]">account_balance_wallet</span>
+                    </label>
+                </div>
+            </section>
+            
+        </main>
+
+        <!-- Sticky Bottom Action -->
+        <div class="fixed bottom-0 left-0 w-full bg-[#F8F4EC] border-t border-[#DCCFBF] p-4 shadow-[0_-4px_16px_rgba(31,77,58,0.05)] z-40">
+            <div class="max-w-lg mx-auto">
+                <button class="w-full bg-[#023625] text-white font-medium text-[17px] py-[13px] rounded-lg flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-transform">
+                    <span>অর্ডার নিশ্চিত করুন</span>
+                    <span class="material-symbols-outlined text-[22px]">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

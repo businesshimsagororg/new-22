@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>অ্যাকাউন্ট তৈরি হচ্ছে - PureOrigins</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#261900",
+                    "secondary-fixed": "#c7efa4",
+                    "primary-container": "#1f4d3a",
+                    "on-secondary-container": "#4c6d31",
+                    "primary": "#023625",
+                    "outline": "#717973",
+                    "on-secondary-fixed-variant": "#304f16",
+                    "on-primary-fixed-variant": "#214f3c",
+                    "outline-variant": "#c0c9c2",
+                    "surface-container-low": "#f8f3ec",
+                    "border-sand": "#DCCFBF",
+                    "tertiary-container": "#5a4103",
+                    "inverse-on-surface": "#f6f0e9",
+                    "surface-container-highest": "#e7e2db",
+                    "surface-container-high": "#ede7e1",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#002114",
+                    "on-primary": "#ffffff",
+                    "muted-gray": "#6F685F",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#d2ae68",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#fef8f2",
+                    "on-surface-variant": "#414944",
+                    "background": "#fef8f2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#1d1b18",
+                    "secondary-container": "#c7efa4",
+                    "tertiary-fixed-dim": "#e7c17a",
+                    "inverse-surface": "#32302c",
+                    "primary-fixed": "#bceed3",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#0c2000",
+                    "surface-variant": "#e7e2db",
+                    "on-primary-container": "#8dbda4",
+                    "surface-cream": "#F8F4EC",
+                    "on-tertiary-fixed-variant": "#5c4304",
+                    "secondary": "#47672c",
+                    "tertiary": "#3f2c00",
+                    "surface-dim": "#dfd9d3",
+                    "on-background": "#1d1b18",
+                    "surface-container": "#f3ede6",
+                    "tertiary-fixed": "#ffdea3",
+                    "surface-tint": "#3a6753",
+                    "surface": "#fef8f2",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#a1d1b8",
+                    "inverse-primary": "#a1d1b8",
+                    "secondary-fixed-dim": "#acd28a",
+                    "background-beige": "#EDE6D6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "unit": "4px",
+                    "margin-mobile": "20px",
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "label-caps": [
+                            "Noto Sans"
+                    ],
+                    "body-md": [
+                            "Noto Sans"
+                    ],
+                    "body-sm": [
+                            "Noto Sans"
+                    ],
+                    "headline-sm": [
+                            "EB Garamond"
+                    ],
+                    "headline-md": [
+                            "EB Garamond"
+                    ],
+                    "display-lg-mobile": [
+                            "EB Garamond"
+                    ],
+                    "display-lg": [
+                            "EB Garamond"
+                    ],
+                    "body-lg": [
+                            "Noto Sans"
+                    ]
+            },
+            "fontSize": {
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-sm": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "36px",
+                            {
+                                    "lineHeight": "44px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+        },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'EB Garamond', serif;
+        }
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Custom Organic Animations */
+        @keyframes organic-pulse {
+            0%, 100% { 
+                transform: scale(1); 
+                opacity: 0.9; 
+                filter: drop-shadow(0 0 8px rgba(2, 54, 37, 0.2));
+            }
+            50% { 
+                transform: scale(1.08); 
+                opacity: 1; 
+                filter: drop-shadow(0 0 16px rgba(2, 54, 37, 0.4));
+            }
+        }
+        .animate-organic-pulse {
+            animation: organic-pulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes progress-fill {
+            0% { width: 0%; }
+            30% { width: 45%; }
+            80% { width: 85%; }
+            100% { width: 95%; } /* Simulates waiting for final confirmation */
+        }
+        .animate-progress-fill {
+            animation: progress-fill 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+            animation: shimmer 1.5s infinite linear;
+        }
+    </style>
+</head>
+<body class="bg-background-beige text-on-surface min-h-screen flex items-center justify-center antialiased">
+<!-- 
+      Semantic Shell Mandate: 
+      TopNavBar and Footer are intentionally SUPPRESSED here because this is a 
+      linear/transactional "Success/Loading" splash screen. The canvas must 
+      be prioritized for the user's focused journey.
+    -->
+<main class="w-full max-w-sm mx-margin-mobile flex flex-col items-center justify-center p-stack-lg">
+<!-- Central Loading Card -->
+<div class="bg-surface-cream shadow-[0_8px_32px_rgba(31,77,58,0.06)] rounded-xl p-stack-lg w-full flex flex-col items-center justify-center text-center gap-stack-lg border border-border-sand relative overflow-hidden">
+<!-- Subtle background pattern for premium feel -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #023625 1px, transparent 0); background-size: 24px 24px;"></div>
+<!-- Icon Animation Container -->
+<div class="relative w-20 h-20 flex items-center justify-center z-10">
+<!-- Soft glow ring -->
+<div class="absolute inset-0 rounded-full bg-primary-container/10 animate-organic-pulse"></div>
+<!-- Core Icon -->
+<span class="material-symbols-outlined text-primary text-5xl relative z-10 animate-organic-pulse" data-icon="energy_savings_leaf" data-weight="fill" style="animation-delay: 0.2s;">
+                    energy_savings_leaf
+                </span>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col gap-unit z-10">
+<h1 class="font-headline-sm text-headline-sm text-primary">আপনার অ্যাকাউন্ট তৈরি করা হচ্ছে...</h1>
+<p class="font-body-sm text-body-sm text-muted-gray">অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন</p>
+</div>
+<!-- Progress Bar Container -->
+<div class="w-full z-10 flex flex-col gap-unit mt-stack-sm">
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden relative">
+<!-- The filling bar -->
+<div class="h-full bg-primary rounded-full animate-progress-fill relative overflow-hidden">
+<!-- Shimmer light effect sweeping across the bar -->
+<div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-shimmer"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Trust Indicator (Optional bottom text) -->
+<div class="mt-stack-md flex items-center gap-unit text-muted-gray opacity-80">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock">lock</span>
+<span class="font-label-caps text-label-caps lowercase first-letter:uppercase">Secure Connection</span>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OTP যাচাইকরণ - PureOrigins</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1d1b18",
+                        "secondary": "#47672c",
+                        "muted-gray": "#6F685F",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e7e2db",
+                        "surface": "#fef8f2",
+                        "on-secondary-fixed-variant": "#304f16",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#8dbda4",
+                        "secondary-fixed-dim": "#acd28a",
+                        "tertiary-fixed-dim": "#e7c17a",
+                        "inverse-on-surface": "#f6f0e9",
+                        "surface-container-high": "#ede7e1",
+                        "on-surface": "#1d1b18",
+                        "on-primary-fixed": "#002114",
+                        "surface-container": "#f3ede6",
+                        "surface-bright": "#fef8f2",
+                        "primary-container": "#1f4d3a",
+                        "on-tertiary-fixed-variant": "#5c4304",
+                        "on-surface-variant": "#414944",
+                        "inverse-surface": "#32302c",
+                        "tertiary": "#3f2c00",
+                        "inverse-primary": "#a1d1b8",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#3a6753",
+                        "surface-cream": "#F8F4EC",
+                        "border-sand": "#DCCFBF",
+                        "tertiary-fixed": "#ffdea3",
+                        "surface-dim": "#dfd9d3",
+                        "outline-variant": "#c0c9c2",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e7e2db",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#c7efa4",
+                        "tertiary-container": "#5a4103",
+                        "on-tertiary-container": "#d2ae68",
+                        "on-tertiary-fixed": "#261900",
+                        "background-beige": "#EDE6D6",
+                        "primary-fixed-dim": "#a1d1b8",
+                        "primary": "#023625",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#bceed3",
+                        "background": "#fef8f2",
+                        "secondary-container": "#c7efa4",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#0c2000",
+                        "surface-container-low": "#f8f3ec",
+                        "on-primary-fixed-variant": "#214f3c",
+                        "outline": "#717973",
+                        "on-secondary-container": "#4c6d31"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "body-md": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "headline-md": ["EB Garamond", "serif"],
+                        "display-lg-mobile": ["EB Garamond", "serif"],
+                        "display-lg": ["EB Garamond", "serif"],
+                        "body-lg": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "label-caps": ["Noto Sans", "Noto Sans Bengali", "sans-serif"],
+                        "headline-sm": ["EB Garamond", "serif"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-sm": ["24px", { "lineHeight": "32px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Noto Sans Bengali', 'Noto Sans', sans-serif; }
+        .h-font { font-family: 'EB Garamond', serif; }
+        
+        .otp-input::-webkit-outer-spin-button,
+        .otp-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .otp-input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md antialiased">
+<header class="bg-surface-bright shadow-[0_8px_24px_rgba(31,77,58,0.08)] sticky top-0 z-50 transition-transform duration-300">
+<nav class="w-full px-margin-mobile md:px-margin-desktop py-stack-md max-w-container-max mx-auto flex justify-between items-center h-20">
+<div class="flex items-center gap-2">
+<a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="#">PureOrigins</a>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Catalog</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Combos</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Sunnah Corner</a>
+</div>
+<div class="flex items-center gap-4">
+<button aria-label="Cart" class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_cart</span>
+</button>
+<button aria-label="Account" class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="flex-grow flex items-center justify-center py-16 px-margin-mobile md:px-0 relative overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23023625\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+<div class="bg-surface-cream rounded-xl shadow-[0_8px_24px_rgba(31,77,58,0.08)] border border-border-sand/50 w-full max-w-[480px] p-8 md:p-12 relative z-10 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed-dim/20 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">enhanced_encryption</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary mb-3 h-font font-medium">OTP যাচাইকরণ</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 px-4">
+                আপনার মোবাইল নাম্বারে একটি ৬-ডিজিটের কোড পাঠানো হয়েছে। অনুগ্রহ করে কোডটি নিচে প্রবেশ করান।
+            </p>
+<form class="w-full flex flex-col gap-8" id="otp-form">
+<div class="flex justify-between gap-2 md:gap-3" id="otp-container">
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" max="9" maxlength="1" min="0" required="" type="number"/>
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" disabled="" max="9" maxlength="1" min="0" required="" type="number"/>
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" disabled="" max="9" maxlength="1" min="0" required="" type="number"/>
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" disabled="" max="9" maxlength="1" min="0" required="" type="number"/>
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" disabled="" max="9" maxlength="1" min="0" required="" type="number"/>
+<input class="otp-input w-12 h-14 md:w-14 md:h-16 text-center font-headline-sm text-headline-sm bg-surface rounded-lg border border-border-sand focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-200 text-on-surface font-medium" disabled="" max="9" maxlength="1" min="0" required="" type="number"/>
+</div>
+<div class="flex flex-col gap-4 w-full mt-2">
+<button class="w-full bg-primary text-on-primary font-body-md font-medium text-body-md py-4 rounded-lg hover:bg-primary-container transition-colors duration-300 shadow-sm hover:shadow-md flex items-center justify-center gap-2 group" type="submit">
+                        ভেরিফাই করুন
+                        <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform duration-200" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+<div class="text-center font-body-sm text-body-sm text-muted-gray mt-2">
+                        কোড পাননি? 
+                        <button class="text-secondary font-medium hover:text-primary transition-colors underline decoration-border-sand hover:decoration-primary ml-1 focus:outline-none" id="resend-btn" type="button">
+                            আবার কোড পাঠান
+                        </button>
+<span class="hidden text-on-surface-variant ml-2 font-medium" id="timer-display">00:59</span>
+</div>
+</div>
+</form>
+</div>
+</main>
+<footer class="bg-surface-container w-full px-margin-mobile md:px-margin-desktop py-stack-lg border-t border-border-sand mt-auto">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="flex flex-col gap-4 max-w-sm">
+<span class="font-headline-sm text-headline-sm text-primary font-medium h-font">PureOrigins</span>
+<p class="font-body-sm text-body-sm text-muted-gray">
+                    © 2024 PureOrigins. All rights reserved. Locally sourced in Bangladesh.
+                </p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-4">
+<a class="font-body-md text-body-md text-muted-gray hover:text-primary transition-colors duration-200 underline decoration-transparent hover:decoration-primary underline-offset-4" href="#">আমাদের সম্পর্কে</a>
+<a class="font-body-md text-body-md text-muted-gray hover:text-primary transition-colors duration-200 underline decoration-transparent hover:decoration-primary underline-offset-4" href="#">পণ্য সমূহ</a>
+<a class="font-body-md text-body-md text-muted-gray hover:text-primary transition-colors duration-200 underline decoration-transparent hover:decoration-primary underline-offset-4" href="#">প্রাইভেসি পলিসি</a>
+<a class="font-body-md text-body-md text-muted-gray hover:text-primary transition-colors duration-200 underline decoration-transparent hover:decoration-primary underline-offset-4" href="#">যোগাযোগ করুন</a>
+</div>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.otp-input');
+            const resendBtn = document.getElementById('resend-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            let timerInterval;
+
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length > 1) {
+                        e.target.value = e.target.value.slice(0, 1);
+                    }
+                    if (e.target.value.length === 1) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].disabled = false;
+                            inputs[index + 1].focus();
+                        }
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value) {
+                        if (index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    }
+                });
+
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').slice(0, 6).replace(/\D/g, '');
+                    if (pastedData) {
+                        for (let i = 0; i < pastedData.length; i++) {
+                            if (inputs[i]) {
+                                inputs[i].value = pastedData[i];
+                                inputs[i].disabled = false;
+                                if (i < inputs.length - 1) {
+                                    inputs[i + 1].focus();
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            const startTimer = (duration) => {
+                clearInterval(timerInterval);
+                let timer = duration, minutes, seconds;
+                resendBtn.style.display = 'none';
+                timerDisplay.style.display = 'inline-block';
+                
+                timerInterval = setInterval(() => {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    timerDisplay.textContent = minutes + ":" + seconds;
+
+                    if (--timer < 0) {
+                        clearInterval(timerInterval);
+                        resendBtn.style.display = 'inline-block';
+                        timerDisplay.style.display = 'none';
+                    }
+                }, 1000);
+            };
+
+            resendBtn.addEventListener('click', () => {
+                inputs.forEach(input => {
+                    input.value = '';
+                    if (input !== inputs[0]) input.disabled = true;
+                });
+                inputs[0].focus();
+                startTimer(59); 
+            });
+            
+            inputs[0].focus();
+        });
+    </script>
+</body></html>

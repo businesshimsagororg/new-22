@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
-import { AlertCircle, RotateCcw } from "lucide-react";
+import { CircleAlert, RotateCcw } from "lucide-react";
 
 interface Props {
   children?: ReactNode;
@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-[#FDFCFB] flex items-center justify-center p-6 font-sans">
           <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-slate-100 shadow-xl text-center">
             <div className="mx-auto w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-6">
-              <AlertCircle className="w-8 h-8" />
+              <CircleAlert className="w-8 h-8" />
             </div>
             
             <h1 className="text-2xl font-bold text-slate-900 mb-3">Something went wrong</h1>
@@ -100,5 +100,3 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
-
-export default ErrorBoundary;

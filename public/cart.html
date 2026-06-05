@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>আপনার কার্ট | PureOrigins</title>
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#023625",
+                    "background": "#fef8f2",
+                    "surface-cream": "#F8F4EC",
+                    "border-sand": "#DCCFBF",
+                    "muted-gray": "#6F685F",
+                    "tertiary-container": "#5a4103",
+                    "secondary": "#47672c",
+                    "on-surface": "#1d1b18",
+                    "on-surface-variant": "#414944",
+                    "surface": "#fef8f2"
+                },
+                fontFamily: {
+                    "body-lg": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                    "headline-sm": ["EB Garamond", "serif"],
+                    "headline-md": ["EB Garamond", "serif"],
+                    "body-sm": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                    "body-md": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                    "label-caps": ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+                    "display-lg": ["EB Garamond", "serif"]
+                }
+            }
+        }
+    }
+  </script>
+  <style>
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased">
+
+  <!-- ============================================== -->
+  <!--               DESKTOP VIEW                     -->
+  <!-- ============================================== -->
+  <div class="hidden md:flex flex-col min-h-screen">
+    <!-- Desktop Header -->
+    <header class="w-full top-0 z-50 bg-background border-b border-border-sand/50">
+      <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+        <a href="#" class="font-headline-md text-3xl font-bold text-primary tracking-tight">PureOrigins</a>
+        <nav class="flex gap-8 items-center">
+          <a href="#" class="text-on-surface-variant hover:text-primary font-body-md">Home</a>
+          <a href="#" class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md">Shop</a>
+          <a href="#" class="text-on-surface-variant hover:text-primary font-body-md">Combo</a>
+          <a href="#" class="text-on-surface-variant hover:text-primary font-body-md">Sunnah</a>
+          <a href="#" class="text-on-surface-variant hover:text-primary font-body-md">About</a>
+          <a href="#" class="text-on-surface-variant hover:text-primary font-body-md">Contact</a>
+        </nav>
+        <div class="flex items-center gap-4 text-primary">
+          <button class="hover:bg-surface-cream p-2 rounded-full transition-colors flex items-center justify-center">
+            <span class="material-symbols-outlined">shopping_cart</span>
+          </button>
+          <button class="hover:bg-surface-cream p-2 rounded-full transition-colors flex items-center justify-center">
+            <span class="material-symbols-outlined">account_circle</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Desktop Main Content -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-8 py-16">
+      <!-- Title Area -->
+      <div class="mb-12">
+        <h1 class="font-display-lg text-[44px] text-primary font-bold mb-3 tracking-tight">আপনার কার্ট</h1>
+        <p class="font-body-lg text-muted-gray text-lg">আপনার নির্বাচিত বিশুদ্ধ পণ্যসমূহ</p>
+      </div>
+
+      <div class="flex gap-12">
+        <!-- Cart Items Column -->
+        <div class="flex-grow flex flex-col gap-6">
+          
+          <!-- Item 1 -->
+          <div class="bg-surface-cream rounded-xl p-6 border border-border-sand/60 flex items-center gap-8 shadow-sm">
+             <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" alt="Moringa Powder" class="w-[140px] h-[140px] object-cover rounded-lg shadow-sm">
+             
+             <div class="flex flex-col flex-grow h-[130px] justify-between">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-headline-md text-3xl text-on-surface mb-1">Moringa Powder</h3>
+                    <p class="text-xs font-bold text-secondary tracking-widest mt-1">ORGANIC • 250G</p>
+                  </div>
+                  <div class="font-headline-sm text-2xl text-tertiary-container font-medium pt-1">৳ ১,২৫০</div>
+                </div>
+                
+                <div class="flex justify-between items-end pb-1">
+                  <!-- Quantity -->
+                  <div class="flex items-center border border-border-sand rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
+                    <button aria-label="Decrease quantity" class="w-10 h-full flex items-center justify-center text-muted-gray hover:text-primary transition-colors hover:bg-surface-cream">
+                       <span class="material-symbols-outlined text-sm">remove</span>
+                    </button>
+                    <input type="text" aria-label="Quantity" value="১" class="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface font-medium" readonly>
+                    <button aria-label="Increase quantity" class="w-10 h-full flex items-center justify-center text-muted-gray hover:text-primary transition-colors hover:bg-surface-cream">
+                       <span class="material-symbols-outlined text-sm">add</span>
+                    </button>
+                  </div>
+                  
+                  <!-- Remove -->
+                  <button class="flex items-center gap-2 text-muted-gray hover:text-red-700 transition-colors group">
+                    <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">delete_outline</span>
+                    <span class="text-sm">মুছে ফেলুন</span>
+                  </button>
+                </div>
+             </div>
+          </div>
+          
+          <!-- Item 2 -->
+          <div class="bg-surface-cream rounded-xl p-6 border border-border-sand/60 flex items-center gap-8 shadow-sm">
+             <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" alt="Chia Seeds" class="w-[140px] h-[140px] object-cover rounded-lg shadow-sm">
+             
+             <div class="flex flex-col flex-grow h-[130px] justify-between">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-headline-md text-3xl text-on-surface mb-1">Chia Seeds</h3>
+                    <p class="text-xs font-bold text-secondary tracking-widest mt-1">SUPERFOOD • 500G</p>
+                  </div>
+                  <div class="font-headline-sm text-2xl text-tertiary-container font-medium pt-1">৳ ১,৮০০</div>
+                </div>
+                
+                <div class="flex justify-between items-end pb-1">
+                  <!-- Quantity -->
+                  <div class="flex items-center border border-border-sand rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
+                    <button aria-label="Decrease quantity" class="w-10 h-full flex items-center justify-center text-muted-gray hover:text-primary transition-colors hover:bg-surface-cream">
+                       <span class="material-symbols-outlined text-sm">remove</span>
+                    </button>
+                    <input type="text" aria-label="Quantity" value="২" class="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface font-medium" readonly>
+                    <button aria-label="Increase quantity" class="w-10 h-full flex items-center justify-center text-muted-gray hover:text-primary transition-colors hover:bg-surface-cream">
+                       <span class="material-symbols-outlined text-sm">add</span>
+                    </button>
+                  </div>
+                  
+                  <!-- Remove -->
+                  <button class="flex items-center gap-2 text-muted-gray hover:text-red-700 transition-colors group">
+                    <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">delete_outline</span>
+                    <span class="text-sm">মুছে ফেলুন</span>
+                  </button>
+                </div>
+             </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="w-[380px] flex-shrink-0">
+          <div class="bg-surface-cream rounded-xl p-8 border border-border-sand/60 sticky top-32 shadow-sm">
+            <h2 class="font-headline-md text-3xl text-primary mb-6 border-b border-border-sand/60 pb-5">অর্ডার সারাংশ</h2>
+            
+            <div class="space-y-4 text-on-surface-variant font-body-md">
+              <div class="flex justify-between">
+                <span>সাবটোটাল</span>
+                <span class="font-medium text-on-surface">৳ ৩,০৫০</span>
+              </div>
+              <div class="flex justify-between">
+                <span>শিপিং খরচ</span>
+                <span class="font-medium text-on-surface">৳ ৬০</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center border-t border-border-sand/60 pt-6 mt-6 mb-8">
+              <span class="text-2xl text-on-surface">মোট</span>
+              <span class="font-headline-md text-[40px] text-tertiary-container font-bold tracking-tight">৳ ৩,১১০</span>
+            </div>
+            
+            <button class="w-full bg-primary hover:bg-[#022b1d] text-white font-body-lg py-4 rounded-lg shadow-md transition-colors flex justify-center items-center gap-3">
+              চেকআউট করুন
+              <span class="material-symbols-outlined text-[24px]">arrow_forward</span>
+            </button>
+            
+            <div class="mt-6 flex justify-center items-center gap-2 text-muted-gray text-sm">
+              <span class="material-symbols-outlined text-[16px]">lock</span>
+              <span>নিরাপদ পেমেন্ট গ্যারান্টি</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Desktop Footer -->
+    <footer class="bg-[#EBE5DB] border-t border-border-sand/60 py-16 mt-auto">
+       <div class="max-w-7xl mx-auto px-8 grid grid-cols-4 gap-12">
+          <div class="col-span-2">
+             <h3 class="font-headline-md text-3xl font-bold text-primary mb-4">PureOrigins</h3>
+             <p class="text-muted-gray text-[15px] max-w-sm mb-8 leading-relaxed">প্রকৃতির খাঁটি উপাদান দিয়ে তৈরি আমাদের পণ্য, আপনার সুস্বাস্থ্যের বিশ্বস্ত সঙ্গী।</p>
+             <p class="text-muted-gray text-sm">© 2024 PureOrigins. All rights reserved.</p>
+          </div>
+          <div>
+            <h4 class="font-headline-sm text-2xl text-on-surface mb-6">প্রয়োজনীয় লিংক</h4>
+            <ul class="space-y-4">
+               <li><a href="#" class="text-muted-gray hover:text-primary transition-colors text-[15px]">Return Policy</a></li>
+               <li><a href="#" class="text-muted-gray hover:text-primary transition-colors text-[15px]">Privacy Policy</a></li>
+               <li><a href="#" class="text-muted-gray hover:text-primary transition-colors text-[15px]">Terms of Service</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-headline-sm text-2xl text-on-surface mb-6">যোগাযোগ</h4>
+            <ul class="space-y-4">
+               <li><a href="#" class="text-muted-gray hover:text-primary transition-colors text-[15px] flex items-center gap-3"><span class="material-symbols-outlined text-[20px]">chat</span> WhatsApp</a></li>
+               <li><a href="#" class="text-muted-gray hover:text-primary transition-colors text-[15px] flex items-center gap-3"><span class="material-symbols-outlined text-[20px]">mail</span> Contact Us</a></li>
+            </ul>
+          </div>
+       </div>
+    </footer>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!--               MOBILE VIEW                      -->
+  <!-- ============================================== -->
+  <div class="flex md:hidden flex-col min-h-screen relative pb-[100px]">
+    <!-- Mobile Header -->
+    <header class="w-full bg-background sticky top-0 z-50">
+      <div class="px-5 py-4 flex justify-between items-center">
+        <button aria-label="Menu" class="text-on-surface flex items-center justify-center">
+          <span class="material-symbols-outlined text-[28px]">menu</span>
+        </button>
+        <a href="#" class="font-headline-md text-3xl font-bold text-primary tracking-tight">PureOrigins</a>
+        <button aria-label="Cart" class="relative text-on-surface flex items-center justify-center">
+          <span class="material-symbols-outlined text-[28px]">shopping_bag</span>
+          <span class="absolute -top-1 -right-1 bg-tertiary-container text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold">2</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Main Content -->
+    <main class="flex-grow w-full px-5 py-8">
+      
+      <!-- Mobile Title -->
+      <div class="text-center mb-8">
+        <h1 class="font-headline-md text-[38px] text-primary font-bold mb-2">আপনার কার্ট</h1>
+        <p class="font-body-md text-muted-gray text-base">আপনার নির্বাচিত বিশুদ্ধ পণ্যসমূহ</p>
+      </div>
+
+      <!-- Mobile Cart Items -->
+      <div class="flex flex-col gap-4 mb-8">
+        
+        <!-- Mobile Item 1 -->
+        <div class="bg-surface-cream rounded-xl p-3 border border-border-sand/60 flex gap-4 shadow-sm relative overflow-hidden">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" alt="মরিঙ্গা পাউডার" class="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply">
+          
+          <div class="flex flex-col flex-grow justify-between py-1">
+             <div class="pr-8">
+               <h3 class="font-body-lg text-[17px] font-medium text-on-surface mb-0 leading-snug">মরিঙ্গা পাউডার</h3>
+               <p class="text-[10px] font-bold text-secondary tracking-widest mt-1 mb-2">ORGANIC • 250G</p>
+               <div class="font-headline-md text-xl text-primary font-bold">৳ ৪৫০</div>
+             </div>
+             
+             <!-- Trash Icon Absolute Top Right -->
+             <button aria-label="Remove item" class="absolute top-3 right-3 text-muted-gray hover:text-red-700 bg-transparent flex items-center justify-center">
+                <span class="material-symbols-outlined text-[22px]">delete_outline</span>
+             </button>
+             
+             <!-- Quantity absolute bottom right -->
+             <div class="absolute bottom-3 right-3 flex items-center border border-border-sand/80 rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
+                <button aria-label="Decrease quantity" class="w-8 h-full flex items-center justify-center text-muted-gray">
+                   <span class="material-symbols-outlined text-[16px]">remove</span>
+                </button>
+                <input type="text" aria-label="Quantity" value="১" class="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface font-medium text-sm" readonly>
+                <button aria-label="Increase quantity" class="w-8 h-full flex items-center justify-center text-muted-gray">
+                   <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+             </div>
+          </div>
+        </div>
+
+        <!-- Mobile Item 2 -->
+        <div class="bg-surface-cream rounded-xl p-3 border border-border-sand/60 flex gap-4 shadow-sm relative overflow-hidden">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" alt="চিয়া বীজ" class="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply">
+          
+          <div class="flex flex-col flex-grow justify-between py-1">
+             <div class="pr-8">
+               <h3 class="font-body-lg text-[17px] font-medium text-on-surface mb-0 leading-snug">চিয়া বীজ</h3>
+               <p class="text-[10px] font-bold text-secondary tracking-widest mt-1 mb-2">RAW • 500G</p>
+               <div class="font-headline-md text-xl text-primary font-bold">৳ ৩২০</div>
+             </div>
+             
+             <!-- Trash Icon Absolute Top Right -->
+             <button aria-label="Remove item" class="absolute top-3 right-3 text-muted-gray hover:text-red-700 bg-transparent flex items-center justify-center">
+                <span class="material-symbols-outlined text-[22px]">delete_outline</span>
+             </button>
+             
+             <!-- Quantity -->
+             <div class="absolute bottom-3 right-3 flex items-center border border-border-sand/80 rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
+                <button aria-label="Decrease quantity" class="w-8 h-full flex items-center justify-center text-muted-gray">
+                   <span class="material-symbols-outlined text-[16px]">remove</span>
+                </button>
+                <input type="text" aria-label="Quantity" value="১" class="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-on-surface font-medium text-sm" readonly>
+                <button aria-label="Increase quantity" class="w-8 h-full flex items-center justify-center text-muted-gray">
+                   <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Order Summary Card -->
+      <div class="bg-surface-cream rounded-xl p-6 border border-border-sand/60 shadow-sm mb-8">
+        <h2 class="font-headline-md text-[26px] text-primary mb-4 border-b border-border-sand/60 pb-4">অর্ডার সারাংশ</h2>
+        
+        <div class="space-y-4 text-on-surface-variant font-body-md text-[15px]">
+          <div class="flex justify-between">
+            <span>সাবটোটাল</span>
+            <span class="font-medium text-on-surface">৳ ৭৭০</span>
+          </div>
+          <div class="flex justify-between">
+            <span>শিপিং খরচ</span>
+            <span class="font-medium text-on-surface">৳ ৬০</span>
+          </div>
+        </div>
+        
+        <div class="flex justify-between items-center border-t border-border-sand/60 pt-5 mt-5">
+          <span class="text-[17px] text-on-surface font-medium">মোট</span>
+          <span class="font-headline-md text-[28px] text-tertiary-container font-bold">৳ ৮৩০</span>
+        </div>
+      </div>
+
+      <!-- Safe payment info -->
+      <div class="flex justify-center items-center gap-2 text-muted-gray text-sm pb-4">
+        <span class="material-symbols-outlined text-[18px]">lock</span>
+        <span>নিরাপদ পেমেন্ট গ্যারান্টি</span>
+      </div>
+
+    </main>
+
+    <!-- Mobile Fixed Bottom Action Bar -->
+    <div class="fixed bottom-0 left-0 w-full bg-[#FCFAF8] p-5 z-40 border-t border-border-sand/30 shadow-[0_-4px_16px_rgba(31,77,58,0.04)]">
+      <button class="w-full bg-[#023625] text-white font-body-lg text-[18px] py-[15px] rounded-xl shadow-md active:bg-[#022b1d] transition-colors flex justify-center items-center gap-3">
+        চেকআউট করুন
+        <span class="material-symbols-outlined text-[22px]">arrow_forward</span>
+      </button>
+    </div>
+
+  </div>
+
+</body>
+</html>

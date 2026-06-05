@@ -3,392 +3,337 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useState } from "react";
-import { 
-  Shield, 
-  Database, 
-  Activity, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  CheckCircle2, 
-  AlertCircle, 
-  Leaf, 
-  Truck, 
-  Heart,
-  Droplets,
-  Search,
-  Menu,
-  X
-} from "lucide-react";
-import { motion } from "motion/react";
-
-interface HealthStatus {
-  ok: boolean;
-  firebaseAdminConfigured: boolean;
-  adminEmailsConfigured: boolean;
-}
+import React, { useState } from "react";
+import { Menu, ShoppingBag, ShoppingCart, User, Minus, Plus, Trash2, ArrowRight, Lock } from "lucide-react";
 
 export default function App() {
-  const [status, setStatus] = useState<HealthStatus | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/health")
-      .then((res) => {
-        if (!res.ok) throw new Error("Backend unreachable");
-        return res.json();
-      })
-      .then((data) => setStatus(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
-
   return (
-    <div className="min-h-screen bg-[#FDFCFB] font-sans text-slate-900">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-[#1B4332] p-2 rounded-xl">
-              <Droplets className="w-6 h-6 text-[#95D5B2]" />
-            </div>
-            <div>
-              <span className="text-xl font-bold tracking-tight text-[#1B4332]">PureOrigins</span>
-              <p className="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Authenticity</p>
+    <div className="bg-[#fef8f2] text-[#1d1b18] font-sans antialiased min-h-screen">
+      
+      {/* ============================================== */}
+      {/*               DESKTOP VIEW                     */}
+      {/* ============================================== */}
+      <div className="hidden md:flex flex-col min-h-screen">
+        {/* Desktop Header */}
+        <header className="w-full top-0 z-50 bg-[#fef8f2] border-b border-[#DCCFBF]/50">
+          <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+            <a href="#" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
+            <nav className="flex gap-8 items-center">
+              <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Home</a>
+              <a href="#" className="text-[#023625] font-bold border-b-2 border-[#023625] pb-1 transition-colors">Shop</a>
+              <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Combo</a>
+              <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Sunnah</a>
+              <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">About</a>
+              <a href="#" className="text-[#414944] hover:text-[#023625] font-medium transition-colors">Contact</a>
+            </nav>
+            <div className="flex items-center gap-4 text-[#023625]">
+              <button className="hover:bg-[#F8F4EC] p-2 rounded-full transition-colors flex items-center justify-center">
+                <ShoppingCart size={24} />
+              </button>
+              <button className="hover:bg-[#F8F4EC] p-2 rounded-full transition-colors flex items-center justify-center">
+                <User size={24} />
+              </button>
             </div>
           </div>
-          
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#features" className="hover:text-[#2D6A4F] transition-colors">আমাদের বৈশিষ্ট্য (Features)</a>
-            <a href="#products" className="hover:text-[#2D6A4F] transition-colors">আমাদের পণ্য (Products)</a>
-            <a href="#contact" className="hover:text-[#2D6A4F] transition-colors">যোগাযোগ করুন (Contact)</a>
+        </header>
+
+        {/* Desktop Main Content */}
+        <main className="flex-grow w-full max-w-7xl mx-auto px-8 py-16">
+          {/* Title Area */}
+          <div className="mb-12">
+            <h1 className="font-serif text-[44px] text-[#023625] font-bold mb-3 tracking-tight">আপনার কার্ট</h1>
+            <p className="text-[#6F685F] text-lg">আপনার নির্বাচিত বিশুদ্ধ পণ্যসমূহ</p>
           </div>
 
-          <div className="flex items-center gap-4">
-            <a href="/pureorigins.html" className="p-2 text-slate-400 hover:text-slate-600 block">
-              <Search className="w-5 h-5" />
-            </a>
-            <div className="h-4 w-px bg-slate-200 hidden sm:block"></div>
-            <div className="flex items-center gap-2 text-xs font-mono">
-              <span className={`w-2 h-2 rounded-full ${status?.ok ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-500'}`}></span>
-              <span className="text-slate-400">SERVER: {status?.ok ? 'LIVE' : 'WAITING'}</span>
+          <div className="flex gap-12">
+            {/* Cart Items Column */}
+            <div className="flex-grow flex flex-col gap-6">
+              
+              {/* Item 1 */}
+              <div className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 flex items-center gap-8 shadow-sm">
+                 <img 
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" 
+                   alt="Moringa Powder" 
+                   referrerPolicy="no-referrer"
+                   className="w-[140px] h-[140px] object-cover rounded-lg shadow-sm"
+                 />
+                 
+                 <div className="flex flex-col flex-grow h-[130px] justify-between">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">Moringa Powder</h3>
+                        <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">ORGANIC • 250G</p>
+                      </div>
+                      <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ ১,২৫০</div>
+                    </div>
+                    
+                    <div className="flex justify-between items-end pb-1">
+                      {/* Quantity */}
+                      <div className="flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
+                        <button aria-label="Decrease quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
+                           <Minus size={16} />
+                        </button>
+                        <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" readOnly />
+                        <button aria-label="Increase quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
+                           <Plus size={16} />
+                        </button>
+                      </div>
+                      
+                      {/* Remove */}
+                      <button className="flex items-center gap-2 text-[#6F685F] hover:text-red-700 transition-colors group">
+                        <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-sm">মুছে ফেলুন</span>
+                      </button>
+                    </div>
+                 </div>
+              </div>
+              
+              {/* Item 2 */}
+              <div className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 flex items-center gap-8 shadow-sm">
+                 <img 
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" 
+                   alt="Chia Seeds" 
+                   referrerPolicy="no-referrer"
+                   className="w-[140px] h-[140px] object-cover rounded-lg shadow-sm"
+                 />
+                 
+                 <div className="flex flex-col flex-grow h-[130px] justify-between">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-serif text-3xl text-[#1d1b18] mb-1">Chia Seeds</h3>
+                        <p className="text-xs font-bold text-[#47672c] tracking-widest mt-1">SUPERFOOD • 500G</p>
+                      </div>
+                      <div className="font-serif text-2xl text-[#5a4103] font-medium pt-1">৳ ১,৮০০</div>
+                    </div>
+                    
+                    <div className="flex justify-between items-end pb-1">
+                      {/* Quantity */}
+                      <div className="flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-10 w-28">
+                        <button aria-label="Decrease quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
+                           <Minus size={16} />
+                        </button>
+                        <input type="text" aria-label="Quantity" defaultValue="২" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium" readOnly />
+                        <button aria-label="Increase quantity" className="w-10 h-full flex items-center justify-center text-[#6F685F] hover:text-[#023625] transition-colors hover:bg-[#F8F4EC]">
+                           <Plus size={16} />
+                        </button>
+                      </div>
+                      
+                      {/* Remove */}
+                      <button className="flex items-center gap-2 text-[#6F685F] hover:text-red-700 transition-colors group">
+                        <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-sm">মুছে ফেলুন</span>
+                      </button>
+                    </div>
+                 </div>
+              </div>
+
             </div>
-            {/* Mobile hamburger menu button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-600 hover:text-[#1B4332] md:hidden transition-colors"
-              id="mobile-menu-btn"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+
+            {/* Sidebar Column */}
+            <div className="w-[380px] flex-shrink-0">
+              <div className="bg-[#F8F4EC] rounded-xl p-8 border border-[#DCCFBF]/60 sticky top-32 shadow-sm">
+                <h2 className="font-serif text-3xl text-[#023625] mb-6 border-b border-[#DCCFBF]/60 pb-5">অর্ডার সারাংশ</h2>
+                
+                <div className="space-y-4 text-[#414944] font-medium">
+                  <div className="flex justify-between">
+                    <span>সাবটোটাল</span>
+                    <span className="text-[#1d1b18]">৳ ৩,০৫০</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>শিপিং খরচ</span>
+                    <span className="text-[#1d1b18]">৳ ৬০</span>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-6 mt-6 mb-8">
+                  <span className="text-2xl text-[#1d1b18]">মোট</span>
+                  <span className="font-serif text-[40px] text-[#5a4103] font-bold tracking-tight">৳ ৩,১১০</span>
+                </div>
+                
+                <button className="w-full bg-[#023625] hover:bg-[#022b1d] text-white font-medium text-lg py-4 rounded-lg shadow-md transition-colors flex justify-center items-center gap-3">
+                  চেকআউট করুন
+                  <ArrowRight size={24} />
+                </button>
+                
+                <div className="mt-6 flex justify-center items-center gap-2 text-[#6F685F] text-sm">
+                  <Lock size={16} />
+                  <span>নিরাপদ পেমেন্ট গ্যারান্টি</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Mobile Drawer/Menu */}
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-white border-b border-slate-100 py-4 px-6 flex flex-col gap-4 text-sm font-medium text-slate-600 shadow-lg"
-          >
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 border-b border-slate-50 transition-colors">আমাদের বৈশিষ্ট্য (Features)</a>
-            <a href="#products" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 border-b border-slate-50 transition-colors">আমাদের পণ্য (Products)</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#2D6A4F] py-2 transition-colors">যোগাযোগ করুন (Contact)</a>
-            <a href="/pureorigins.html" onClick={() => setMobileMenuOpen(false)} className="bg-[#1B4332] text-white text-center py-2.5 rounded-xl hover:bg-[#2D6A4F] transition-colors font-semibold">শপ ভিজিট করুন</a>
-          </motion.div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <header className="relative py-20 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] opacity-[0.03] pointer-events-none">
-          <Leaf className="w-full h-full rotate-12" />
-        </div>
+        </main>
         
-        <div className="mx-auto max-w-4xl px-6 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+        {/* Desktop Footer */}
+        <footer className="bg-[#EBE5DB] border-t border-[#DCCFBF]/60 py-16 mt-auto">
+           <div className="max-w-7xl mx-auto px-8 grid grid-cols-4 gap-12">
+              <div className="col-span-2">
+                 <h3 className="font-serif text-3xl font-bold text-[#023625] mb-4">PureOrigins</h3>
+                 <p className="text-[#6F685F] text-[15px] max-w-sm mb-8 leading-relaxed">প্রকৃতির খাঁটি উপাদান দিয়ে তৈরি আমাদের পণ্য, আপনার সুস্বাস্থ্যের বিশ্বস্ত সঙ্গী।</p>
+                 <p className="text-[#6F685F] text-sm">© 2024 PureOrigins. All rights reserved.</p>
+              </div>
+              <div>
+                <h4 className="font-serif text-2xl text-[#1d1b18] mb-6">প্রয়োজনীয় লিংক</h4>
+                <ul className="space-y-4">
+                   <li><a href="#" className="text-[#6F685F] hover:text-[#023625] transition-colors text-[15px]">Return Policy</a></li>
+                   <li><a href="#" className="text-[#6F685F] hover:text-[#023625] transition-colors text-[15px]">Privacy Policy</a></li>
+                   <li><a href="#" className="text-[#6F685F] hover:text-[#023625] transition-colors text-[15px]">Terms of Service</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-serif text-2xl text-[#1d1b18] mb-6">যোগাযোগ</h4>
+                <ul className="space-y-4">
+                   <li><a href="#" className="text-[#6F685F] hover:text-[#023625] transition-colors text-[15px] flex items-center gap-3">WhatsApp</a></li>
+                   <li><a href="#" className="text-[#6F685F] hover:text-[#023625] transition-colors text-[15px] flex items-center gap-3">Contact Us</a></li>
+                </ul>
+              </div>
+           </div>
+        </footer>
+      </div>
+
+      {/* ============================================== */}
+      {/*               MOBILE VIEW                      */}
+      {/* ============================================== */}
+      <div className="flex md:hidden flex-col min-h-screen relative pb-[100px]">
+        {/* Mobile Header */}
+        <header className="w-full bg-[#fef8f2] sticky top-0 z-50 p-5 flex justify-between items-center">
+          <button 
+            aria-label="Menu" 
+            className="text-[#1d1b18] flex items-center justify-center p-1"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-[#1B4332] leading-[1.1] mb-6">
-              প্রকৃতির বিশুদ্ধতা, <br />
-              <span className="text-[#409167]">সরাসরি আপনার কাছে</span>
-            </h1>
-            <p className="text-lg text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-              PureOrigins এ আমরা সরাসরি কৃষক ও খামারিদের কাছ থেকে সংগ্রহ করি সেরা মানের পণ্য, যাতে আপনার টেবিলে পৌঁছে যায় শতভাগ বিশুদ্ধ খাবার।
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a 
-                href="/pureorigins.html" 
-                className="px-8 py-4 bg-[#1B4332] text-white rounded-full font-semibold shadow-xl shadow-emerald-900/10 hover:bg-[#2D6A4F] transition-all transform hover:-translate-y-0.5 block select-none text-center"
-              >
-                কেনাকাটা শুরু করুন
-              </a>
-              <a 
-                href="#products" 
-                className="px-8 py-4 bg-white text-[#1B4332] border border-slate-200 rounded-full font-semibold hover:bg-slate-50 transition-all shadow-sm block select-none text-center"
-              >
-                পণ্য সম্পর্কে জানুন
-              </a>
+            <Menu size={28} />
+          </button>
+          <a href="#" className="font-serif text-3xl font-bold text-[#023625] tracking-tight">PureOrigins</a>
+          <button aria-label="Cart" className="relative text-[#1d1b18] flex items-center justify-center p-1">
+            <ShoppingBag size={28} />
+            <span className="absolute -top-1 -right-1 bg-[#5a4103] text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold">2</span>
+          </button>
+        </header>
+
+        {/* Mobile Main Content */}
+        <main className="flex-grow w-full px-5 py-8">
+          
+          {/* Mobile Title */}
+          <div className="text-center mb-8">
+            <h1 className="font-serif text-[38px] text-[#023625] font-bold mb-2">আপনার কার্ট</h1>
+            <p className="text-[#6F685F] text-base">আপনার নির্বাচিত বিশুদ্ধ পণ্যসমূহ</p>
+          </div>
+
+          {/* Mobile Cart Items */}
+          <div className="flex flex-col gap-4 mb-8">
+            
+            {/* Mobile Item 1 */}
+            <div className="bg-[#F8F4EC] rounded-xl p-3 border border-[#DCCFBF]/60 flex gap-4 shadow-sm relative overflow-hidden">
+              <img 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHWhYB-E3MN2OSd-cNDgxAb4UoxlWeoFlq3rnMPF8KAiUXUbSXmao8-UqQVIkBIp8z3_RuVh4Fldb_e3G1AkWSMkFvY1QJIhUXDdi3Hh4VXUu4OwlNrZbNqzm-_5leMISqlcRbOZkUog_ZiF9HuMActymW9-oXHyKDFuQ_mm4oCOeCsq7SdDUSQL9DbEojP850z1E6EknagaOB68llHZsZodCP_65Pkr8j6f_LtQnWi9j_kAHnHUHqUALQdnE0alWdd47pmLE3wYg" 
+                alt="মরিঙ্গা পাউডার" 
+                referrerPolicy="no-referrer"
+                className="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply" 
+              />
+              
+              <div className="flex flex-col flex-grow justify-between py-1">
+                 <div className="pr-8">
+                   <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">মরিঙ্গা পাউডার</h3>
+                   <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">ORGANIC • 250G</p>
+                   <div className="font-serif text-xl text-[#023625] font-bold">৳ ৪৫০</div>
+                 </div>
+                 
+                 {/* Trash Icon Absolute Top Right */}
+                 <button aria-label="Remove item" className="absolute top-3 right-3 text-[#6F685F] hover:text-red-700 bg-transparent p-1 flex items-center justify-center">
+                    <Trash2 size={22} />
+                 </button>
+                 
+                 {/* Quantity */}
+                 <div className="absolute bottom-3 right-3 flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
+                    <button aria-label="Decrease quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
+                       <Minus size={16} />
+                    </button>
+                    <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" readOnly />
+                    <button aria-label="Increase quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
+                       <Plus size={16} />
+                    </button>
+                 </div>
+              </div>
             </div>
-          </motion.div>
-        </div>
-      </header>
 
-      {/* Features Grid */}
-      <section id="features" className="scroll-mt-24 py-20 bg-white border-y border-slate-100">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#1B4332] mb-4">আমাদের মূল্যবোধ</h2>
-            <div className="w-16 h-1 bg-[#409167] mx-auto rounded-full"></div>
+            {/* Mobile Item 2 */}
+            <div className="bg-[#F8F4EC] rounded-xl p-3 border border-[#DCCFBF]/60 flex gap-4 shadow-sm relative overflow-hidden">
+              <img 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcH_P37UseyTfDouXtNP_oprPpYKLvlkyvO8PG0Nv7VWV9Qf-7f1Y8BmvwDlmFg-0gvtmZ8i4Jg0u66QGZCTnYoWauqQxKvfilSBuBBISgYiRVxub7_N38jqWdBfxEXUscagXxlx0uccfoO7s-yqJtb64ay3r6Iht974zL-qm3rU3IV46uy-tb-2ByV4MTqG084sNqeGMzbIw4WskW_X24o5J2MgXO_QukpEqMskUyEUgVQRm7WicNoaHPwb1wSEevXk-zd_i2UQ" 
+                alt="চিয়া বীজ" 
+                referrerPolicy="no-referrer"
+                className="w-[100px] h-[100px] object-cover rounded-lg flex-shrink-0 shadow-sm mix-blend-multiply" 
+              />
+              
+              <div className="flex flex-col flex-grow justify-between py-1">
+                 <div className="pr-8">
+                   <h3 className="text-[17px] font-medium text-[#1d1b18] mb-0 leading-snug">চিয়া বীজ</h3>
+                   <p className="text-[10px] font-bold text-[#47672c] tracking-widest mt-1 mb-2">RAW • 500G</p>
+                   <div className="font-serif text-xl text-[#023625] font-bold">৳ ৩২০</div>
+                 </div>
+                 
+                 {/* Trash Icon Absolute Top Right */}
+                 <button aria-label="Remove item" className="absolute top-3 right-3 text-[#6F685F] hover:text-red-700 bg-transparent p-1 flex items-center justify-center">
+                    <Trash2 size={22} />
+                 </button>
+                 
+                 {/* Quantity */}
+                 <div className="absolute bottom-3 right-3 flex items-center border border-[#DCCFBF] rounded-md bg-white overflow-hidden shadow-sm h-8 w-24">
+                    <button aria-label="Decrease quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
+                       <Minus size={16} />
+                    </button>
+                    <input type="text" aria-label="Quantity" defaultValue="১" className="w-8 text-center bg-transparent border-none focus:ring-0 p-0 text-[#1d1b18] font-medium text-sm" readOnly />
+                    <button aria-label="Increase quantity" className="w-8 h-full flex items-center justify-center text-[#6F685F]">
+                       <Plus size={16} />
+                    </button>
+                 </div>
+              </div>
+            </div>
           </div>
-          
-          <div className="grid gap-10 md:grid-cols-3">
-            <FeatureCard 
-              icon={<Leaf className="w-6 h-6" />}
-              title="সরাসরি উৎস"
-              description="কোনো মধ্যস্বত্বভোগী নেই, আমরা সরাসরি মাঠ থেকে খাঁটি মানের পণ্য সংগ্রহ করি।"
-            />
-            <FeatureCard 
-              icon={<Shield className="w-6 h-6" />}
-              title="মান পরীক্ষিত"
-              description="উন্নত ল্যাবে পরীক্ষা করে প্রতিটি পণ্যের বিশুদ্ধতা নিশ্চিত করা হয়।"
-            />
-            <FeatureCard 
-              icon={<Heart className="w-6 h-6" />}
-              title="সততা ও স্বচ্ছতা"
-              description="আমরা বিশ্বাস করি সততায়। পণ্যের প্রতিটি তথ্য আপনার সামনে স্পষ্ট থাকে।"
-            />
-          </div>
-        </div>
-      </section>
 
-      {/* Products Section */}
-      <section id="products" className="scroll-mt-24 py-20 bg-[#F8FAF9]">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#1B4332] mb-4">আমাদের জনপ্রিয় পণ্যসমূহ (Products)</h2>
-            <p className="text-slate-500 max-w-lg mx-auto text-sm mt-3">সরাসরি কৃষক ও খামারিদের থেকে সংগৃহীত শতভাগ খাঁটি ও প্রাকৃতিক পণ্যসমূহ।</p>
-            <div className="w-16 h-1 bg-[#409167] mx-auto rounded-full mt-4"></div>
-          </div>
-          
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <ProductCard 
-              image="https://images.unsplash.com/photo-1587049352847-4d4b1263d508?auto=format&fit=crop&w=400&q=80"
-              title="খাঁটি সুন্দরবনের মধু"
-              price="৳ ৮৫০"
-              unit="১ কেজি"
-              badge="বেস্ট সেলার"
-            />
-            <ProductCard 
-              image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80"
-              title="কালোজিরা তেল (কোল্ড প্রেস)"
-              price="৳ ৪২০"
-              unit="২৫০ মি.লি."
-              badge="অর্গানিক"
-            />
-            <ProductCard 
-              image="https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=400&q=80"
-              title="প্রিমিয়াম চিয়া সিডস"
-              price="৳ ৩৫০"
-              unit="২৫০ গ্রাম"
-              badge="সুপারফুড"
-            />
-            <ProductCard 
-              image="https://images.unsplash.com/photo-1540308001150-13f57ebd19b4?auto=format&fit=crop&w=400&q=80"
-              title="কাঠের ঘানি ভাঙা সরিষার তেল"
-              price="৳ ২৯০"
-              unit="১ লিটার"
-              badge="শতভাগ খাঁটি"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Admin Quick Scan */}
-      <section className="py-20 bg-[#F8FAF9]">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold text-[#1B4332] mb-6 flex items-center gap-2">
-                <Database className="w-6 h-6 text-[#409167]" /> System Infrastructure
-              </h3>
-              <div className="space-y-4">
-                {loading ? (
-                  <SkeletonPulse />
-                ) : (
-                  <>
-                    <AdminStatusItem label="API Backend" status={status?.ok ?? false} />
-                    <AdminStatusItem label="Firebase Config" status={status?.firebaseAdminConfigured ?? false} />
-                    <AdminStatusItem label="Admin Emails" status={status?.adminEmailsConfigured ?? false} />
-                  </>
-                )}
+          {/* Mobile Order Summary Card */}
+          <div className="bg-[#F8F4EC] rounded-xl p-6 border border-[#DCCFBF]/60 shadow-sm mb-8">
+            <h2 className="font-serif text-[26px] text-[#023625] mb-4 border-b border-[#DCCFBF]/60 pb-4">অর্ডার সারাংশ</h2>
+            
+            <div className="space-y-4 text-[#414944] font-medium text-[15px]">
+              <div className="flex justify-between">
+                <span>সাবটোটাল</span>
+                <span className="text-[#1d1b18]">৳ ৭৭০</span>
+              </div>
+              <div className="flex justify-between">
+                <span>শিপিং খরচ</span>
+                <span className="text-[#1d1b18]">৳ ৬০</span>
               </div>
             </div>
             
-            <div className="flex-1 bg-[#1B4332] p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 -mr-16 -mt-16 rounded-full"></div>
-              <Activity className="w-8 h-8 text-[#95D5B2] mb-8" />
-              <h4 className="text-xl font-bold mb-4">Instance Monitor</h4>
-              {loading ? (
-                <div className="animate-pulse space-y-4 py-4 opacity-50">
-                  <div className="h-4 bg-white/10 rounded w-3/4"></div>
-                  <div className="h-4 bg-white/10 rounded w-1/2"></div>
-                  <div className="h-4 bg-white/10 rounded w-5/6"></div>
-                </div>
-              ) : (
-                <div className="space-y-4 font-mono text-xs opacity-80">
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span>PROJECT_ID:</span>
-                    <span>{status ? ((import.meta as any).env?.VITE_FIREBASE_PROJECT_ID || 'new-web-76da8') : 'NOT_SET'}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span>REGION:</span>
-                    <span>asia-east1</span>
-                  </div>
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span>ADMIN_ACCESS:</span>
-                    <span className={status?.adminEmailsConfigured ? 'text-emerald-400' : 'text-amber-400'}>
-                      {status?.adminEmailsConfigured ? 'CONFIGURED' : 'PENDING'}
-                    </span>
-                  </div>
-                </div>
-              )}
-              
-              {!status?.firebaseAdminConfigured && !loading && (
-                <div className="mt-8 p-4 bg-white/10 rounded-xl flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-amber-300 mt-0.5" />
-                  <p className="text-xs leading-relaxed text-slate-200">
-                    <strong>Notice:</strong> Please ensure your Firebase service account JSON credentials have been correctly mapped to your environment variables.
-                  </p>
-                </div>
-              )}
+            <div className="flex justify-between items-center border-t border-[#DCCFBF]/60 pt-5 mt-5">
+              <span className="text-[17px] text-[#1d1b18] font-medium">মোট</span>
+              <span className="font-serif text-[28px] text-[#5a4103] font-bold">৳ ৮৩০</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Info Section */}
-      <footer id="contact" className="scroll-mt-24 bg-slate-900 py-16 text-slate-400">
-        <div className="mx-auto max-w-7xl px-6 grid gap-12 md:grid-cols-4">
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
-              <Droplets className="w-6 h-6 text-[#95D5B2]" />
-              <span className="text-xl font-bold text-white tracking-tight">PureOrigins</span>
-            </div>
-            <p className="text-sm leading-relaxed mb-6">প্রকৃতির বিশুদ্ধতা সরাসরি আপনার টেবিলে পৌঁছে দেওয়াই আমাদের মূল লক্ষ্য।</p>
-          </div>
-          
-          <div>
-            <h5 className="text-white font-semibold mb-6">যোগাযোগ</h5>
-            <ul className="space-y-4 text-sm">
-              <li className="flex items-center gap-3"><MapPin className="w-4 h-4" /> Gulshan, Dhaka</li>
-              <li className="flex items-center gap-3"><Phone className="w-4 h-4" /> +880 1234-567890</li>
-              <li className="flex items-center gap-3"><Mail className="w-4 h-4" /> support@pureorigins.com</li>
-            </ul>
+          {/* Safe payment info */}
+          <div className="flex justify-center items-center gap-2 text-[#6F685F] text-sm pb-4">
+            <Lock size={18} />
+            <span>নিরাপদ পেমেন্ট গ্যারান্টি</span>
           </div>
 
-          <div>
-            <h5 className="text-white font-semibold mb-6">দ্রুত লিঙ্ক</h5>
-            <ul className="space-y-4 text-sm">
-              <li><a href="#features" className="hover:text-white transition-colors">আমাদের বৈশিষ্ট্য (Features)</a></li>
-              <li><a href="#products" className="hover:text-white transition-colors">আমাদের পণ্য (Products)</a></li>
-              <li><a href="#contact" className="hover:text-white transition-colors">যোগাযোগ করুন (Contact)</a></li>
-            </ul>
-          </div>
+        </main>
 
-          <div>
-            <h5 className="text-white font-semibold mb-6">ডেলিভারি</h5>
-            <div className="space-y-4 text-sm">
-              <div className="flex items-start gap-3">
-                <Truck className="w-4 h-4 mt-0.5" />
-                <span>সারা বাংলাদেশে নির্ভরযোগ্য ডেলিভারি সার্ভিস নিশ্চিত করা হয়।</span>
-              </div>
-            </div>
-          </div>
+        {/* Mobile Fixed Bottom Action Bar */}
+        <div className="fixed bottom-0 left-0 w-full bg-[#FCFAF8] p-5 z-40 border-t border-[#DCCFBF]/30 shadow-[0_-4px_16px_rgba(31,77,58,0.04)]">
+          <button className="w-full bg-[#023625] text-white font-medium text-[18px] py-[15px] rounded-xl shadow-md active:bg-[#022b1d] transition-colors flex justify-center items-center gap-3">
+            চেকআউট করুন
+            <ArrowRight size={22} />
+          </button>
         </div>
-        
-        <div className="mx-auto max-w-7xl px-6 mt-16 pt-8 border-t border-slate-800 text-center text-xs">
-          <p>© 2024 PureOrigins Backend System. All rights reserved.</p>
-        </div>
-      </footer>
+
+      </div>
     </div>
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: any; title: string; description: string }) {
-  return (
-    <motion.div 
-      whileHover={{ y: -5 }}
-      className="p-8 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-emerald-900/5 transition-all duration-300"
-    >
-      <div className="w-12 h-12 bg-[#F0F7F4] flex items-center justify-center rounded-2xl text-[#2D6A4F] mb-6">
-        {icon}
-      </div>
-      <h4 className="text-xl font-bold text-[#1B4332] mb-3">{title}</h4>
-      <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
-    </motion.div>
-  );
-}
-
-function ProductCard({ image, title, price, unit, badge }: { image: string, title: string, price: string, unit: string, badge?: string }) {
-  return (
-    <motion.div 
-      whileHover={{ y: -6 }}
-      className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-emerald-900/5 transition-all duration-300 flex flex-col h-full"
-    >
-      <div className="relative h-48 overflow-hidden bg-slate-100 flex items-center justify-center">
-        <img referrerPolicy="no-referrer" src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-        {badge && (
-          <span className="absolute top-3 left-3 bg-[#1B4332] text-[#95D5B2] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-            {badge}
-          </span>
-        )}
-      </div>
-      <div className="p-5 flex-1 flex flex-col justify-between">
-        <div>
-          <h4 className="text-sm font-bold text-[#1B4332] mb-1.5 leading-snug">{title}</h4>
-          <span className="text-[11px] text-slate-400 font-medium font-mono">{unit}</span>
-        </div>
-        <div className="flex items-center justify-between mt-4 border-t border-slate-100/55 pt-3">
-          <span className="text-base font-bold text-[#2D6A4F] font-mono">{price}</span>
-          <a 
-            href="/pureorigins.html" 
-            className="text-[10px] font-bold bg-[#1B4332] text-white px-3.5 py-1.5 rounded-full hover:bg-[#2D6A4F] transition-colors uppercase tracking-wider inline-block text-center select-none"
-          >
-            অর্ডার
-          </a>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function SkeletonPulse() {
-  return (
-    <div className="animate-pulse space-y-4">
-      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
-      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
-      <div className="h-14 bg-slate-200/50 rounded-2xl w-full"></div>
-    </div>
-  );
-}
-
-function AdminStatusItem({ label, status }: { label: string; status: boolean }) {
-  return (
-    <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-      <span className="text-sm font-medium text-slate-700">{label}</span>
-      <div className="flex items-center gap-2">
-        <span className={`text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full ${status ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-          {status ? 'Active' : 'Pending'}
-        </span>
-        {status ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
-      </div>
-    </div>
-  );
-}
 

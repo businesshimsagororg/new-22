@@ -1,0 +1,261 @@
+:root {
+  --po-primary: #023625;
+  --po-primary-soft: #1f4d3a;
+  --po-secondary: #47672c;
+  --po-gold: #c9971c;
+  --po-gold-soft: #ffdea3;
+  --po-bg: #ede6d6;
+  --po-surface: #fef8f2;
+  --po-surface-soft: #f8f4ec;
+  --po-border: #dccfbf;
+  --po-text: #1d1b18;
+  --po-muted: #6f685f;
+  --po-shadow: 0 12px 34px rgba(2, 54, 37, 0.1);
+  --po-radius: 8px;
+  --po-font-display: "EB Garamond", serif;
+  --po-font-body: "Noto Sans Bengali", "Noto Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    linear-gradient(180deg, rgba(254, 248, 242, 0.94), rgba(237, 230, 214, 0.94)),
+    radial-gradient(circle at top left, rgba(199, 239, 164, 0.2), transparent 34%);
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  outline-color: var(--po-gold);
+}
+
+button,
+a {
+  text-underline-offset: 4px;
+}
+
+.btn-primary,
+.settings-tab.active,
+.category-chip.active,
+.nav-link.active,
+.bnav-item.active,
+.nav-tab.active {
+  letter-spacing: 0.03em;
+}
+
+.btn-primary,
+.btn-outline,
+.btn-secondary,
+.btn-ghost,
+.category-chip,
+.tab-btn,
+.filter-chip,
+.settings-tab,
+.inp,
+.form-input,
+.form-select,
+.field-wrap,
+.product-card,
+.luxury-card,
+.card,
+.metric-card {
+  border-radius: var(--po-radius) !important;
+}
+
+.btn-primary,
+.btn-outline,
+.btn-secondary {
+  min-height: 42px;
+}
+
+.btn-primary {
+  background: var(--po-primary) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(2, 54, 37, 0.16);
+}
+
+.btn-primary:hover {
+  background: var(--po-primary-soft) !important;
+}
+
+.btn-outline,
+.btn-secondary,
+.btn-ghost {
+  border-color: var(--po-border) !important;
+}
+
+.card,
+.metric-card,
+.product-card,
+.luxury-card {
+  border-color: rgba(220, 207, 191, 0.78) !important;
+  box-shadow: 0 8px 26px rgba(2, 54, 37, 0.07) !important;
+}
+
+#main-header,
+.topbar,
+#sidebar,
+.po-page-shell {
+  border-color: rgba(220, 207, 191, 0.82) !important;
+}
+
+.po-site-switcher {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 6px 16px;
+  background: rgba(2, 54, 37, 0.96);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 222, 163, 0.28);
+  box-shadow: 0 8px 24px rgba(2, 54, 37, 0.16);
+  font-family: var(--po-font-body);
+}
+
+.po-switcher-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: 8px;
+  color: #fff;
+  font-family: var(--po-font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.po-switcher-brand::before {
+  content: "eco";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--po-gold-soft);
+  color: var(--po-primary);
+  font-family: "Material Symbols Outlined";
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.po-site-switcher nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.po-site-switcher nav::-webkit-scrollbar {
+  display: none;
+}
+
+.po-site-switcher a:not(.po-switcher-brand) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px !important;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.po-site-switcher a:not(.po-switcher-brand):hover,
+.po-site-switcher a[aria-current="page"] {
+  background: rgba(255, 222, 163, 0.16);
+  border-color: rgba(255, 222, 163, 0.42);
+  color: #fff;
+}
+
+.po-site-switcher a[aria-current="page"] {
+  color: var(--po-gold-soft);
+}
+
+.po-signature-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.po-signature-mark::before {
+  content: "";
+  width: 34px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--po-gold), var(--po-gold-soft));
+}
+
+body:has(.po-site-switcher) #main-header,
+body:has(.po-site-switcher) #top-nav {
+  top: 42px !important;
+}
+
+body:has(.po-site-switcher) #sidebar {
+  top: 42px !important;
+  height: calc(100vh - 42px) !important;
+}
+
+@media (max-width: 760px) {
+  .po-site-switcher {
+    justify-content: flex-start;
+    padding-inline: 12px;
+  }
+
+  .po-switcher-brand {
+    position: sticky;
+    left: 0;
+    padding-right: 8px;
+    background: var(--po-primary);
+  }
+}
+
+/* Premium Enhancements */
+.card, .metric-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85) !important;
+}
+
+.po-site-switcher {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(2, 54, 37, 0.85) !important;
+}
+
+.btn-primary, .btn-outline, .btn-secondary, .btn-ghost, .card, .metric-card, .nav-link {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(2, 54, 37, 0.25) !important;
+}
+
+.card:hover, .metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(2, 54, 37, 0.12) !important;
+}
+
+.nav-link:hover {
+  transform: translateX(4px);
+}

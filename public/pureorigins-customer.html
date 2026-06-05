@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PureOrigins — Customer Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"/>
+<link href="pureorigins-signature.css" rel="stylesheet"/>
+
+<style>
+  body { background-color: #EDE6D6; font-family: 'Noto Sans Bengali', sans-serif; }
+  .page { display: none; min-height: 100vh; flex-direction: column; }
+  .page.active { display: flex; }
+  .luxury-card { background: #F8F4EC; border-radius: 16px; border: 1px solid rgba(220,207,191,0.5); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+  .btn-primary { background: #023625; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .field-wrap { background: #F8F4EC; border: 1.5px solid #DCCFBF; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+  .field-wrap input { background: transparent; border: none; outline: none; width: 100%; }
+</style>
+</head>
+<body>
+<div class="po-site-switcher" role="navigation" aria-label="PureOrigins pages">
+  <a class="po-switcher-brand" href="pureorigins.html">PureOrigins</a>
+  <nav>
+    <a href="pureorigins.html">Home</a>
+    <a href="pureorigins-shop.html#shop">Shop</a>
+    <a href="pureorigins-shop.html#account">Account</a>
+    <a href="pureorigins-customer.html" aria-current="page">Customer Portal</a>
+    <a href="pureorigins_admin.html">Admin</a>
+  </nav>
+</div>
+
+<div class="page active" id="page-login">
+  <main class="flex-1 flex flex-col items-center justify-center px-5">
+    <div class="luxury-card p-10 w-full max-w-sm">
+      <h1 class="font-serif text-3xl text-primary text-center mb-8">PureOrigins</h1>
+      <h2 class="text-xl font-bold mb-6">লগইন করুন</h2>
+      <div class="space-y-4">
+        <div class="field-wrap">
+          <span class="material-symbols-outlined">person</span>
+          <input type="text" id="login-id" placeholder="মোবাইল বা ইমেইল">
+        </div>
+        <div class="field-wrap">
+          <span class="material-symbols-outlined">lock</span>
+          <input type="password" id="login-pw" placeholder="পাসওয়ার্ড">
+        </div>
+        <button class="btn-primary mt-4" onclick="handleLogin()">প্রবেশ করুন</button>
+        <button class="w-full py-3 border border-border-sand rounded-full flex items-center justify-center gap-2 mt-2 bg-white" onclick="signInWithGoogle()">
+           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/callback/google.svg" width="18"> Google দিয়ে লগইন
+        </button>
+      </div>
+      <p class="text-center text-sm mt-6 text-muted">অ্যাকাউন্ট নেই? <button onclick="goTo('page-signup')" class="text-primary font-bold">নতুন তৈরি করুন</button></p>
+    </div>
+  </main>
+</div>
+
+<div class="page" id="page-signup">
+  <main class="flex-1 flex flex-col items-center justify-center px-5">
+    <div class="luxury-card p-10 w-full max-w-sm text-center">
+      <h1 class="font-serif text-3xl text-primary mb-8">PureOrigins</h1>
+      <h2 class="text-xl font-bold mb-6">নতুন অ্যাকাউন্ট</h2>
+      <div class="space-y-4 text-left">
+        <div class="field-wrap"><span class="material-symbols-outlined">person</span><input type="text" id="su-name" placeholder="আপনার নাম"></div>
+        <div class="field-wrap"><span class="material-symbols-outlined">call</span><input type="tel" id="su-mobile" placeholder="মোবাইল নম্বর"></div>
+        <div class="field-wrap"><span class="material-symbols-outlined">lock</span><input type="password" id="su-pw" placeholder="পাসওয়ার্ড"></div>
+        <button class="btn-primary mt-4" onclick="handleSignup()">সাইন আপ</button>
+      </div>
+      <p class="text-center text-sm mt-6 text-muted">অ্যাকাউন্ট আছে? <button onclick="goTo('page-login')" class="text-primary font-bold">লগইন করুন</button></p>
+    </div>
+  </main>
+</div>
+
+<div class="page" id="page-account">
+   <div class="max-w-4xl mx-auto px-5 py-10 w-full">
+      <div class="bg-primary text-white p-10 rounded-3xl mb-8 flex items-center gap-6">
+         <div class="w-20 h-20 bg-primary-lt rounded-full flex items-center justify-center text-3xl font-serif">স</div>
+         <div>
+            <h2 class="text-2xl font-serif" id="user-name">সামিনা আক্তার</h2>
+            <p class="text-white/60" id="user-phone">+880 1712-345678</p>
+         </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+         <div class="luxury-card p-6">
+            <h3 class="text-xl font-serif mb-4 flex items-center gap-2"><span class="material-symbols-outlined">shopping_bag</span> আমার অর্ডার</h3>
+            <div id="orders-list" class="space-y-4">
+               <div class="p-3 border-b text-sm">অর্ডার #8842 - পাঠানো হয়েছে</div>
+            </div>
+         </div>
+         <div class="luxury-card p-6">
+            <h3 class="text-xl font-serif mb-4 flex items-center gap-2"><span class="material-symbols-outlined">location_on</span> সংরক্ষিত ঠিকানা</h3>
+            <div class="p-4 border border-border-sand rounded-xl text-sm">
+               ধানমন্ডি, ঢাকা — ১২০৫
+            </div>
+            <button class="mt-4 text-primary font-bold text-sm">+ নতুন ঠিকানা</button>
+         </div>
+      </div>
+      <button class="mt-10 text-error font-bold" onclick="handleLogout()">লগআউট করুন</button>
+   </div>
+</div>
+
+<div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full opacity-0 transition-opacity pointer-events-none"></div>
+
+<script>
+function goTo(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m; t.style.opacity = 1;
+  setTimeout(()=>t.style.opacity = 0, 3000);
+}
+function handleLogin() { showToast('লগইন হচ্ছে'); setTimeout(()=>goTo('page-account'), 1000); }
+function handleLogout() { goTo('page-login'); }
+function handleSignup() { showToast('অ্যাকাউন্ট তৈরি হচ্ছে'); setTimeout(()=>goTo('page-login'), 1000); }
+</script>
+
+<script type="module">
+import { signInWithGoogle as firebaseSignIn, logOut, auth } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+window.signInWithGoogle = async function() {
+  try { await firebaseSignIn(); goTo('page-account'); } catch(e) { console.error(e); }
+}
+window.handleLogout = async function() {
+  await logOut(); goTo('page-login');
+}
+onAuthStateChanged(auth, user => {
+  if (user) {
+    goTo('page-account');
+    document.getElementById('user-name').textContent = user.displayName || 'ব্যবহারকারী';
+    document.getElementById('user-phone').textContent = user.phoneNumber || user.email;
+  }
+});
+</script>
+</body>
+</html>

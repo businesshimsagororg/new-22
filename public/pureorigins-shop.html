@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PureOrigins — প্রকৃতির বিশুদ্ধতা</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Noto+Sans:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="pureorigins-signature.css" rel="stylesheet"/>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#023625","on-primary": "#ffffff","primary-container": "#1f4d3a",
+        "on-primary-container": "#8dbda4","inverse-primary": "#a1d1b8",
+        "primary-fixed": "#bceed3","primary-fixed-dim": "#a1d1b8",
+        "secondary": "#47672c","on-secondary": "#ffffff",
+        "secondary-container": "#c7efa4","on-secondary-container": "#4c6d31",
+        "tertiary": "#3f2c00","on-tertiary": "#ffffff",
+        "tertiary-container": "#5a4103","on-tertiary-container": "#d2ae68",
+        "tertiary-fixed": "#ffdea3","tertiary-fixed-dim": "#e7c17a",
+        "surface": "#fef8f2","surface-cream": "#F8F4EC",
+        "surface-dim": "#dfd9d3","surface-bright": "#fef8f2",
+        "surface-container-lowest": "#ffffff","surface-container-low": "#f8f3ec",
+        "surface-container": "#f3ede6","surface-container-high": "#ede7e1",
+        "surface-container-highest": "#e7e2db","surface-variant": "#e7e2db",
+        "surface-tint": "#3a6753","on-surface": "#1d1b18",
+        "on-surface-variant": "#414944","inverse-surface": "#32302c",
+        "inverse-on-surface": "#f6f0e9","outline": "#717973",
+        "outline-variant": "#c0c9c2","background": "#fef8f2",
+        "background-beige": "#EDE6D6","on-background": "#1d1b18",
+        "border-sand": "#DCCFBF","muted-gray": "#6F685F",
+        "error": "#ba1a1a","on-error": "#ffffff",
+        "error-container": "#ffdad6","on-error-container": "#93000a",
+        "gold": "#C9971C","gold-light": "#ffdea3"
+      },
+      fontFamily: {
+        "garamond": ["EB Garamond","serif"],
+        "sans-bn": ["Noto Sans Bengali","Noto Sans","sans-serif"]
+      },
+      borderRadius: { "DEFAULT":"0.5rem","sm":"0.25rem","lg":"0.75rem","xl":"1rem","2xl":"1.5rem","full":"9999px" },
+      spacing: { "unit":"4px","stack-sm":"8px","stack-md":"16px","stack-lg":"32px","gutter":"24px","margin-mobile":"20px","margin-desktop":"64px","container-max":"1280px" }
+    }
+  }
+}
+</script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:"Noto Sans Bengali","Noto Sans",sans-serif;background:#EDE6D6;color:#1d1b18;min-height:100vh;display:flex;flex-direction:column;}
+  .mat{font-family:"Material Symbols Outlined";font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .mat.fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .page{display:none;flex-direction:column;flex:1;animation:fadeIn .25s ease;}
+  .page.active{display:flex;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .drawer{transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);position:fixed;top:0;right:0;height:100%;z-index:100;background:#F8F4EC;display:flex;flex-direction:column;width:min(420px,100vw);box-shadow:-8px 0 40px rgba(2,54,37,.15);}
+  .drawer.open{transform:translateX(0);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(2,54,37,.35);z-index:90;backdrop-filter:blur(2px);}
+  .overlay.show{display:block;}
+  .product-card{background:#F8F4EC;border-radius:.75rem;overflow:hidden;border:1px solid rgba(220,207,191,.6);transition:transform .2s, box-shadow .2s;cursor:pointer;}
+  .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(2,54,37,.12);}
+  .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .btn-primary{background:#023625;color:#fff;padding:12px 24px;border-radius:9999px;font-size:14px;font-weight:600;transition:all .2s;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+  .toast-box{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);z-index:200;opacity:0;transition:all .3s;pointer-events:none;}
+  .toast-box.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body class="antialiased">
+<div class="po-site-switcher" role="navigation" aria-label="PureOrigins pages">
+  <a class="po-switcher-brand" href="pureorigins.html">PureOrigins</a>
+  <nav>
+    <a href="pureorigins-shop.html#home" data-route="home" aria-current="page">Home</a>
+    <a href="pureorigins-shop.html#shop" data-route="shop">Shop</a>
+    <a href="pureorigins-shop.html#cart" data-route="cart">Cart</a>
+    <a href="pureorigins-shop.html#checkout" data-route="checkout">Checkout</a>
+    <a href="pureorigins-shop.html#tracking" data-route="tracking">Track</a>
+    <a href="pureorigins-shop.html#account" data-route="account">Account</a>
+    <a href="pureorigins-customer.html">Customer Portal</a>
+    <a href="pureorigins_admin.html">Admin</a>
+  </nav>
+</div>
+
+<!-- HEADER -->
+<header id="main-header" class="sticky top-0 z-50 bg-surface-container-low border-b border-border-sand/60">
+  <div class="flex items-center justify-between w-full px-5 md:px-16 py-3.5 max-w-[1280px] mx-auto">
+    <button onclick="nav('home')" class="font-garamond font-bold text-primary text-2xl md:text-[28px] tracking-tight leading-none">PureOrigins</button>
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold">
+      <button onclick="nav('home')" class="nav-link text-on-surface-variant hover:text-primary">Home</button>
+      <button onclick="nav('shop')" class="nav-link text-on-surface-variant hover:text-primary">Shop</button>
+      <button onclick="nav('combo')" class="nav-link text-on-surface-variant hover:text-primary">Combo</button>
+      <button onclick="nav('sunnah')" class="nav-link text-on-surface-variant hover:text-primary">Sunnah</button>
+      <button onclick="nav('tracking')" class="nav-link text-on-surface-variant hover:text-primary">Track Order</button>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button onclick="openCart()" class="w-10 h-10 rounded-full flex items-center justify-center text-primary relative">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <span id="cart-badge" class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-secondary text-white text-[10px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+      </button>
+      <button onclick="nav('account')" class="w-10 h-10 rounded-full flex items-center justify-center text-primary">
+        <span class="material-symbols-outlined">person</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="pages" class="flex-1 flex flex-col pb-16 md:pb-0">
+  <div id="page-home" class="page active">
+    <!-- Home Content - Shortened for brevity -->
+    <section class="max-w-[1280px] mx-auto px-5 md:px-16 py-12 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <div class="md:col-span-5 flex flex-col gap-5">
+        <h1 class="font-garamond font-semibold text-primary text-5xl leading-tight">প্রকৃতির বিশুদ্ধতা আপনার ঘরে</h1>
+        <p class="text-on-surface-variant text-lg">সরাসরি কৃষক ও খামারিদের থেকে সংগৃহীত শতভাগ খাঁটি মধু ও অর্গানিক পণ্য।</p>
+        <div class="flex gap-4">
+          <button onclick="nav('shop')" class="btn-primary">কেনাকাটা করুন</button>
+        </div>
+      </div>
+      <div class="md:col-span-7 rounded-2xl overflow-hidden shadow-xl">
+         <img src="https://images.unsplash.com/photo-1587049352847-4d4b1263d508?auto=format&fit=crop&w=1200&q=80" alt="Products" class="w-full h-full object-cover">
+      </div>
+    </section>
+    <section class="max-w-[1280px] mx-auto px-5 md:px-16 py-12">
+      <h2 class="font-garamond font-semibold text-primary text-3xl mb-8">জনপ্রিয় পণ্য</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="home-products-grid"></div>
+    </section>
+  </div>
+
+  <div id="page-shop" class="page">
+    <div class="max-w-[1280px] mx-auto px-5 md:px-16 py-8">
+      <h1 class="font-garamond font-semibold text-primary text-4xl mb-6">সব পণ্য</h1>
+      
+      <!-- Search and Filter Bar -->
+      <div class="flex flex-col md:flex-row gap-4 mb-8">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-muted-gray text-xl">search</span>
+          <input type="text" id="shop-search-input" oninput="renderShop()" placeholder="পণ্য খুঁজুন (যেমন: মধু, তেল, চিয়া)..." class="w-full pl-10 pr-4 py-2 bg-surface-cream border border-border-sand/60 rounded-xl focus:outline-none focus:border-primary text-sm shadow-sm transition-all">
+        </div>
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0" id="category-filters">
+          <button onclick="setCategory('সব')" class="category-chip px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all">সব</button>
+          <button onclick="setCategory('মধু')" class="category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all">মধু</button>
+          <button onclick="setCategory('তেল')" class="category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all">তেল</button>
+          <button onclick="setCategory('সুপারফুড')" class="category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all">সুপারফুড</button>
+          <button onclick="setCategory('মশলা')" class="category-chip px-4 py-2 bg-surface-cream text-muted-gray text-xs font-semibold rounded-full border border-border-sand/40 hover:bg-border-sand/20 transition-all">মশলা</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="shop-grid"></div>
+    </div>
+  </div>
+
+  <div id="page-cart" class="page">
+    <div class="max-w-[1280px] mx-auto px-5 md:px-16 py-8">
+      <h1 class="font-garamond font-semibold text-primary text-4xl mb-6">আপনার কার্ট</h1>
+      <div id="cart-page-content"></div>
+    </div>
+  </div>
+
+  <div id="page-checkout" class="page">
+    <!-- Checkout markup from user provided file -->
+    <div class="max-w-4xl mx-auto px-5 py-10" id="checkout-step-1">
+       <h2 class="text-2xl font-serif mb-6">ডেলিভারি তথ্য</h2>
+       <div class="grid gap-4">
+          <input type="text" id="co-name" placeholder="পুরো নাম" class="p-3 border border-border-sand rounded-xl bg-surface-cream">
+          <input type="tel" id="co-phone" placeholder="মোবাইল নম্বর" class="p-3 border border-border-sand rounded-xl bg-surface-cream">
+          <textarea id="co-address" placeholder="ঠিকানা" class="p-3 border border-border-sand rounded-xl bg-surface-cream h-24"></textarea>
+          <select id="co-city" class="p-3 border border-border-sand rounded-xl bg-surface-cream">
+             <option value="Dhaka">ঢাকা</option>
+             <option value="Chittagong">চট্টগ্রাম</option>
+          </select>
+          <button onclick="goToPaymentStep()" class="btn-primary justify-center font-bold">পেমেন্টে যান</button>
+       </div>
+    </div>
+    <div class="max-w-4xl mx-auto px-5 py-10 hidden" id="checkout-step-2">
+       <h2 class="text-2xl font-serif mb-6">পেমেন্ট পদ্ধতি</h2>
+       <div class="grid gap-3">
+          <label class="flex items-center gap-3 p-4 border-2 border-primary bg-surface-lo rounded-xl">
+             <input type="radio" name="pay" value="cod" checked>
+             <span>ক্যাশ অন ডেলিভারি</span>
+          </label>
+          <button onclick="placeOrder()" class="btn-primary justify-center font-bold mt-4">অর্ডার নিশ্চিত করুন</button>
+       </div>
+    </div>
+  </div>
+  
+  <div id="page-tracking" class="page">
+     <div class="max-w-md mx-auto px-5 py-16 text-center">
+        <h1 class="text-3xl font-serif mb-6">অর্ডার ট্র্যাক করুন</h1>
+        <input type="text" id="track-input" placeholder="অর্ডার আইডি" class="w-full p-4 rounded-xl border border-border-sand mb-4">
+        <button onclick="trackOrder()" class="btn-primary w-full justify-center">ট্র্যাক</button>
+        <div id="tracking-result" class="hidden mt-8 p-6 bg-surface-cream rounded-2xl border border-border-sand text-left">
+           <p class="font-bold">আইডি: <span id="track-order-id"></span></p>
+           <p>অবস্থা: <span id="track-status-badge">প্রক্রিয়াধীন</span></p>
+        </div>
+     </div>
+  </div>
+
+  <div id="page-success" class="page">
+    <div class="max-w-xl mx-auto px-5 py-12 md:py-20 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-800 rounded-full mb-6">
+        <span class="material-symbols-outlined text-[32px]">check_circle</span>
+      </div>
+      <h1 class="font-garamond font-semibold text-primary text-3xl md:text-4xl mb-3">ধন্যবাদ! আপনার অর্ডার সফল হয়েছে।</h1>
+      <p class="text-muted-gray text-base mb-8">আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব এবং অর্ডারটি ডেলিভারি করব।</p>
+      
+      <div class="bg-surface-cream rounded-2xl border border-border-sand p-6 text-left shadow-sm flex flex-col gap-4 mb-8">
+        <div class="flex justify-between items-center pb-3 border-b border-border-sand">
+          <span class="text-sm text-muted-gray font-medium">অর্ডার আইডি</span>
+          <span id="success-order-id" class="font-bold text-primary font-mono text-sm"></span>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-primary text-sm mb-3">পণ্যসমূহ</h4>
+          <div id="success-items-list" class="flex flex-col gap-2"></div>
+        </div>
+        
+        <div class="pt-3 border-t border-border-sand flex flex-col gap-1 text-sm">
+          <div class="flex justify-between text-muted-gray">
+            <span>সাবটোটাল</span>
+            <span id="success-subtotal"></span>
+          </div>
+          <div class="flex justify-between font-bold text-primary pt-2 border-t border-border-sand">
+            <span>মোট পরিশোধযোগ্য</span>
+            <span id="success-total"></span>
+          </div>
+        </div>
+        
+        <div class="pt-3 border-t border-border-sand">
+          <h4 class="font-semibold text-primary text-sm mb-1.5">ডেলিভারি ঠিকানা</h4>
+          <pre id="success-address" class="text-xs text-muted-gray leading-relaxed font-sans whitespace-pre-line"></pre>
+        </div>
+      </div>
+      
+      <div class="flex gap-4 justify-center">
+        <button onclick="nav('home')" class="btn-primary">হোম পেজে ফিরে যান</button>
+        <button onclick="nav('shop')" class="btn-outline">আরো কেনাকাটা করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-product" class="page">
+    <div class="max-w-[1280px] mx-auto px-5 md:px-16 py-8">
+      <button onclick="nav(lastPage || 'shop')" class="flex items-center gap-2 text-primary font-semibold mb-6 hover:underline">
+        <span class="material-symbols-outlined mb-[2px]">arrow_back</span>
+        ফিরে যান
+      </button>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16" id="product-detail-content">
+        <!-- Filled by shop.js openProduct() -->
+      </div>
+      
+      <div class="mt-16 md:mt-24">
+        <h2 class="font-garamond font-semibold text-primary text-2xl mb-8">সম্পর্কিত পণ্যসমূহ (Related Products)</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="related-products-grid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="flex items-center justify-between px-5 py-4 border-b">
+    <h2 class="font-garamond text-xl">কার্ট</h2>
+    <button onclick="closeCart()" class="material-symbols-outlined">close</button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-5" id="drawer-items"></div>
+  <div class="p-5 border-t bg-surface-cream" id="drawer-footer">
+    <div class="flex flex-col gap-1.5 mb-4 text-sm pb-3 border-b border-border-sand/40">
+      <div class="flex justify-between text-muted-gray"><span>উপ-মোট</span><span id="drawer-subtotal">৳ ০</span></div>
+      <div class="flex justify-between text-muted-gray"><span>ডেলিভারি চার্জ</span><span id="drawer-delivery">৳ ০</span></div>
+    </div>
+    <div class="flex justify-between mb-4 font-bold text-primary"><span>মোট</span><span id="drawer-total">৳ ০</span></div>
+    <button onclick="closeCart();nav('checkout')" class="btn-primary w-full justify-center">চেকআউট</button>
+  </div>
+</div>
+
+<div class="toast-box" id="toast">
+  <div class="bg-primary text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
+    <span class="material-symbols-outlined" id="toast-icon">check_circle</span>
+    <span id="toast-msg"></span>
+  </div>
+</div>
+
+<script src="shop.js"></script>
+<script type="module">
+import { auth, signInWithGoogle as firebaseSignIn, logOut } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+async function saveSession(user) {
+  const token = await user.getIdToken();
+  localStorage.setItem("pureoriginsFirebaseToken", token);
+  localStorage.setItem("pureoriginsUser", JSON.stringify({
+    uid: user.uid,
+    name: user.displayName || "",
+    email: user.email || "",
+    photoURL: user.photoURL || ""
+  }));
+}
+
+window.signInWithGoogle = async function signInWithGoogle() {
+  try {
+    const { user } = await firebaseSignIn();
+    await saveSession(user);
+    location.reload();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) await saveSession(user);
+});
+</script>
+</body>
+</html>

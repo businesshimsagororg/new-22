@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pure Origins — প্রকৃতির বিশুদ্ধতা</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link href="pureorigins-signature.css" rel="stylesheet"/>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary:        "#023625",
+        "primary-lt":   "#1f4d3a",
+        "primary-dim":  "#a1d1b8",
+        "primary-fixed":"#bceed3",
+        secondary:      "#47672c",
+        "sec-container":"#c7efa4",
+        tertiary:       "#3f2c00",
+        "tert-dim":     "#e7c17a",
+        "tert-fixed":   "#ffdea3",
+        "tert-container":"#5a4103",
+        background:     "#fef8f2",
+        "bg-beige":     "#EDE6D6",
+        "surface":      "#fef8f2",
+        "surface-cream":"#F8F4EC",
+        "surface-lo":   "#f8f3ec",
+        "surface-hi":   "#ede7e1",
+        "on-surface":   "#1d1b18",
+        "on-surf-var":  "#414944",
+        "muted":        "#6F685F",
+        "border-sand":  "#DCCFBF",
+        "outline":      "#717973",
+        "out-variant":  "#c0c9c2",
+        gold:           "#C2962C",
+        "gold-light":   "#e7c17a",
+      },
+      fontFamily: {
+        serif: ["EB Garamond", "serif"],
+        sans:  ["Noto Sans Bengali", "Noto Sans", "sans-serif"],
+      },
+      spacing: {
+        "section": "5rem",
+        "container-max": "1280px",
+      },
+      boxShadow: {
+        "card":    "0 4px 24px rgba(2,54,37,0.06)",
+        "card-lg": "0 12px 40px rgba(2,54,37,0.10)",
+        "nav":     "0 4px 24px rgba(2,54,37,0.08)",
+        "up":      "0 -8px 24px rgba(2,54,37,0.08)",
+        "modal":   "0 24px 64px rgba(2,54,37,0.16)",
+      },
+      borderRadius: {
+        "DEFAULT": "0.5rem",
+        "sm":  "0.25rem",
+        "md":  "0.75rem",
+        "lg":  "1rem",
+        "xl":  "1.5rem",
+        "2xl": "2rem",
+        "full":"9999px",
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  /* Base */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #fef8f2;
+    color: #1d1b18;
+    font-family: "Noto Sans Bengali", "Noto Sans", sans-serif;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4,h5,h6 { font-family: "EB Garamond", serif; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #fef8f2; }
+  ::-webkit-scrollbar-thumb { background: #a1d1b8; border-radius: 3px; }
+
+  /* Page System */
+  .page { display: none; opacity: 0; transition: opacity 0.35s ease; }
+  .page.active { display: block; opacity: 1; }
+  .page.fade-in { animation: fadeUp 0.45s ease forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Skeleton Shimmer */
+  @keyframes shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, #ede7e1 25%, #f8f4ec 50%, #ede7e1 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.6s infinite linear;
+    border-radius: 0.375rem;
+  }
+
+  /* Nav Active State */
+  .nav-link { position: relative; }
+  .nav-link.active { color: #023625; font-weight: 600; }
+  .nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 2px;
+    background: #e7c17a;
+    border-radius: 1px;
+  }
+
+  /* Simple Transition */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+
+<body class="pb-16 md:pb-0">
+<div class="po-site-switcher" role="navigation" aria-label="PureOrigins pages">
+  <a class="po-switcher-brand" href="pureorigins.html" aria-current="page">PureOrigins</a>
+  <nav>
+    <a href="pureorigins.html" aria-current="page">Home</a>
+    <a href="pureorigins-shop.html#shop">Shop</a>
+    <a href="pureorigins-shop.html#cart">Cart</a>
+    <a href="pureorigins-shop.html#checkout">Checkout</a>
+    <a href="pureorigins-shop.html#tracking">Track</a>
+    <a href="pureorigins-shop.html#account">Account</a>
+    <a href="pureorigins-customer.html">Customer Portal</a>
+  </nav>
+</div>
+
+<!-- HEADER -->
+<header id="main-header" class="fixed top-0 w-full z-50 transition-all duration-300"
+        style="background: rgba(254,248,242,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+  <div class="max-w-[1280px] mx-auto px-5 md:px-16">
+    <div class="flex items-center justify-between h-16 md:h-[72px]">
+      <a href="pureorigins.html" class="font-serif text-[1.75rem] md:text-[2rem] font-semibold text-primary tracking-wide leading-none">
+        Pure Origins
+      </a>
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="pureorigins.html" class="nav-link font-sans text-sm font-semibold text-primary uppercase tracking-widest">Home</a>
+        <a href="#features" class="nav-link font-sans text-sm font-medium text-on-surf-var hover:text-primary uppercase tracking-widest transition-colors">Features</a>
+        <a href="#products" class="nav-link font-sans text-sm font-medium text-on-surf-var hover:text-primary uppercase tracking-widest transition-colors">Products</a>
+        <a href="#contact" class="nav-link font-sans text-sm font-medium text-on-surf-var hover:text-primary uppercase tracking-widest transition-colors">Contact</a>
+      </nav>
+      <div class="flex items-center gap-3 text-primary">
+         <a href="pureorigins-shop.html#cart" class="p-1"><span class="material-symbols-outlined">shopping_bag</span></a>
+         <a href="pureorigins-customer.html" class="p-1"><span class="material-symbols-outlined">person</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="pt-24 pb-16">
+  <section class="max-w-[1280px] mx-auto px-5 md:px-16 text-center">
+     <h1 class="text-5xl font-serif text-primary mb-6">প্রকৃতির বিশুদ্ধতা</h1>
+     <p class="text-xl text-muted max-w-2xl mx-auto mb-10">সরাসরি কৃষক ও খামারিদের থেকে সংগৃহীত শতভাগ খাঁটি ও প্রাকৃতিক পণ্য।</p>
+     <div class="flex justify-center gap-4">
+        <a href="pureorigins-shop.html#shop" class="bg-primary text-white px-8 py-3 rounded-full font-bold">কেনাকাটা শুরু করুন</a>
+        <a href="pureorigins-shop.html#combo" class="border border-primary text-primary px-8 py-3 rounded-full font-bold">অফার দেখুন</a>
+     </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section id="features" class="scroll-mt-24 mt-20 max-w-6xl mx-auto px-5 grid md:grid-cols-3 gap-8">
+     <div class="bg-surface-cream p-8 rounded-2xl border border-border-sand">
+        <h3 class="text-2xl font-serif mb-4">আমাদের মূল্যবোধ</h3>
+        <p class="text-sm text-muted">সরাসরি মাঠ থেকে খাঁটি মানের পণ্য সংগ্রহ। কোনো মধ্যস্বত্বভোগী নেই।</p>
+     </div>
+     <div class="bg-surface-cream p-8 rounded-2xl border border-border-sand">
+        <h3 class="text-2xl font-serif mb-4">মান পরীক্ষিত</h3>
+        <p class="text-sm text-muted">উন্নত ল্যাবে পরীক্ষা করে প্রতিটি পণ্যের বিশুদ্ধতা নিশ্চিত করা হয়।</p>
+     </div>
+     <div class="bg-surface-cream p-8 rounded-2xl border border-border-sand">
+        <h3 class="text-2xl font-serif mb-4">দ্রুত ডেলিভারি</h3>
+        <p class="text-sm text-muted">সারা বাংলাদেশে ২৪-৪৮ ঘণ্টার মধ্যে নির্ভরযোগ্য ডেলিভারি সার্ভিস।</p>
+     </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="scroll-mt-24 mt-24 max-w-6xl mx-auto px-5">
+     <div class="text-center mb-12">
+        <h2 class="text-3xl font-serif text-primary mb-3">আমাদের জনপ্রিয় পণ্যসমূহ (Products)</h2>
+        <p class="text-sm text-muted max-w-md mx-auto">শতভাগ খাঁটি উপাদানে তৈরি আমাদের সেরা কিছু অর্গানিক প্রোডাক্ট।</p>
+        <div class="w-12 h-1 bg-gold mx-auto mt-4 rounded-full"></div>
+     </div>
+     
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- Product 1 -->
+        <div class="bg-surface-cream p-4 rounded-2xl border border-border-sand/60 hover:shadow-lg transition-all flex flex-col justify-between">
+           <div>
+              <img src="https://images.unsplash.com/photo-1587049352847-4d4b1263d508?auto=format&fit=crop&w=300&q=80" alt="Honey" class="w-full h-36 object-cover rounded-xl mb-3">
+              <h4 class="font-serif font-bold text-lg text-primary">খাঁটি সুন্দরবনের মধু</h4>
+              <p class="text-xs text-muted mb-2 font-mono">১ কেজি</p>
+           </div>
+           <div class="flex items-center justify-between mt-3">
+              <span class="text-secondary font-bold text-sm">৳ ৮৫০</span>
+              <a href="pureorigins-shop.html#shop" class="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors">ক্রয় করুন</a>
+           </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="bg-surface-cream p-4 rounded-2xl border border-border-sand/60 hover:shadow-lg transition-all flex flex-col justify-between">
+           <div>
+              <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=300&q=80" alt="Mustard Oil" class="w-full h-36 object-cover rounded-xl mb-3">
+              <h4 class="font-serif font-bold text-lg text-primary">কালোজিরা তেল</h4>
+              <p class="text-xs text-muted mb-2 font-mono">২৫০ মি.লি.</p>
+           </div>
+           <div class="flex items-center justify-between mt-3">
+              <span class="text-secondary font-bold text-sm">৳ ৪২০</span>
+              <a href="pureorigins-shop.html#shop" class="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors">ক্রয় করুন</a>
+           </div>
+        </div>
+        <!-- Product 3 -->
+        <div class="bg-surface-cream p-4 rounded-2xl border border-border-sand/60 hover:shadow-lg transition-all flex flex-col justify-between">
+           <div>
+              <img src="https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=300&q=80" alt="Chia Seeds" class="w-full h-36 object-cover rounded-xl mb-3">
+              <h4 class="font-serif font-bold text-lg text-primary">প্রিমিয়াম চিয়া সিডস</h4>
+              <p class="text-xs text-muted mb-2 font-mono">২৫০ গ্রাম</p>
+           </div>
+           <div class="flex items-center justify-between mt-3">
+              <span class="text-secondary font-bold text-sm">৳ ৩৫০</span>
+              <a href="pureorigins-shop.html#shop" class="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors">ক্রয় করুন</a>
+           </div>
+        </div>
+        <!-- Product 4 -->
+        <div class="bg-surface-cream p-4 rounded-2xl border border-border-sand/60 hover:shadow-lg transition-all flex flex-col justify-between">
+           <div>
+              <img src="https://images.unsplash.com/photo-1540308001150-13f57ebd19b4?auto=format&fit=crop&w=300&q=80" alt="Ghee" class="w-full h-36 object-cover rounded-xl mb-3">
+              <h4 class="font-serif font-bold text-lg text-primary">সরিষার তেল</h4>
+              <p class="text-xs text-muted mb-2 font-mono">১ লিটার</p>
+           </div>
+           <div class="flex items-center justify-between mt-3">
+              <span class="text-secondary font-bold text-sm">৳ ২৯০</span>
+              <a href="pureorigins-shop.html#shop" class="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-opacity-90 transition-colors">ক্রয় করুন</a>
+           </div>
+        </div>
+     </div>
+  </section>
+</main>
+
+<footer id="contact" class="scroll-mt-24 bg-primary text-white py-12">
+   <div class="max-w-6xl mx-auto px-5 text-center">
+      <p class="text-2xl mb-4 font-serif">Pure Origins</p>
+      <p class="text-white/60 mb-8 max-w-md mx-auto">প্রকৃতির বিশুদ্ধতা সরাসরি আপনার টেবিলে পৌঁছে দেওয়াই আমাদের মূল লক্ষ্য।</p>
+      <p class="text-xs text-white/40">© ২০২৪ Pure Origins. সর্বস্বত্ব সংরক্ষিত।</p>
+   </div>
+</footer>
+</body>
+</html>
